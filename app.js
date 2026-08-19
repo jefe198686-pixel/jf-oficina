@@ -9,5 +9,6 @@ document.write([
   '<script src="library.js?v=0.10.0"><\/script>',
   '<script src="service-intelligence.js?v=0.10.0"><\/script>',
   '<script src="recovery.js?v=0.10.0"><\/script>',
+  '<script src="release.js?v=0.10.0"><\/script>',
   '<script src="init.js?v=0.10.0"><\/script>'
 ].join(''));
