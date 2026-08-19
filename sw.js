@@ -1,6 +1,6 @@
 const VERSION='0.9.8';
 const CACHE='jf-oficina-'+VERSION;
-const CORE=["./", "./index.html", "./manifest.webmanifest", "./styles.css", "./core.js", "./os.js", "./clients.js", "./products.js", "./updater-tech.js", "./library.js", "./init.js"];
+const CORE=["./", "./index.html", "./manifest.webmanifest", "./styles.css", "./app.js", "./core.js", "./os.js", "./clients.js", "./products.js", "./updater-tech.js", "./library.js", "./init.js"];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('jf-oficina-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
