@@ -1,0 +1,105 @@
+// JF Oficina v0.11.0 — sincronização central offline-first
+const JF_SYNC_VERSION='0.11.0';
+const JF_SYNC_KEYS={
+ key:'jf-sync-key',revision:'jf-sync-revision',dirty:'jf-sync-dirty-at',last:'jf-sync-last-at',device:'jf-sync-device-id'
+};
+let JF_SYNC_SUPPRESS=false,JF_SYNC_TIMER=null,JF_SYNC_BUSY=false;
+
+function jfGetSyncKey(){return localStorage.getItem(JF_SYNC_KEYS.key)||''}
+function jfSetSyncKey(v){localStorage.setItem(JF_SYNC_KEYS.key,String(v||'').trim())}
+function jfDeviceId(){let x=localStorage.getItem(JF_SYNC_KEYS.device);if(!x){x='D-'+crypto.randomUUID();localStorage.setItem(JF_SYNC_KEYS.device,x)}return x}
+function jfStateSize(x=S){try{return JSON.stringify(x||{}).length}catch(e){return 0}}
+function jfStateItems(x=S){
+ if(typeof jfStateCount==='function')return jfStateCount(x);
+ const c=x?.custom||{};return ['clientes','equipamentos_clientes','produtos','ordens_servico','os_equipamentos','os_servicos','os_outros_servicos','os_produtos'].reduce((n,k)=>n+(Array.isArray(x?.[k])?x[k].length:0),0)+['clientes','equipamentos','os'].reduce((n,k)=>n+(Array.isArray(c[k])?c[k].length:0),0)
+}
+function jfGenerateSyncKey(){
+ const b=new Uint8Array(24);crypto.getRandomValues(b);
+ const s=[...b].map(x=>x.toString(16).padStart(2,'0')).join('').toUpperCase();
+ return 'JF-'+s.match(/.{1,8}/g).join('-');
+}
+function jfSetSyncStatus(text,type=''){let el=document.getElementById('syncStatus');if(el){el.textContent=text;el.dataset.type=type}}
+function jfSyncRevision(){return Number(localStorage.getItem(JF_SYNC_KEYS.revision)||0)}
+function jfMarkSynced(rev){localStorage.setItem(JF_SYNC_KEYS.revision,String(rev||0));localStorage.removeItem(JF_SYNC_KEYS.dirty);localStorage.setItem(JF_SYNC_KEYS.last,new Date().toISOString())}
+function jfMarkDirty(){if(JF_SYNC_SUPPRESS)return;localStorage.setItem(JF_SYNC_KEYS.dirty,String(Date.now()));jfScheduleSync()}
+function jfScheduleSync(){clearTimeout(JF_SYNC_TIMER);if(!jfGetSyncKey()||!navigator.onLine)return;JF_SYNC_TIMER=setTimeout(()=>jfSyncNow('auto'),2500)}
+
+async function jfApi(method,payload){
+ const key=jfGetSyncKey();if(!key)throw new Error('Código de sincronização não configurado.');
+ const opt={method,headers:{'x-jf-sync-key':key,'content-type':'application/json'},cache:'no-store'};
+ if(payload)opt.body=JSON.stringify(payload);
+ const r=await fetch('/api/sync',opt);let data={};try{data=await r.json()}catch(e){}
+ if(r.status===409)return {conflict:true,...data};
+ if(!r.ok)throw new Error(data.message||data.error||('HTTP '+r.status));
+ return data;
+}
+function jfRecordKey(x){return String(x?.id??x?.codigo_jf??x?.codigo_cti??x?.matricula??x?.numero_os??'')}
+function jfMergeArrayLocalWins(server=[],local=[]){
+ const out=(server||[]).map(x=>deep(x)),idx=new Map(out.map((x,i)=>[jfRecordKey(x),i]));
+ for(const item of local||[]){const k=jfRecordKey(item);if(k&&idx.has(k))out[idx.get(k)]=deep(item);else out.push(deep(item))}
+ return out;
+}
+function jfMergeStatesLocalWins(server,local){
+ const out=deep(server||{}),top=['clientes','equipamentos_clientes','produtos','servicos_catalogo','ordens_servico','os_equipamentos','os_servicos','os_outros_servicos','os_produtos','situacoes'];
+ for(const k of top)out[k]=jfMergeArrayLocalWins(server?.[k]||[],local?.[k]||[]);
+ out.custom=out.custom||{};const sc=server?.custom||{},lc=local?.custom||{};
+ for(const k of ['clientes','equipamentos','os','log','stockMoves','deletedProducts','dictionary','techLibrary'])out.custom[k]=jfMergeArrayLocalWins(sc[k]||[],lc[k]||[]);
+ out.custom.productSeq=Math.max(Number(sc.productSeq||0),Number(lc.productSeq||0));
+ return out;
+}
+async function jfApplyServerState(payload,revision){
+ if(!payload||typeof payload!=='object')return;
+ if(typeof jfSnapshotCurrent==='function')await jfSnapshotCurrent();
+ JF_SYNC_SUPPRESS=true;try{S=deep(payload);normalize();await saveDB();render();jfMarkSynced(revision)}finally{JF_SYNC_SUPPRESS=false}
+}
+async function jfPushState(baseRevision){
+ const r=await jfApi('POST',{baseRevision,payload:S,deviceId:jfDeviceId()});
+ if(r.conflict)return r;jfMarkSynced(r.revision);return r
+}
+async function jfSyncNow(mode='manual'){
+ if(JF_SYNC_BUSY)return;const key=jfGetSyncKey();if(!key){if(mode!=='auto')jfSetSyncStatus('Sincronização ainda não configurada.');return}
+ if(!navigator.onLine){jfSetSyncStatus('Offline — alterações permanecem salvas neste aparelho.','offline');return}
+ JF_SYNC_BUSY=true;jfSetSyncStatus('Sincronizando...');
+ try{
+   const remote=await jfApi('GET'),localItems=jfStateItems(S),dirty=Number(localStorage.getItem(JF_SYNC_KEYS.dirty)||0),known=jfSyncRevision();
+   if(!remote.exists){
+     if(localItems>0){const up=await jfPushState(0);if(up.conflict)throw new Error('Conflito ao criar base central.');jfSetSyncStatus(`Sincronizado — ${localItems} registros enviados ao banco central.`,'ok')}
+     else jfSetSyncStatus('Banco central vazio. Abra primeiro no aparelho que contém os dados e sincronize.','warn');
+     return;
+   }
+   if(localItems===0){await jfApplyServerState(remote.payload,remote.revision);jfSetSyncStatus(`Sincronizado — ${jfStateItems(S)} registros recebidos do banco central.`,'ok');return}
+   if(dirty){
+     let up=await jfPushState(known||remote.revision);
+     if(up.conflict){
+       const merged=jfMergeStatesLocalWins(up.payload,S);S=merged;normalize();JF_SYNC_SUPPRESS=true;try{await saveDB()}finally{JF_SYNC_SUPPRESS=false}
+       up=await jfPushState(up.revision);
+       if(up.conflict)throw new Error('Outro aparelho alterou os dados durante a sincronização. Tente novamente.');
+     }
+     jfSetSyncStatus('Sincronizado — alterações deste aparelho enviadas.','ok');return;
+   }
+   if(remote.revision>known){await jfApplyServerState(remote.payload,remote.revision);jfSetSyncStatus('Sincronizado — alterações de outro aparelho recebidas.','ok');return}
+   if(known===0){await jfApplyServerState(remote.payload,remote.revision);jfSetSyncStatus('Sincronização inicial concluída.','ok');return}
+   jfSetSyncStatus('Sincronizado.','ok');
+ }catch(e){console.error('JF sync',e);jfSetSyncStatus('Falha na sincronização: '+String(e.message||e),'error')}
+ finally{JF_SYNC_BUSY=false}
+}
+
+const jfOriginalSaveDB=saveDB;
+saveDB=async function(){const r=await jfOriginalSaveDB.apply(this,arguments);jfMarkDirty();return r};
+
+function jfInstallSyncUI(){
+ const settings=document.getElementById('settings');if(!settings||document.getElementById('syncBox'))return;
+ const box=document.createElement('div');box.className='section';box.id='syncBox';
+ box.innerHTML=`<h3>Sincronização central</h3><p id="syncStatus" class="muted">Preparando sincronização...</p><div class="grid2"><label>Código de sincronização<input id="syncCode" autocomplete="off" placeholder="JF-XXXXXXXX-..."></label><div><span class="small muted">O mesmo código deve ser usado no PC, Chrome e celular. Guarde-o com segurança.</span></div></div><div class="toolbar"><button type="button" id="createSyncCode" class="primary">Criar código neste aparelho</button><button type="button" id="saveSyncCode">Usar este código</button><button type="button" id="copySyncCode">Copiar código</button><button type="button" id="syncNowBtn">Sincronizar agora</button></div><p class="small muted">O aplicativo continua funcionando offline. Quando a internet voltar, as alterações pendentes serão sincronizadas automaticamente.</p>`;
+ settings.insertBefore(box,document.getElementById('recoveryBox')||null);
+ const inp=document.getElementById('syncCode');inp.value=jfGetSyncKey();
+ document.getElementById('createSyncCode').onclick=async()=>{if(jfGetSyncKey()&&!confirm('Já existe um código configurado. Criar outro separará este aparelho da base atual. Continuar?'))return;const k=jfGenerateSyncKey();jfSetSyncKey(k);inp.value=k;localStorage.setItem(JF_SYNC_KEYS.revision,'0');localStorage.setItem(JF_SYNC_KEYS.dirty,String(Date.now()));jfSetSyncStatus('Código criado. Enviando os dados deste aparelho ao banco central...');await jfSyncNow('manual')};
+ document.getElementById('saveSyncCode').onclick=async()=>{const k=inp.value.trim();if(k.length<24){alert('Código de sincronização inválido.');return}jfSetSyncKey(k);localStorage.setItem(JF_SYNC_KEYS.revision,'0');jfSetSyncStatus('Código salvo. Buscando a base central...');await jfSyncNow('manual')};
+ document.getElementById('copySyncCode').onclick=async()=>{const k=jfGetSyncKey()||inp.value.trim();if(!k)return;try{await navigator.clipboard.writeText(k);jfSetSyncStatus('Código copiado. Use o mesmo código nos outros aparelhos.','ok')}catch(e){inp.select();document.execCommand('copy')}};
+ document.getElementById('syncNowBtn').onclick=()=>jfSyncNow('manual');
+ if(jfGetSyncKey())jfSetSyncStatus(navigator.onLine?'Sincronização configurada. Verificando banco central...':'Offline — dados locais disponíveis.');else jfSetSyncStatus('Crie o código neste Edge, que contém a base completa. Depois use o mesmo código nos outros aparelhos.');
+}
+addEventListener('DOMContentLoaded',()=>{jfInstallSyncUI();setTimeout(()=>{if(jfGetSyncKey())jfSyncNow('auto')},1400)});
+addEventListener('online',()=>{jfSetSyncStatus('Conexão restabelecida. Sincronizando...');jfSyncNow('auto')});
+addEventListener('offline',()=>jfSetSyncStatus('Offline — alterações permanecem salvas neste aparelho.','offline'));
+setInterval(()=>{if(jfGetSyncKey()&&navigator.onLine)jfSyncNow('auto')},60000);
