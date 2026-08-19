@@ -1,8 +1,8 @@
 {
-  "version": "0.10.0",
-  "build": 1787163000,
+  "version": "0.11.0",
+  "build": 1787173300,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "legacy-data-recovery",
-  "feature": "smart-service-checklist"
+  "migration": "central-sync",
+  "feature": "cross-device-sync"
 }
