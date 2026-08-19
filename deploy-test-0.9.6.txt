@@ -1,0 +1,3 @@
+JF Oficina — teste de deploy automático GitHub → Vercel
+Versão de teste: 0.9.6
+Objetivo: confirmar que um commit na branch main dispara um novo deployment automaticamente no projeto jf-oficina.
