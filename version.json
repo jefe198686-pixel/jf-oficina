@@ -1,6 +1,7 @@
 {
-  "version": "0.9.8",
-  "build": 1787159950,
+  "version": "0.9.9",
+  "build": 1787161962,
   "channel": "stable-test",
-  "app": "JF Oficina"
+  "app": "JF Oficina",
+  "migration": "legacy-data-recovery"
 }
