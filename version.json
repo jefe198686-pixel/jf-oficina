@@ -1,7 +1,8 @@
 {
-  "version": "0.9.9",
-  "build": 1787161962,
+  "version": "0.10.0",
+  "build": 1787163000,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "legacy-data-recovery"
+  "migration": "legacy-data-recovery",
+  "feature": "smart-service-checklist"
 }
