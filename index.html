@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#16202a">
 <link rel="manifest" href="manifest.webmanifest">
-<title>JF Oficina v0.9.5</title>
+<title>JF Oficina v0.9.6</title>
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--ink:#17202a;--muted:#65727f;--line:#dce2e8;--brand:#f2a51a;--dark:#16202a;--ok:#e8f7ed;--warn:#fff4d8;--danger:#fde8e8}
 *{box-sizing:border-box}body{margin:0;font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -48,7 +48,7 @@ dialog{border:0;border-radius:14px;padding:0;box-shadow:0 22px 70px #0004}.modal
 </style>
 </head>
 <body>
-<header><div><b>JF Oficina</b><div class="ver">v0.9.5 • Agrícola • Elétrica • Ar-condicionado</div></div><button id="installBtn" class="primary hidden">Instalar</button></header>
+<header><div><b>JF Oficina</b><div class="ver">v0.9.6 • Agrícola • Elétrica • Ar-condicionado</div></div><button id="installBtn" class="primary hidden">Instalar</button></header>
 <nav>
 <button data-view="home" class="primary">Início</button><button data-view="os">OS</button><button data-view="clients">Clientes</button><button data-view="stock">Estoque</button><button data-view="settings">Configurações</button>
 </nav>
@@ -325,7 +325,7 @@ dialog{border:0;border-radius:14px;padding:0;box-shadow:0 22px 70px #0004}.modal
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-const VERSION='0.9.5';
+const VERSION='0.9.6';
 let S={clientes:[],equipamentos_clientes:[],produtos:[],servicos_catalogo:[],ordens_servico:[],os_equipamentos:[],os_servicos:[],os_outros_servicos:[],os_produtos:[],situacoes:[],custom:{}};
 let work=null, installPrompt=null, swreg=null, reloading=false;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -592,10 +592,12 @@ function isNewerVersion(remote,local){
  return false;
 }
 function refreshInstalledVersionLabel(){
+  const status=document.getElementById('updateStatus');
+  if(!status)return;
   if(location.protocol==='https:'){
-    setUpdateStatus('Versão instalada: '+VERSION+' — atualização automática ativa.');
+    status.textContent='Versão instalada: '+VERSION+' — atualização automática ativa.';
   }else{
-    setUpdateStatus('Versão instalada: '+VERSION+' — modo local; atualização automática indisponível.');
+    status.textContent='Versão instalada: '+VERSION+' — modo local; atualização automática indisponível.';
   }
 }
 
@@ -626,7 +628,7 @@ async function checkAppUpdate(showMessage=false){
    setTimeout(()=>{if(!APP_RELOADING){APP_RELOADING=true;location.replace(location.pathname+'?v='+encodeURIComponent(info.version))}},1800);
    return true;
  }
- if(showMessage)setUpdateStatus('Versão instalada: '+VERSION+' — aplicativo atualizado.');
+ if(showMessage)setUpdateStatus('Versão instalada: '+VERSION+' — aplicativo atualizado. Atualização automática ativa.');
  return false;
 }
 async function registerUpdater(){
