@@ -12,11 +12,29 @@ function findDbUrl(){
   const any=entries.find(([k,v])=>/POSTGRES|DATABASE/i.test(k)&&/^postgres(?:ql)?:\/\//i.test(v||''));
   return any?.[1]||'';
 }
+function normalizeDbUrl(raw){
+  try{
+    const u=new URL(raw);
+    // Supabase/Vercel pode incluir sslmode=require na própria URL. No pg, esses
+    // parâmetros podem substituir o objeto ssl fornecido abaixo e reativar a
+    // validação da cadeia. Removemos os parâmetros SSL da URL e controlamos a
+    // conexão explicitamente no Pool.
+    for(const k of ['sslmode','sslcert','sslkey','sslrootcert'])u.searchParams.delete(k);
+    return u.toString();
+  }catch(e){return raw}
+}
 function getPool(){
   if(pool)return pool;
-  const connectionString=findDbUrl();
-  if(!connectionString)throw new Error('Nenhuma variável Postgres válida encontrada no ambiente Vercel.');
-  pool=new Pool({connectionString,ssl:{rejectUnauthorized:false},max:3,idleTimeoutMillis:10000,connectionTimeoutMillis:10000});
+  const raw=findDbUrl();
+  if(!raw)throw new Error('Nenhuma variável Postgres válida encontrada no ambiente Vercel.');
+  const connectionString=normalizeDbUrl(raw);
+  pool=new Pool({
+    connectionString,
+    ssl:{rejectUnauthorized:false},
+    max:3,
+    idleTimeoutMillis:10000,
+    connectionTimeoutMillis:10000
+  });
   return pool;
 }
 async function ensureTable(){
