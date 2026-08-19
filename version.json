@@ -1,8 +1,8 @@
 {
-  "version": "0.11.2",
-  "build": 1787179800,
+  "version": "0.11.3",
+  "build": 1787182200,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "central-sync",
-  "feature": "offline-os-number-reconciliation"
+  "migration": "central-sync-integrity",
+  "feature": "multi-device-entity-and-stock-reconciliation"
 }
