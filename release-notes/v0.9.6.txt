@@ -1,0 +1,4 @@
+JF Oficina v0.9.6
+- Corrige o indicador visual da versão instalada.
+- Mantém a atualização automática via GitHub → Vercel.
+- Esta versão possui backup ZIP gerado antes da publicação.
