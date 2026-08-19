@@ -34,14 +34,9 @@
   }
   function mergeBases(server,local,out){
     ensureLedger(server);ensureLedger(local);ensureLedger(out);
+    // A base do servidor prevalece para produtos já conhecidos; produtos novos
+    // criados offline levam sua própria base inicial.
     out.custom.stockBase={...(local.custom.stockBase||{}),...(server.custom.stockBase||{})};
-    for(const p of out.produtos||[]){
-      const id=String(p?.id||'');if(!id)continue;
-      if(!Object.prototype.hasOwnProperty.call(out.custom.stockBase,id)){
-        const src=(server.produtos||[]).find(x=>String(x?.id||'')===id)||(local.produtos||[]).find(x=>String(x?.id||'')===id)||p;
-        out.custom.stockBase[id]=(Number(src?.estoque_atual)||0)-moveSum(src===p?out:(server.produtos||[]).includes(src)?server:local,id);
-      }
-    }
   }
 
   if(typeof jfMergeStatesLocalWins==='function'){
@@ -56,8 +51,8 @@
     jfApplyServerState=async function(payload,revision){return originalApply(reconcileStock(deep(payload||{})),revision)};
   }
 
-  // Registra toda alteração manual de quantidade como movimento, evitando perda
-  // quando dois aparelhos alteram o mesmo produto enquanto estão offline.
+  // Registra ajustes manuais de quantidade como movimentos. Assim, duas baixas
+  // feitas offline em aparelhos diferentes são somadas em vez de uma sobrescrever a outra.
   function installProductStockLedger(){
     if(typeof productForm==='undefined'||!productForm||productForm.dataset.jfLedger==='1')return;
     productForm.dataset.jfLedger='1';
@@ -68,29 +63,30 @@
       const oldStock=Number(existing?.estoque_atual)||0;
       ensureLedger(S);
       const r=await original.call(this,ev);
+      // Validação do formulário falhou: o diálogo continua aberto e não há nada a registrar.
+      if(typeof productDlg!=='undefined'&&productDlg.open)return r;
       let p=beforeId&&typeof prodBy==='function'?prodBy(beforeId):null;
-      if(!p&&code)p=(S.produtos||[]).find(x=>String(typeof window.productCode==='function'?window.productCode(x):(x.codigo_jf||''))===code)||null;
+      if(!p&&code)p=(S.produtos||[]).find(x=>String(x.codigo_jf||x.id||'')===code)||null;
       if(!p)return r;
       const id=String(p.id||'');if(!id)return r;
       ensureLedger(S);
       if(!existing){
         S.custom.stockBase[id]=Number(p.estoque_atual)||0;
       }else{
-        const delta=(Number(p.estoque_atual)||0)-oldStock;
-        if(delta){
-          S.custom.stockMoves.unshift({id:uid('M'),at:new Date().toISOString(),produto_id:id,delta,origem:'AJUSTE MANUAL'});
-          p.estoque_atual=(Number(S.custom.stockBase[id])||0)+moveSum(S,id);
-        }
+        const newStock=Number(p.estoque_atual)||0,delta=newStock-oldStock;
+        if(delta)S.custom.stockMoves.unshift({id:uid('M'),at:new Date().toISOString(),produto_id:id,delta,origem:'AJUSTE MANUAL'});
       }
       await saveDB();render();return r;
     };
   }
 
+  // Ao salvar localmente, apenas garante que exista uma base. A recomposição do
+  // saldo é feita na reconciliação, depois que movimentos de todos os aparelhos são unidos.
   const currentSave=saveDB;
-  saveDB=async function(){ensureLedger(S);reconcileStock(S);return currentSave.apply(this,arguments)};
+  saveDB=async function(){ensureLedger(S);return currentSave.apply(this,arguments)};
 
   addEventListener('DOMContentLoaded',async()=>{
     installProductStockLedger();
-    if(ensureLedger(S)){reconcileStock(S);await saveDB();render()}
+    if(ensureLedger(S)){await saveDB();render()}
   });
 })();
