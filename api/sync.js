@@ -40,35 +40,80 @@ function workspaceHash(req){
   return crypto.createHash('sha256').update(raw).digest('hex');
 }
 function json(res,status,obj){res.status(status).setHeader('content-type','application/json; charset=utf-8');res.setHeader('cache-control','no-store');res.end(JSON.stringify(obj));}
-function osSortKey(o){return String(o?.entrada||o?.data_entrada||o?.created_at||o?.createdAt||'9999')+'|'+String(o?.id||'')}
-function canonicalizeOSNumbers(payload){
-  if(!payload||typeof payload!=='object')return {payload,renumbered:[]};
-  const clone=JSON.parse(JSON.stringify(payload));
-  const arrays=[];
-  if(Array.isArray(clone.ordens_servico))arrays.push(clone.ordens_servico);
-  if(Array.isArray(clone.custom?.os))arrays.push(clone.custom.os);
-  const all=arrays.flat().filter(x=>x&&typeof x==='object');
-  const numeric=all.map(o=>Number(o.numero_os)).filter(n=>Number.isInteger(n)&&n>0);
-  let next=numeric.length?Math.max(...numeric):0;
-  const groups=new Map();
-  for(const o of all){
-    const n=Number(o.numero_os);
-    if(!Number.isInteger(n)||n<=0)continue;
-    if(!groups.has(n))groups.set(n,[]);
-    groups.get(n).push(o);
+function clone(x){return JSON.parse(JSON.stringify(x));}
+function sortKey(o){return String(o?.entrada||o?.data_entrada||o?.created_at||o?.createdAt||o?.at||'9999')+'|'+String(o?.id||'');}
+function positiveInt(v){const n=Number(v);return Number.isInteger(n)&&n>0?n:null;}
+function pathArray(root,path){let x=root;for(const p of path){x=x?.[p]}return Array.isArray(x)?x:[];}
+
+function canonicalizeNumberedEntity(payload,spec){
+  const refs=[];
+  for(const path of spec.paths)for(const item of pathArray(payload,path))if(item&&typeof item==='object')refs.push(item);
+  const logical=new Map();let anon=0;
+  for(const ref of refs){
+    const id=String(ref.id||'')||`__anon_${anon++}`;
+    if(!logical.has(id))logical.set(id,{id,refs:[],sample:ref});
+    logical.get(id).refs.push(ref);
   }
-  const renumbered=[];
+  const groups=new Map();let next=0;
+  for(const rec of logical.values()){
+    const n=positiveInt(spec.get(rec.sample));if(!n)continue;
+    next=Math.max(next,n);if(!groups.has(n))groups.set(n,[]);groups.get(n).push(rec);
+  }
+  const changed=[];
   for(const [n,group] of groups){
-    const unique=[];const ids=new Set();
-    for(const o of group){const id=String(o.id||'');if(id&&ids.has(id))continue;if(id)ids.add(id);unique.push(o)}
-    if(unique.length<=1)continue;
-    unique.sort((a,b)=>osSortKey(a).localeCompare(osSortKey(b)));
-    for(let i=1;i<unique.length;i++){
-      const o=unique[i];const old=String(o.numero_os);o.numero_os=String(++next);
-      renumbered.push({id:String(o.id||''),from:old,to:String(o.numero_os)});
+    if(group.length<=1)continue;
+    group.sort((a,b)=>sortKey(a.sample).localeCompare(sortKey(b.sample)));
+    for(let i=1;i<group.length;i++){
+      const rec=group[i],to=++next;
+      for(const ref of rec.refs)spec.set(ref,to);
+      changed.push({entity:spec.entity,id:rec.id,from:String(n),to:String(to)});
     }
   }
-  return {payload:clone,renumbered};
+  return changed;
+}
+
+function ensureStockLedger(payload){
+  payload.custom=payload.custom||{};
+  if(!Array.isArray(payload.custom.stockMoves))payload.custom.stockMoves=[];
+  if(!payload.custom.stockBase||typeof payload.custom.stockBase!=='object'||Array.isArray(payload.custom.stockBase))payload.custom.stockBase={};
+  const unique=[],seen=new Set();
+  for(const m of payload.custom.stockMoves){
+    if(!m||typeof m!=='object')continue;
+    const id=String(m.id||'');
+    if(id&&seen.has(id))continue;
+    if(id)seen.add(id);unique.push(m);
+  }
+  payload.custom.stockMoves=unique;
+  const sums=new Map();
+  for(const m of unique){const id=String(m.produto_id||'');if(!id)continue;sums.set(id,(sums.get(id)||0)+(Number(m.delta)||0));}
+  for(const p of Array.isArray(payload.produtos)?payload.produtos:[]){
+    const id=String(p?.id||'');if(!id)continue;
+    const moves=sums.get(id)||0;
+    if(!Object.prototype.hasOwnProperty.call(payload.custom.stockBase,id))payload.custom.stockBase[id]=(Number(p.estoque_atual)||0)-moves;
+    p.estoque_atual=(Number(payload.custom.stockBase[id])||0)+moves;
+  }
+}
+
+function canonicalizeState(raw){
+  if(!raw||typeof raw!=='object')return {payload:raw,renumbered:[]};
+  const payload=clone(raw),renumbered=[];
+  ensureStockLedger(payload);
+  renumbered.push(...canonicalizeNumberedEntity(payload,{
+    entity:'OS',paths:[['ordens_servico'],['custom','os']],
+    get:o=>o.numero_os,
+    set:(o,n)=>{o.numero_os=String(n)}
+  }));
+  renumbered.push(...canonicalizeNumberedEntity(payload,{
+    entity:'Cliente',paths:[['clientes'],['custom','clientes']],
+    get:o=>o.matricula||o.codigo_cti,
+    set:(o,n)=>{o.matricula=String(n);o.codigo_cti=String(n)}
+  }));
+  renumbered.push(...canonicalizeNumberedEntity(payload,{
+    entity:'Produto',paths:[['produtos']],
+    get:o=>o.codigo_jf,
+    set:(o,n)=>{o.codigo_jf=String(n);o.qr='JF-PRODUTO-'+String(n)}
+  }));
+  return {payload,renumbered};
 }
 
 module.exports=async function handler(req,res){
@@ -84,39 +129,37 @@ module.exports=async function handler(req,res){
         await client.query('begin');
         const q=await client.query('select payload,revision,updated_at from jf_sync_state where workspace_hash=$1 for update',[workspace]);
         if(!q.rowCount){await client.query('commit');return json(res,200,{ok:true,exists:false,revision:0,payload:null,updatedAt:null});}
-        let r=q.rows[0];
-        const fixed=canonicalizeOSNumbers(r.payload);
-        if(fixed.renumbered.length){
+        const r=q.rows[0],fixed=canonicalizeState(r.payload);
+        const changed=JSON.stringify(fixed.payload)!==JSON.stringify(r.payload);
+        if(changed){
           const upd=await client.query('update jf_sync_state set payload=$2::jsonb,revision=revision+1,updated_at=now() where workspace_hash=$1 returning revision,updated_at',[workspace,JSON.stringify(fixed.payload)]);
           await client.query('commit');
           return json(res,200,{ok:true,exists:true,revision:Number(upd.rows[0].revision),payload:fixed.payload,updatedAt:upd.rows[0].updated_at,renumbered:fixed.renumbered});
         }
         await client.query('commit');
-        return json(res,200,{ok:true,exists:true,revision:Number(r.revision),payload:r.payload,updatedAt:r.updated_at,renumbered:[]});
+        return json(res,200,{ok:true,exists:true,revision:Number(r.revision),payload:r.payload,updatedAt:r.updated_at,renumbered:fixed.renumbered});
       }catch(e){try{await client.query('rollback')}catch(_){}throw e}finally{client.release()}
     }
     let body=req.body;
     if(typeof body==='string'){try{body=JSON.parse(body)}catch(e){body=null}}
     if(!body||typeof body!=='object'||!body.payload||typeof body.payload!=='object')return json(res,400,{ok:false,error:'invalid_payload'});
-    const baseRevision=Number(body.baseRevision||0);
-    const client=await db.connect();
+    const baseRevision=Number(body.baseRevision||0),client=await db.connect();
     try{
       await client.query('begin');
       const q=await client.query('select payload,revision,updated_at from jf_sync_state where workspace_hash=$1 for update',[workspace]);
       if(!q.rowCount){
         if(baseRevision!==0){await client.query('rollback');return json(res,409,{ok:false,error:'revision_conflict',revision:0,payload:null,updatedAt:null});}
-        const fixed=canonicalizeOSNumbers(body.payload);
+        const fixed=canonicalizeState(body.payload);
         const ins=await client.query('insert into jf_sync_state(workspace_hash,payload,revision,updated_at) values($1,$2::jsonb,1,now()) returning revision,updated_at',[workspace,JSON.stringify(fixed.payload)]);
         await client.query('commit');
         return json(res,200,{ok:true,revision:Number(ins.rows[0].revision),updatedAt:ins.rows[0].updated_at,payload:fixed.payload,renumbered:fixed.renumbered});
       }
-      const current=q.rows[0];
-      const currentRevision=Number(current.revision);
+      const current=q.rows[0],currentRevision=Number(current.revision);
       if(baseRevision!==currentRevision){
         await client.query('rollback');
         return json(res,409,{ok:false,error:'revision_conflict',revision:currentRevision,payload:current.payload,updatedAt:current.updated_at});
       }
-      const fixed=canonicalizeOSNumbers(body.payload);
+      const fixed=canonicalizeState(body.payload);
       const upd=await client.query('update jf_sync_state set payload=$2::jsonb,revision=revision+1,updated_at=now() where workspace_hash=$1 returning revision,updated_at',[workspace,JSON.stringify(fixed.payload)]);
       await client.query('commit');
       return json(res,200,{ok:true,revision:Number(upd.rows[0].revision),updatedAt:upd.rows[0].updated_at,payload:fixed.payload,renumbered:fixed.renumbered});
