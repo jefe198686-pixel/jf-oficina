@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16202a">
+<link rel="manifest" href="manifest.webmanifest">
+<title>JF Oficina v0.9.5</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#17202a;--muted:#65727f;--line:#dce2e8;--brand:#f2a51a;--dark:#16202a;--ok:#e8f7ed;--warn:#fff4d8;--danger:#fde8e8}
+*{box-sizing:border-box}body{margin:0;font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--dark);color:#fff;padding:14px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+header b{font-size:18px}.ver{font-size:11px;opacity:.75}
+nav{display:flex;gap:6px;padding:9px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:52px;z-index:35;overflow:auto}
+button,.btn{border:0;border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer;background:#e8edf1;color:#17202a;white-space:nowrap}
+button:hover{filter:brightness(.98)}.primary{background:var(--brand)}.danger{background:var(--danger)}.success{background:var(--ok)}.ghost{background:transparent;border:1px solid var(--line)}
+main{padding:14px;max-width:1250px;margin:auto}.view{display:none}.view.on{display:block}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.card,.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px}.card b{display:block;font-size:25px;margin-top:4px}
+.toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:8px 0}.toolbar input,.toolbar select{width:auto;min-width:190px}
+input,select,textarea{width:100%;padding:9px;border:1px solid #cbd4dc;border-radius:8px;background:#fff;color:#17202a;margin:3px 0}
+textarea{resize:vertical}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+table{width:100%;border-collapse:collapse}.tablewrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:11px}
+th,td{padding:9px;border-bottom:1px solid #edf0f2;text-align:left;font-size:12px;vertical-align:top}th{background:#f8fafb;position:sticky;top:0}
+.click{cursor:pointer}.click:hover{background:#f8fafb}.muted{color:var(--muted)}.small{font-size:11px}.badge{display:inline-block;padding:3px 7px;border-radius:999px;background:#e8edf1;font-size:11px;font-weight:700}
+.badge.andamento{background:#e6f0ff}.badge.aguardando{background:#fff0c7}.badge.concluida{background:#e6f8ea}.badge.finalizada{background:#e6f8ea}.badge.cancelada{background:#fde4e4}
+dialog{border:0;border-radius:14px;padding:0;box-shadow:0 22px 70px #0004}.modal{width:min(760px,95vw);max-height:92vh;overflow:auto}.osmodal{width:min(1220px,98vw);height:min(94vh,920px);max-height:94vh;overflow:hidden}
+.dhead{padding:12px 14px;background:var(--dark);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}.dbody{padding:13px;overflow:auto;max-height:calc(94vh - 115px)}
+.dfoot{padding:10px 13px;border-top:1px solid var(--line);display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;background:#fff;position:sticky;bottom:0}
+.tabs{display:flex;gap:5px;overflow:auto;padding:9px 12px;border-bottom:1px solid var(--line);background:#fff}.tab{background:#eef2f5}.tab.active{background:var(--brand)}
+.tabpane{display:none}.tabpane.on{display:block}.section{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:10px}.section h3{margin:0 0 8px}
+.itemrow{display:grid;grid-template-columns:2fr .65fr .9fr .75fr .75fr .9fr auto;gap:6px;align-items:end;padding:7px 0;border-bottom:1px dashed #dfe5ea}.itemrow.other{grid-template-columns:2fr .7fr .9fr .9fr .9fr auto}.itemrow.eq{grid-template-columns:2fr 1fr auto auto}
+.sumline{display:flex;justify-content:space-between;padding:5px 0}.sumline.total{font-size:17px;font-weight:800;border-top:2px solid var(--dark);margin-top:5px;padding-top:9px}
+.photoGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.photo{border:1px solid var(--line);border-radius:9px;padding:6px;background:#fff}.photo img{width:100%;height:105px;object-fit:cover;border-radius:6px}.photo button{width:100%;margin-top:5px}
+.audit{border-left:3px solid #dce2e8;padding-left:9px;margin:8px 0}.stickybar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.statusnote{padding:8px 10px;border-radius:9px;background:#f5f7f8}.right{margin-left:auto}.hidden{display:none!important}
+.techReviewBar{display:flex;gap:6px;flex-wrap:wrap;margin:5px 0}
+.reviewPreview{white-space:pre-wrap;background:#f8fafb;border:1px solid var(--line);padding:10px;border-radius:8px;max-height:300px;overflow:auto}
+.productFilters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.prodImg{width:84px;height:84px;border:1px solid var(--line);border-radius:10px;object-fit:cover;background:#f8fafb}
+.prodPreview{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.qrbox{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px;border:1px dashed var(--line);border-radius:10px;background:#fff}
+.trashrow{opacity:.85}
+@media(max-width:800px){.productFilters{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){
+.cards{grid-template-columns:1fr 1fr}.grid2,.grid3,.grid4{grid-template-columns:1fr}.itemrow,.itemrow.other,.itemrow.eq{grid-template-columns:1fr 1fr}.itemrow>*:first-child{grid-column:1/-1}
+.osmodal{width:100vw;height:100vh;max-height:100vh;border-radius:0}.dbody{max-height:calc(100vh - 155px)}header{position:static}nav{top:0}.toolbar input,.toolbar select{width:100%;min-width:0}
+}
+</style>
+</head>
+<body>
+<header><div><b>JF Oficina</b><div class="ver">v0.9.5 • Agrícola • Elétrica • Ar-condicionado</div></div><button id="installBtn" class="primary hidden">Instalar</button></header>
+<nav>
+<button data-view="home" class="primary">Início</button><button data-view="os">OS</button><button data-view="clients">Clientes</button><button data-view="stock">Estoque</button><button data-view="settings">Configurações</button>
+</nav>
+<main>
+<section id="home" class="view on">
+<h2>Painel</h2>
+<div class="cards">
+<div class="card">OS total<b id="kOs">0</b></div><div class="card">Em andamento<b id="kAnd">0</b></div><div class="card">Aguardando peças<b id="kWait">0</b></div><div class="card">Clientes<b id="kCli">0</b></div><div class="card">Estoque baixo<b id="kLow">0</b></div>
+</div>
+<div class="toolbar"><button class="primary" id="homeNewOS">+ Nova OS</button><button id="homeNewClient">+ Novo cliente</button></div>
+<div class="grid2"><div class="section"><h3>OS que exigem atenção</h3><div id="attention"></div></div><div class="section"><h3>Últimas OS</h3><div id="recent"></div></div></div>
+</section>
+
+<section id="os" class="view">
+<h2>Ordens de serviço</h2>
+<div class="toolbar"><button class="primary" id="newOS">+ Nova OS</button><input id="osSearch" placeholder="Buscar número, cliente, equipamento, defeito..."><select id="osStatus"><option value="">Todas as situações</option><option>Em andamento</option><option>Aguardando peças</option><option>Concluída</option><option>Finalizada</option><option>Cancelada</option></select></div>
+<div class="tablewrap"><table><thead><tr><th>OS</th><th>Entrada</th><th>Cliente / equipamento</th><th>Situação</th><th>Total</th></tr></thead><tbody id="osTable"></tbody></table></div>
+</section>
+
+<section id="clients" class="view">
+<h2>Clientes</h2><div class="toolbar"><button class="primary" id="newClient">+ Novo cliente</button><input id="clientSearch" placeholder="Buscar cliente"></div>
+<div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Equipamentos</th><th>OS</th><th>Última OS</th></tr></thead><tbody id="clientTable"></tbody></table></div>
+</section>
+
+<section id="stock" class="view">
+<h2>Estoque</h2>
+<div class="toolbar">
+<button class="primary" id="newProduct">+ Novo produto</button>
+<button id="trashProducts">Lixeira de produtos</button>
+<button id="printLabels">Gerar etiquetas</button>
+</div>
+<div class="section">
+<h3>Pesquisa de produtos</h3>
+<div class="productFilters">
+<label>Código do produto<input id="filterProdCode" placeholder="Ex.: 1622"></label>
+<label>Código interno / fabricante<input id="filterInternalCode" placeholder="Código do fabricante"></label>
+<label>Código de barras / GTIN<input id="filterGTIN" placeholder="GTIN ou SEM GTIN"></label>
+<label>Nome / descrição<input id="filterName" placeholder="Nome ou parte da descrição"></label>
+<label>Categoria<input id="filterCategory" placeholder="Categoria"></label>
+<label>Locação<input id="filterLocation" placeholder="Local de armazenamento"></label>
+</div>
+<div class="toolbar"><button id="clearProdFilters">Limpar filtros</button><select id="stockFilter"><option value="">Todos ativos</option><option value="low">Abaixo do mínimo</option></select></div>
+</div>
+<div class="tablewrap"><table><thead><tr><th>Imagem</th><th>Código</th><th>Produto</th><th>Saldo</th><th>Mín.</th><th>Máx.</th><th>Venda</th><th>Categoria</th><th>Locação</th></tr></thead><tbody id="stockTable"></tbody></table></div>
+</section>
+
+<section id="settings" class="view">
+<h2>Configurações</h2>
+<div class="section">
+<h3>Atualização do aplicativo</h3>
+<p id="updateStatus" class="muted"></p>
+<div class="toolbar"><button type="button" id="forceUpdateCheck" class="primary">Verificar atualização agora</button><button type="button" id="reloadApp">Recarregar aplicativo</button></div>
+<p class="small muted">Quando uma nova versão for publicada no mesmo endereço HTTPS, o aplicativo verifica automaticamente e atualiza sem reinstalar.</p>
+</div>
+<p class="small muted">Os dados continuam disponíveis offline neste aparelho. A sincronização central celular ↔ PC será a próxima camada de infraestrutura.</p>
+</div></section>
+</main>
+
+<!-- OS -->
+<dialog id="osDlg" class="osmodal">
+<form id="osForm" method="dialog">
+<div class="dhead"><div><b id="osTitle">Nova OS</b><div id="osSubtitle" class="small"></div></div><button type="button" id="closeOS">✕</button></div>
+<div class="tabs">
+<button type="button" class="tab active" data-tab="general">Geral</button><button type="button" class="tab" data-tab="checklist">Checklist Técnico</button><button type="button" class="tab" data-tab="services">Serviços</button><button type="button" class="tab" data-tab="others">Desloc./Outros</button><button type="button" class="tab" data-tab="materials">Materiais</button><button type="button" class="tab" data-tab="equipments">Equipamentos</button><button type="button" class="tab" data-tab="photos">Fotos</button><button type="button" class="tab" data-tab="finance">Financeiro</button><button type="button" class="tab" data-tab="history">Histórico</button>
+</div>
+<div class="dbody">
+<input type="hidden" id="osId">
+
+<div class="tabpane on" id="tab-general">
+<div class="section"><h3>Atendimento</h3>
+<div class="grid3">
+<label>Cliente<div class="toolbar"><select id="osClient" required></select><button type="button" id="quickClient">+ Cliente</button></div></label>
+<label>Situação<select id="osSituation"><option>Em andamento</option><option>Aguardando peças</option><option>Concluída</option><option>Finalizada</option><option>Cancelada</option></select></label>
+<label>Solicitante<input id="osRequester"></label>
+<label>Entrada<input id="osEntry" type="datetime-local"></label><label>Saída<input id="osExit" type="datetime-local"></label><label>Local / Fazenda<input id="osLocation"></label>
+<label>Atendente / Técnico<input id="osTechnician" value="JEFERSON"></label><label>Horímetro<input id="osHourmeter"></label><label>Nº controle<input id="osControl"></label>
+</div></div>
+<div class="section"><h3>Diagnóstico</h3>
+<label>Defeito reclamado<div class="toolbar"><button type="button" class="voiceBtn" data-target="osComplaint">🎙 Ditado</button></div><div class="techReviewBar"><button type="button" class="spellReview" data-review="osComplaint">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osComplaint">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osComplaint">＋ Dicionário</button></div><textarea id="osComplaint" rows="3"></textarea></label>
+<label>Defeito constatado<div class="toolbar"><button type="button" class="voiceBtn" data-target="osFinding">🎙 Ditado</button></div><div class="techReviewBar"><button type="button" class="spellReview" data-review="osFinding">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osFinding">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osFinding">＋ Dicionário</button></div><textarea id="osFinding" rows="4"></textarea></label>
+<label>Descrição do Serviço
+<div class="toolbar"><button type="button" class="voiceBtn" data-target="osServiceDesc">🎙 Ditado</button><button type="button" id="generateServiceDesc">⚙ Gerar Descrição do Serviço</button></div>
+<div class="techReviewBar"><button type="button" class="spellReview" data-review="osServiceDesc">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osServiceDesc">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osServiceDesc">＋ Dicionário</button></div>
+<textarea id="osServiceDesc" rows="5" placeholder="Registre somente os procedimentos efetivamente executados. O botão Gerar usa os serviços lançados e, se necessário, os campos técnicos da OS sem inventar procedimentos."></textarea>
+</label><label>Laudo técnico / descrição do atendimento<div class="toolbar"><button type="button" class="voiceBtn" data-target="osReport">🎙 Ditado</button><button type="button" id="generateReport">⚙ Gerar Laudo Técnico</button></div><div class="techReviewBar"><button type="button" class="spellReview" data-review="osReport">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osReport">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osReport">＋ Dicionário</button></div><textarea id="osReport" rows="7"></textarea></label>
+<label>Recomendação<div class="toolbar"><button type="button" class="voiceBtn" data-target="osRecommendation">🎙 Ditado</button></div><div class="techReviewBar"><button type="button" class="spellReview" data-review="osRecommendation">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osRecommendation">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osRecommendation">＋ Dicionário</button></div><textarea id="osRecommendation" rows="3"></textarea></label>
+<label>Observações internas <span class="small muted">(não sai no relatório do cliente)</span><div class="toolbar"><button type="button" class="voiceBtn" data-target="osInternal">🎙 Ditado</button><button type="button" id="generateInternal">⚙ Gerar Observações Internas</button></div><div class="techReviewBar"><button type="button" class="spellReview" data-review="osInternal">✓ Corrigir escrita</button><button type="button" class="techReview" data-review="osInternal">⚙ Revisar tecnicamente</button><button type="button" class="dictAdd" data-review="osInternal">＋ Dicionário</button></div><textarea id="osInternal" rows="3"></textarea></label>
+</div>
+</div>
+
+
+<div class="tabpane" id="tab-checklist">
+<div class="section">
+  <h3>Checklist Técnico Inteligente</h3>
+  <p class="small muted">O sistema usa principalmente o <b>Defeito constatado</b> para sugerir o próximo caminho técnico. O defeito reclamado é usado apenas como contexto secundário.</p>
+  <div class="grid3">
+    <label>Categoria
+      <select id="checkCategory">
+        <option value="">Automática</option>
+        <option>Ar-condicionado</option>
+        <option>Elétrica</option>
+        <option>Eletrônica</option>
+      </select>
+    </label>
+    <label>Regra sugerida
+      <select id="checkRule"></select>
+    </label>
+    <label>&nbsp;
+      <button type="button" id="identifyChecklist" class="primary">Identificar procedimentos</button>
+    </label>
+  </div>
+  <div id="checkReason" class="statusnote">Preencha o defeito constatado e clique em “Identificar procedimentos”.</div>
+</div>
+
+<div class="section">
+  <div class="toolbar">
+    <h3 style="margin:0">Procedimentos sugeridos</h3>
+    <button type="button" id="markAllChecklist">Marcar todos</button>
+    <button type="button" id="clearChecklist">Limpar</button>
+    <button type="button" id="applyChecklistToService" class="primary">Gerar Descrição do Serviço</button>
+  </div>
+  <div id="checkItems"></div>
+</div>
+
+<div class="section">
+  <div class="toolbar">
+    <h3 style="margin:0">Biblioteca Técnica</h3>
+    <button type="button" id="openLibrary">Editar biblioteca</button>
+  </div>
+  <p class="small muted">A biblioteca pode ser ampliada sem alterar o restante da OS. Cada regra contém categoria, palavras-chave e uma sequência de procedimentos.</p>
+</div>
+</div>
+
+<div class="tabpane" id="tab-services">
+<div class="section"><h3>Serviços executados</h3><div class="small muted">Cada linha pode ter serviço, quantidade/horas, valor, desconto, acréscimo e técnico.</div><div id="serviceRows"></div><button type="button" id="addService">+ Adicionar serviço</button></div>
+</div>
+
+<div class="tabpane" id="tab-others">
+<div class="section"><h3>Deslocamentos e outros serviços</h3><div id="otherRows"></div><button type="button" id="addOther">+ Adicionar deslocamento/outro</button></div>
+</div>
+
+<div class="tabpane" id="tab-materials">
+<div class="section"><h3>Materiais utilizados</h3><div class="small muted">A origem Oficina/Hilux fica registrada. Alterações na OS recalculam a movimentação de estoque.</div><div id="materialRows"></div><button type="button" id="addMaterial">+ Adicionar material</button> <button type="button" id="scanMaterialQR">📷 Ler QR Code</button></div>
+</div>
+
+<div class="tabpane" id="tab-equipments">
+<div class="section"><h3>Equipamentos vinculados à OS</h3><div id="equipmentRows"></div><div class="toolbar"><button type="button" id="addEquipment">+ Vincular equipamento</button><button type="button" id="newEquipment">+ Novo equipamento</button></div><p class="small muted">Pode haver mais de um equipamento na mesma OS, mas somente um principal.</p></div>
+</div>
+
+<div class="tabpane" id="tab-photos">
+<div class="section"><h3>Fotos do atendimento</h3><input id="photoInput" type="file" accept="image/*" capture="environment" multiple><p class="small muted">As fotos são reduzidas para uso offline e ficam vinculadas à OS.</p><div id="photoGrid" class="photoGrid"></div></div>
+</div>
+
+<div class="tabpane" id="tab-finance">
+<div class="grid2">
+<div class="section"><h3>Totais</h3><div id="totals"></div></div>
+<div class="section"><h3>Fechamento</h3>
+<div class="grid2"><label>Desconto geral<input id="globalDiscount" type="number" step=".01" value="0"></label><label>Acréscimo geral<input id="globalAdd" type="number" step=".01" value="0"></label><label>Frete<input id="globalFreight" type="number" step=".01" value="0"></label><label>Forma de pagamento<select id="paymentType"><option>Nenhum</option><option>À vista</option><option>À prazo</option><option>Cartão</option><option>PIX</option></select></label></div>
+<div id="installmentBox" class="hidden"><div class="grid2"><label>Nº parcelas<input id="installmentCount" type="number" min="1" max="24" value="2"></label><label>1º vencimento<input id="firstDue" type="date"></label></div><button type="button" id="generateInstallments">Gerar parcelas</button><div id="installmentRows"></div></div>
+</div></div>
+</div>
+
+<div class="tabpane" id="tab-history"><div class="section"><h3>Histórico de alterações</h3><div id="auditRows"></div></div></div>
+</div>
+<div class="dfoot">
+<div class="stickybar">
+<button type="button" id="printOS">Imprimir / PDF</button><button type="button" id="shareOS">Compartilhar</button>
+<span id="dirtyNote" class="statusnote">Sem alterações pendentes</span>
+</div>
+<div class="right"></div>
+<button type="button" id="cancelOS">Fechar</button><button type="button" id="saveOS">Salvar</button><button type="button" id="reopenOS" class="hidden">Reabrir</button><button type="button" id="finalizeOS" class="primary">Finalizar</button>
+</div>
+</form></dialog>
+
+<!-- Client -->
+<dialog id="clientDlg" class="modal"><form id="clientForm">
+<div class="dhead"><b id="clientTitle">Cliente</b><button type="button" id="closeClient">✕</button></div><div class="dbody">
+<input type="hidden" id="clientId"><div class="grid2">
+<label>Matrícula / código CTi<input id="clientCode" readonly></label>
+<label>Nome / Razão social<input id="clientName" required></label>
+<label>CPF/CNPJ<input id="clientDoc"></label><label>Inscrição Estadual<input id="clientIE"></label>
+<label>Telefone<input id="clientPhone"></label><label>E-mail<input id="clientEmail"></label>
+<label>Cidade<input id="clientCity"></label><label>Fazenda / propriedade<input id="clientFarm"></label>
+<label>Endereço / logradouro<input id="clientAddress"></label><label>Data nascimento / abertura<input id="clientBirth" type="date"></label>
+</div><label>Observações<textarea id="clientObs" rows="3"></textarea></label>
+<p class="small muted">A matrícula histórica do CTi é preservada. Os equipamentos e o histórico de OS permanecem vinculados ao cliente.</p>
+<div id="clientRelations" class="hidden"><h3>Equipamentos</h3><div class="tablewrap"><table><tbody id="clientEquipTable"></tbody></table></div><button type="button" id="clientNewEquip">+ Novo equipamento</button><h3>Histórico de OS</h3><div class="tablewrap"><table><tbody id="clientOsTable"></tbody></table></div></div>
+</div><div class="dfoot"><button type="button" id="clientCancel">Cancelar</button><button class="primary">Salvar cliente</button></div></form></dialog>
+
+<!-- Equipment -->
+<dialog id="equipDlg" class="modal"><form id="equipForm">
+<div class="dhead"><b id="equipTitle">Equipamento</b><button type="button" id="closeEquip">✕</button></div><div class="dbody"><input type="hidden" id="equipId"><label>Cliente<select id="equipClient" required></select></label><div class="grid2"><label>Tipo<input id="equipType"></label><label>Marca<input id="equipBrand"></label><label>Grupo / Modelo<input id="equipModel" required></label><label>Nº série / Chassi<input id="equipSerial"></label><label>Patrimônio<input id="equipAsset"></label><label>Ano<input id="equipYear"></label><label>Horímetro<input id="equipHour"></label><label>Local / Fazenda<input id="equipLocation"></label></div><label>Observações<textarea id="equipObs"></textarea></label></div><div class="dfoot"><button type="button" id="equipCancel">Cancelar</button><button class="primary">Salvar equipamento</button></div></form></dialog>
+
+<!-- Product -->
+<dialog id="productDlg" class="modal"><form id="productForm">
+<div class="dhead"><b id="productTitle">Produto / Estoque</b><button type="button" id="closeProduct">✕</button></div>
+<div class="dbody"><input type="hidden" id="productId">
+<div class="prodPreview">
+<img id="productImagePreview" class="prodImg" alt="Imagem do produto">
+<div>
+<label class="btn primary">Capturar imagem<input id="productCamera" type="file" accept="image/*" capture="environment" hidden></label>
+<label class="btn">Selecionar imagem<input id="productImageFile" type="file" accept="image/*" hidden></label>
+<button type="button" id="removeProductImage">Remover imagem</button>
+</div>
+</div>
+<div class="grid2">
+<label>Código do produto<input id="productCode" readonly></label>
+<label>Código interno / fabricante<input id="productMaker"></label>
+<label>Descrição<input id="productDesc" required></label>
+<label>Código de barras / GTIN<input id="productBarcode" placeholder="SEM GTIN"></label>
+<label>Categoria<input id="productCategory"></label>
+<label>Locação / armazenamento<input id="productLoc"></label>
+<label>Estoque atual<input id="productStock" type="number" step=".01"></label>
+<label>Estoque mínimo<input id="productMin" type="number" step=".01"></label>
+<label>Estoque máximo<input id="productMax" type="number" step=".01"></label>
+<label>Valor da compra<input id="productCost" type="number" step=".01"></label>
+<label>Margem %<input id="productMargin" type="number" step=".01"></label>
+<label>Valor de venda<input id="productSale" type="number" step=".01"></label>
+<label>Fornecedor<input id="productSupplier"></label>
+</div>
+<label>Observações<textarea id="productObs" rows="3"></textarea></label>
+<div class="grid2">
+<div class="qrbox"><b>QR Code do produto</b><div id="productQR"></div><span id="productQRText" class="small muted"></span><button type="button" id="printOneLabel">Imprimir etiqueta</button></div>
+<div class="section"><h3>Pesquisa externa</h3><p class="small muted">Usa descrição, código interno, GTIN e demais dados para auxiliar na busca de reposição.</p><button type="button" id="webSearchProduct">Pesquisar na internet</button> <button type="button" id="searchSupplier">Buscar fornecedor</button></div>
+</div>
+<p class="small muted">Código do produto = sequência histórica da empresa. Não é reutilizado. Código interno = referência do fabricante e pode ficar em branco. GTIN ausente = SEM GTIN.</p>
+</div>
+<div class="dfoot"><button type="button" id="deleteProduct" class="danger hidden">Excluir / enviar à lixeira</button><button type="button" id="productCancel">Cancelar</button><button class="primary">Salvar produto</button></div>
+</form></dialog>
+
+<dialog id="trashDlg" class="modal">
+<div class="dhead"><b>Lixeira de produtos</b><button type="button" id="closeTrash">✕</button></div>
+<div class="dbody"><p class="small muted">Produtos ficam na lixeira por 30 dias. O código do produto nunca é reutilizado.</p><div class="tablewrap"><table><thead><tr><th>Código</th><th>Produto</th><th>Excluído em</th><th>Dias restantes</th><th>Ações</th></tr></thead><tbody id="trashTable"></tbody></table></div></div>
+</dialog>
+
+<dialog id="scanDlg" class="modal">
+<div class="dhead"><b>Ler QR Code do produto</b><button type="button" id="closeScan">✕</button></div>
+<div class="dbody">
+<video id="scanVideo" autoplay playsinline style="width:100%;max-height:420px;background:#111;border-radius:10px"></video>
+<p id="scanStatus" class="muted">Aponte a câmera para o QR da etiqueta.</p>
+<div class="grid2"><label>Ou digite o código do produto<input id="manualScanCode"></label><button type="button" id="manualAddProduct">Adicionar pelo código</button></div>
+</div></dialog>
+
+<dialog id="dictDlg" class="modal">
+<div class="dhead"><b>Dicionário Técnico JF</b><button type="button" id="closeDict">✕</button></div>
+<div class="dbody">
+<div class="grid2"><label>Novo termo<input id="dictTerm" placeholder="Ex.: MidiMax, DPA5, Topper"></label><button type="button" id="saveDictTerm">Adicionar termo</button></div>
+<p class="small muted">Termos adicionados ficam protegidos contra substituições automáticas do revisor local.</p>
+<div id="dictList"></div>
+</div></dialog>
+<dialog id="reviewDlg" class="modal">
+<div class="dhead"><b id="reviewTitle">Revisão</b><button type="button" id="closeReview">✕</button></div>
+<div class="dbody"><p class="small muted">Confira antes de aplicar. A revisão não deve criar medições, causas ou procedimentos não registrados.</p><div id="reviewPreview" class="reviewPreview"></div></div>
+<div class="dfoot"><button type="button" id="cancelReview">Cancelar</button><button type="button" id="applyReview" class="primary">Aplicar no campo</button></div>
+</dialog>
+
+<dialog id="libraryDlg" class="modal">
+<div class="dhead"><b>Biblioteca Técnica JF</b><button type="button" id="closeLibrary">✕</button></div>
+<div class="dbody">
+  <div class="grid2">
+    <label>Categoria
+      <select id="libCategory"><option>Ar-condicionado</option><option>Elétrica</option><option>Eletrônica</option></select>
+    </label>
+    <label>Nome da regra<input id="libName" placeholder="Ex.: Pressostato aberto / danificado"></label>
+  </div>
+  <label>Palavras-chave <span class="small muted">(separadas por vírgula)</span><input id="libKeywords" placeholder="pressostato, aberto, danificado"></label>
+  <label>Procedimentos <span class="small muted">(um por linha)</span><textarea id="libSteps" rows="9"></textarea></label>
+  <div class="toolbar"><button type="button" id="saveLibraryRule" class="primary">Salvar nova regra</button></div>
+  <hr>
+  <h3>Regras cadastradas</h3>
+  <div id="libraryList"></div>
+</div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+const VERSION='0.9.5';
+let S={clientes:[],equipamentos_clientes:[],produtos:[],servicos_catalogo:[],ordens_servico:[],os_equipamentos:[],os_servicos:[],os_outros_servicos:[],os_produtos:[],situacoes:[],custom:{}};
+let work=null, installPrompt=null, swreg=null, reloading=false;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const num=v=>{let x=String(v??0).trim().replace(/\./g,'').replace(',','.');if(/^-?\d+(\.\d+)?$/.test(String(v??'')))x=String(v);return Number(x)||0};
+const money=v=>num(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const nowLocal=()=>{let d=new Date(),z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`};
+const dateOnly=()=>nowLocal().slice(0,10);
+function uid(prefix){return prefix+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function deep(x){return JSON.parse(JSON.stringify(x))}
+function normalize(){
+ S.custom=S.custom||{}; for(const k of ['clientes','equipamentos','os','log','stockMoves','deletedProducts','dictionary','techLibrary']) S.custom[k]=S.custom[k]||[];S.custom.productSeq=Math.max(num(S.custom.productSeq),1746,...S.produtos.map(p=>num(productCode(p))));
+ for(const k of ['clientes','equipamentos_clientes','produtos','servicos_catalogo','ordens_servico','os_equipamentos','os_servicos','os_outros_servicos','os_produtos','situacoes'])S[k]=S[k]||[];
+}
+function clients(){return [...S.custom.clientes,...S.clientes]}
+function equips(){return [...S.custom.equipamentos,...S.equipamentos_clientes]}
+function orders(){return [...S.custom.os,...S.ordens_servico]}
+function byId(arr,id){return arr.find(x=>String(x.id)==String(id))}
+function clientBy(id){return byId(clients(),id)}
+function equipBy(id){return byId(equips(),id)}
+function prodBy(id){return byId(S.produtos,id)}
+function activeProducts(){let del=new Set(S.custom.deletedProducts.map(x=>String(x.product_id)));return S.produtos.filter(p=>!del.has(String(p.id)))}
+function isLegacyProduct(p){return !!p && /^\d+$/.test(String(p.id||''))}
+function productCode(p){return String(p?.codigo_jf || (isLegacyProduct(p)?p.id:(p?.codigo_interno||p?.id||'')))}
+function productMakerCode(p){return String(p?.codigo_fabricante || (isLegacyProduct(p)?(p?.codigo_interno||''):'') || '')}
+function nextClientCode(){let a=clients().map(c=>String(c.matricula||c.codigo_cti||c.id||'')).filter(x=>/^\d+$/.test(x)).map(Number);return String((a.length?Math.max(...a):0)+1)}
+function serviceBy(id){return byId(S.servicos_catalogo,id)}
+function osBy(id){return byId(orders(),id)}
+function clientName(id){return clientBy(id)?.nome||''}
+function equipClient(e){return e?.cliente_id??e?.id_cliente??e?.cliente}
+function equipName(id){let e=equipBy(id);return e?(e.equipamento||e.modelo||e.descricao||[e.marca,e.tipo].filter(Boolean).join(' ')||`Equip. ${e.id}`):''}
+function situation(o){
+ if(o.situacao)return o.situacao;
+ let s=byId(S.situacoes,o.situacao_id)?.descricao||'',u=s.toUpperCase();
+ if(u.includes('AGUARD'))return 'Aguardando peças'; if(u.includes('CANCEL'))return 'Cancelada'; if(u.includes('CONCLU'))return 'Concluída'; if(u.includes('ABERT')||u.includes('ANDAMENTO'))return 'Em andamento'; return 'Finalizada'
+}
+function badge(s){let c=s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').split(' ')[0];return `<span class="badge ${c}">${esc(s)}</span>`}
+function legacyEquipLinks(id){return S.os_equipamentos.filter(x=>String(x.os_id)==String(id)).map(x=>({equipamento_id:x.equipamento_cliente_id,principal:!!x.principal}))}
+function legacyServices(id){return S.os_servicos.filter(x=>String(x.os_id)==String(id)).map(x=>({id:x.id,servico_id:x.servico_id,descricao:serviceBy(x.servico_id)?.descricao||'',quantidade:num(x.quantidade),valor:num(x.valor_unitario),desconto:num(x.desconto),acrescimo:num(x.acrescimo),tecnico:'',total:num(x.total)}))}
+function legacyOthers(id){return S.os_outros_servicos.filter(x=>String(x.os_id)==String(id)).map(x=>({id:x.id,nome:x.nome||'',quantidade:num(x.quantidade),valor:num(x.valor_unitario),desconto:num(x.desconto),acrescimo:num(x.acrescimo),origem:'',destino:'',km:0,total:num(x.total)}))}
+function legacyMaterials(id){return S.os_produtos.filter(x=>String(x.os_id)==String(id)).map(x=>({id:x.id,produto_id:x.produto_id,quantidade:num(x.quantidade),valor:num(x.valor_unitario),desconto:num(x.desconto),acrescimo:num(x.acrescimo),origem:'Oficina',total:num(x.total)}))}
+function log(entity,id,message,details=''){S.custom.log.unshift({id:uid('L'),entity,entity_id:id,at:new Date().toISOString(),message,details})}
+function auditFor(o){return [...(o.audit||[]),...S.custom.log.filter(x=>x.entity==='os'&&String(x.entity_id)==String(o.id))].sort((a,b)=>String(b.at).localeCompare(String(a.at)))}
+
+function openDB(){return new Promise((ok,err)=>{let r=indexedDB.open('jf-oficina',2);r.onupgradeneeded=()=>{let d=r.result;if(!d.objectStoreNames.contains('s'))d.createObjectStore('s')};r.onsuccess=()=>ok(r.result);r.onerror=()=>err(r.error)})}
+async function loadDB(){let d=await openDB();return new Promise(ok=>{let r=d.transaction('s').objectStore('s').get('a');r.onsuccess=()=>ok(r.result)})}
+async function saveDB(){let d=await openDB();return new Promise(ok=>{let t=d.transaction('s','readwrite');t.objectStore('s').put(S,'a');t.oncomplete=ok})}
+
+function render(){
+ normalize(); let os=orders(), low=S.produtos.filter(p=>num(p.estoque_minimo)>0&&num(p.estoque_atual)<num(p.estoque_minimo));
+ kOs.textContent=os.length;kAnd.textContent=os.filter(o=>situation(o)==='Em andamento').length;kWait.textContent=os.filter(o=>situation(o)==='Aguardando peças').length;kCli.textContent=clients().length;kLow.textContent=low.length;
+ let att=os.filter(o=>['Em andamento','Aguardando peças'].includes(situation(o))).sort((a,b)=>String(b.data_entrada||'').localeCompare(String(a.data_entrada||''))).slice(0,7);
+ attention.innerHTML=att.length?att.map(o=>`<div class="audit click" onclick="openOS('${esc(o.id)}')"><b>OS ${esc(o.numero_os||o.id)}</b> · ${badge(situation(o))}<br>${esc(clientName(o.cliente_id))} <span class="muted">${esc((o.defeito_reclamado||'').slice(0,80))}</span></div>`).join(''):'<p class="muted">Nenhuma OS pendente.</p>';
+ recent.innerHTML=os.slice().sort((a,b)=>num(b.numero_os)-num(a.numero_os)).slice(0,7).map(o=>`<div class="audit click" onclick="openOS('${esc(o.id)}')"><b>OS ${esc(o.numero_os||o.id)}</b> · ${esc(clientName(o.cliente_id))}<br><span class="muted">${esc(o.data_entrada||'')} · ${money(o.total)}</span></div>`).join('');
+ let q=osSearch.value.toLowerCase(),st=osStatus.value;
+ osTable.innerHTML=os.filter(o=>(!st||situation(o)===st)&&[o.numero_os,clientName(o.cliente_id),...(legacyEquipLinks(o.id).map(x=>equipName(x.equipamento_id))),o.defeito_reclamado].join(' ').toLowerCase().includes(q)).sort((a,b)=>num(b.numero_os)-num(a.numero_os)).slice(0,500).map(o=>{
+   let eq=(o.equipamentos||legacyEquipLinks(o.id)).map(x=>equipName(x.equipamento_id)).filter(Boolean).join(', ');
+   return `<tr class="click" onclick="openOS('${esc(o.id)}')"><td><b>${esc(o.numero_os||o.id)}</b></td><td>${esc(o.data_entrada||'')}</td><td><b>${esc(clientName(o.cliente_id))}</b><br><span class="muted">${esc(eq)}</span></td><td>${badge(situation(o))}</td><td>${money(o.total)}</td></tr>`}).join('');
+ q=clientSearch.value.toLowerCase();
+ clientTable.innerHTML=clients().filter(c=>[c.nome,c.documento,c.cpf_cnpj,c.cidade].join(' ').toLowerCase().includes(q)).slice(0,500).map(c=>{
+   let es=equips().filter(e=>String(equipClient(e))===String(c.id)), co=os.filter(o=>String(o.cliente_id)===String(c.id)), last=co.slice().sort((a,b)=>num(b.numero_os)-num(a.numero_os))[0];
+   return `<tr class="click" onclick="openClient('${esc(c.id)}')"><td><b>${esc(c.nome)}</b><br><span class="muted">${esc(c.cidade||'')}</span></td><td>${es.length}<br><span class="muted">${esc(es.slice(0,3).map(e=>equipName(e.id)).join(', '))}</span></td><td>${co.length}</td><td>${last?`OS ${esc(last.numero_os||last.id)} · ${esc(last.data_entrada||'')}`:''}</td></tr>`}).join('');
+ let fpc=filterProdCode.value.trim().toLowerCase(),fic=filterInternalCode.value.trim().toLowerCase(),fgt=filterGTIN.value.trim().toLowerCase(),fn=filterName.value.trim().toLowerCase(),fcat=filterCategory.value.trim().toLowerCase(),floc=filterLocation.value.trim().toLowerCase();
+ stockTable.innerHTML=activeProducts().filter(p=>{
+   let gt=(p.codigo_barras||'SEM GTIN').toLowerCase();
+   return (!fpc||productCode(p).toLowerCase().includes(fpc))&&(!fic||productMakerCode(p).toLowerCase().includes(fic))&&(!fgt||gt.includes(fgt))&&(!fn||(p.descricao||'').toLowerCase().includes(fn))&&(!fcat||(p.categoria||'').toLowerCase().includes(fcat))&&(!floc||(p.localizacao||'').toLowerCase().includes(floc))&&(stockFilter.value!=='low'||(num(p.estoque_minimo)>0&&num(p.estoque_atual)<num(p.estoque_minimo)))
+ }).slice(0,900).map(p=>`<tr class="click" onclick="openProduct('${esc(p.id)}')"><td>${p.imagem?`<img class="prodImg" src="${p.imagem}">`:''}</td><td><b>${esc(productCode(p))}</b><br><span class="muted">${esc(productMakerCode(p))}</span></td><td><b>${esc(p.descricao)}</b><br><span class="muted">${esc(p.codigo_barras||'SEM GTIN')}</span></td><td>${num(p.estoque_atual)}</td><td>${num(p.estoque_minimo)}</td><td>${num(p.estoque_maximo)}</td><td>${money(p.valor_venda)}</td><td>${esc(p.categoria||'')}</td><td>${esc(p.localizacao||'')}</td></tr>`).join('');
+}
+
+function blankOS(){return {id:'',numero_os:'',cliente_id:'',situacao:'Em andamento',solicitante:'',entrada:nowLocal(),saida:'',local:'',tecnico:'JEFERSON',horimetro:'',controle:'',defeito_reclamado:'',defeito_constatado:'',laudo:'',descricao_servico:'',recomendacao:'',observacoes_internas:'',servicos:[],outros:[],materiais:[],equipamentos:[],fotos:[],desconto:0,acrescimo:0,frete:0,pagamento:'Nenhum',parcelas:[],checklist:{rule_id:'',category:'',items:[]},audit:[]}}
+function modelOS(o){
+ if(!o)return blankOS();
+ return {id:o.id,numero_os:o.numero_os||o.id,cliente_id:o.cliente_id||'',situacao:situation(o),solicitante:o.solicitante||'',entrada:o.entrada||[o.data_entrada,o.hora_entrada].filter(Boolean).join('T').slice(0,16),saida:o.saida||[o.data_saida,o.hora_saida].filter(Boolean).join('T').slice(0,16),local:o.local||'',tecnico:o.tecnico||'JEFERSON',horimetro:o.horimetro||'',controle:o.controle||'',defeito_reclamado:o.defeito_reclamado||'',defeito_constatado:o.defeito_constatado||'',laudo:o.laudo||o.observacoes||'',descricao_servico:o.descricao_servico||'',recomendacao:o.recomendacao||'',observacoes_internas:o.observacoes_internas||'',servicos:deep(o.servicos||legacyServices(o.id)),outros:deep(o.outros||legacyOthers(o.id)),materiais:deep(o.materiais||legacyMaterials(o.id)),equipamentos:deep(o.equipamentos||legacyEquipLinks(o.id)),fotos:deep(o.fotos||[]),desconto:num(o.desconto),acrescimo:num(o.acrescimo),frete:num(o.frete),pagamento:o.pagamento||'Nenhum',parcelas:deep(o.parcelas||[]),checklist:deep(o.checklist||{rule_id:'',category:'',items:[]}),audit:deep(o.audit||auditFor(o))};
+}
+function fillClientSelects(){
+ let opts='<option value="">Selecione...</option>'+clients().map(c=>`<option value="${esc(c.id)}">${esc(c.nome)}</option>`).join('');
+ osClient.innerHTML=opts;equipClient.innerHTML=opts;
+}
+function serviceOptions(selected=''){return '<option value="">Selecione...</option>'+S.servicos_catalogo.filter(s=>s.ativo!==false).map(s=>`<option value="${esc(s.id)}" ${String(s.id)===String(selected)?'selected':''}>${esc(s.descricao)}</option>`).join('')}
+function productOptions(selected=''){return '<option value="">Selecione...</option>'+activeProducts().filter(p=>p.ativo!==false).map(p=>`<option value="${esc(p.id)}" ${String(p.id)===String(selected)?'selected':''}>[${esc(productCode(p))}] ${esc(p.descricao||'')}</option>`).join('')}
+function equipmentOptions(client,selected=''){return '<option value="">Selecione...</option>'+equips().filter(e=>String(equipClient(e))===String(client)).map(e=>`<option value="${esc(e.id)}" ${String(e.id)===String(selected)?'selected':''}>${esc(equipName(e.id))} ${esc(e.numero_serie||'')}</option>`).join('')}
+
+function openOS(id=''){
+ let o=id?osBy(id):null;work=modelOS(o); fillClientSelects(); osId.value=work.id;osClient.value=work.cliente_id;osSituation.value=work.situacao;osRequester.value=work.solicitante;osEntry.value=work.entrada||nowLocal();osExit.value=work.saida||'';osLocation.value=work.local;osTechnician.value=work.tecnico;osHourmeter.value=work.horimetro;osControl.value=work.controle;osComplaint.value=work.defeito_reclamado;osFinding.value=work.defeito_constatado;osReport.value=work.laudo;osServiceDesc.value=work.descricao_servico||'';osRecommendation.value=work.recomendacao;osInternal.value=work.observacoes_internas;globalDiscount.value=work.desconto;globalAdd.value=work.acrescimo;globalFreight.value=work.frete;paymentType.value=work.pagamento||'Nenhum';
+ osTitle.textContent=id?`OS ${work.numero_os}`:'Nova OS';osSubtitle.textContent=id?`${clientName(work.cliente_id)} · ${work.situacao}`:'Atendimento novo';
+ renderWork(); setTab('general'); osDlg.showModal(); markClean();
+}
+window.openOS=openOS;
+function setTab(name){$$('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===name));$$('.tabpane').forEach(x=>x.classList.toggle('on',x.id==='tab-'+name))}
+$$('.tab').forEach(x=>x.onclick=()=>setTab(x.dataset.tab));
+
+function renderWork(){
+ renderServices();renderOthers();renderMaterials();renderEquipments();renderPhotos();renderFinance();renderAudit();fillRuleSelect(work.checklist?.rule_id||'');renderChecklist();
+ let final=work.situacao==='Finalizada',cancel=work.situacao==='Cancelada';
+ reopenOS.classList.toggle('hidden',!final);finalizeOS.classList.toggle('hidden',final||cancel);saveOS.disabled=final;
+}
+function rowInput(label,value,attrs=''){return `<label>${label}<input ${attrs} value="${esc(value)}"></label>`}
+function renderServices(){
+ serviceRows.innerHTML=work.servicos.map((r,i)=>`<div class="itemrow" data-i="${i}">
+ <label>Serviço<select class="srvSel">${serviceOptions(r.servico_id)}</select></label><label>Qtd/Horas<input class="srvQty" type="number" step=".25" value="${num(r.quantidade)||1}"></label><label>Valor<input class="srvVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="srvDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="srvAdd" type="number" step=".01" value="${num(r.acrescimo)}"></label><label>Técnico<input class="srvTech" value="${esc(r.tecnico||work.tecnico)}"></label><button type="button" class="danger delSrv">✕</button></div>`).join('');
+ $$('.srvSel').forEach((e,i)=>e.onchange=()=>{let s=serviceBy(e.value);work.servicos[i].servico_id=e.value;work.servicos[i].descricao=s?.descricao||'';if(!work.servicos[i].valor)work.servicos[i].valor=num(s?.valor);renderServices();renderFinance();dirty()});
+ bindRows('.srvQty','quantidade',work.servicos);bindRows('.srvVal','valor',work.servicos);bindRows('.srvDisc','desconto',work.servicos);bindRows('.srvAdd','acrescimo',work.servicos);bindRows('.srvTech','tecnico',work.servicos,false);
+ $$('.delSrv').forEach((e,i)=>e.onclick=()=>{work.servicos.splice(i,1);renderWork();dirty()});
+}
+function bindRows(sel,key,arr,numeric=true){$$(sel).forEach((e,i)=>e.oninput=()=>{arr[i][key]=numeric?num(e.value):e.value;renderFinance();dirty()})}
+function renderOthers(){
+ otherRows.innerHTML=work.outros.map((r,i)=>`<div class="itemrow other"><label>Descrição<input class="othName" value="${esc(r.nome)}" placeholder="Ex.: Deslocamento Rio Brilhante → Maracaju"></label><label>Qtd/Km<input class="othQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor un.<input class="othVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Origem<input class="othFrom" value="${esc(r.origem||'')}"></label><label>Destino<input class="othTo" value="${esc(r.destino||'')}"></label><button type="button" class="danger delOth">✕</button></div>`).join('');
+ bindRows('.othName','nome',work.outros,false);bindRows('.othQty','quantidade',work.outros);bindRows('.othVal','valor',work.outros);bindRows('.othFrom','origem',work.outros,false);bindRows('.othTo','destino',work.outros,false);$$('.delOth').forEach((e,i)=>e.onclick=()=>{work.outros.splice(i,1);renderWork();dirty()})
+}
+function renderMaterials(){
+ materialRows.innerHTML=work.materiais.map((r,i)=>`<div class="itemrow" data-i="${i}">
+ <label>Produto / Código<select class="matSel">${productOptions(r.produto_id)}</select></label><label>Qtd<input class="matQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor<input class="matVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="matDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="matAdd" type="number" step=".01" value="${num(r.acrescimo)}"></label><label>Origem<select class="matOrigin"><option ${r.origem==='Oficina'?'selected':''}>Oficina</option><option ${r.origem==='Hilux'?'selected':''}>Hilux</option></select></label><button type="button" class="danger delMat">✕</button></div>`).join('');
+ $$('.matSel').forEach((e,i)=>e.onchange=()=>{let p=prodBy(e.value);work.materiais[i].produto_id=e.value;if(!work.materiais[i].valor)work.materiais[i].valor=num(p?.valor_venda);renderMaterials();renderFinance();dirty()});
+ bindRows('.matQty','quantidade',work.materiais);bindRows('.matVal','valor',work.materiais);bindRows('.matDisc','desconto',work.materiais);bindRows('.matAdd','acrescimo',work.materiais);bindRows('.matOrigin','origem',work.materiais,false);$$('.delMat').forEach((e,i)=>e.onclick=()=>{work.materiais.splice(i,1);renderWork();dirty()})
+}
+function renderEquipments(){
+ equipmentRows.innerHTML=work.equipamentos.map((r,i)=>`<div class="itemrow eq"><label>Equipamento<select class="eqSel">${equipmentOptions(work.cliente_id,r.equipamento_id)}</select></label><label>Horímetro nesta OS<input class="eqHour" value="${esc(r.horimetro||'')}"></label><label><input class="eqMain" type="radio" name="mainEq" ${r.principal?'checked':''}> Principal</label><button type="button" class="danger delEq">✕</button></div>`).join('');
+ $$('.eqSel').forEach((e,i)=>e.onchange=()=>{work.equipamentos[i].equipamento_id=e.value;dirty()});$$('.eqHour').forEach((e,i)=>e.oninput=()=>{work.equipamentos[i].horimetro=e.value;dirty()});$$('.eqMain').forEach((e,i)=>e.onchange=()=>{work.equipamentos.forEach((x,j)=>x.principal=j===i);renderEquipments();dirty()});$$('.delEq').forEach((e,i)=>e.onclick=()=>{work.equipamentos.splice(i,1);if(work.equipamentos.length&&!work.equipamentos.some(x=>x.principal))work.equipamentos[0].principal=true;renderEquipments();dirty()})
+}
+function renderPhotos(){
+ photoGrid.innerHTML=work.fotos.map((p,i)=>`<div class="photo"><img src="${p.data}"><div class="small">${esc(p.tipo||'Foto')}<br>${esc(p.nome||'')}</div><button type="button" class="danger" onclick="removePhoto(${i})">Remover</button></div>`).join('')
+}
+window.removePhoto=i=>{work.fotos.splice(i,1);renderPhotos();dirty()}
+function lineTotal(r){return Math.max(0,num(r.quantidade)*num(r.valor)-num(r.desconto)+num(r.acrescimo))}
+function calcTotals(){
+ let s=work.servicos.reduce((a,r)=>a+lineTotal(r),0),o=work.outros.reduce((a,r)=>a+lineTotal(r),0),m=work.materiais.reduce((a,r)=>a+lineTotal(r),0);
+ let total=Math.max(0,s+o+m+num(globalFreight.value)+num(globalAdd.value)-num(globalDiscount.value));return {s,o,m,total}
+}
+function renderFinance(){
+ let t=calcTotals(); totals.innerHTML=`<div class="sumline"><span>Serviços</span><b>${money(t.s)}</b></div><div class="sumline"><span>Desloc./Outros</span><b>${money(t.o)}</b></div><div class="sumline"><span>Materiais</span><b>${money(t.m)}</b></div><div class="sumline"><span>Frete</span><b>${money(globalFreight.value)}</b></div><div class="sumline"><span>Acréscimos</span><b>${money(globalAdd.value)}</b></div><div class="sumline"><span>Descontos</span><b>-${money(globalDiscount.value)}</b></div><div class="sumline total"><span>TOTAL</span><b>${money(t.total)}</b></div>`;
+ installmentBox.classList.toggle('hidden',paymentType.value!=='À prazo');renderInstallments()
+}
+function renderInstallments(){installmentRows.innerHTML=work.parcelas.map((p,i)=>`<div class="grid2"><label>Vencimento<input type="date" class="parDue" value="${esc(p.vencimento)}"></label><label>Valor<input type="number" step=".01" class="parVal" value="${num(p.valor)}"></label></div>`).join('');bindRows('.parDue','vencimento',work.parcelas,false);bindRows('.parVal','valor',work.parcelas)}
+function renderAudit(){let rows=work.audit||[];auditRows.innerHTML=rows.length?rows.map(a=>`<div class="audit"><b>${esc(a.message||'Alteração')}</b><br><span class="small muted">${new Date(a.at).toLocaleString('pt-BR')} ${a.details?'· '+esc(a.details):''}</span></div>`).join(''):'<p class="muted">Nenhuma alteração registrada.</p>'}
+function dirty(){dirtyNote.textContent='Alterações não salvas';dirtyNote.style.background='#fff0c7'}
+function markClean(){dirtyNote.textContent='Sem alterações pendentes';dirtyNote.style.background='#f5f7f8'}
+
+function readForm(){
+ work.cliente_id=osClient.value;work.situacao=osSituation.value;work.solicitante=osRequester.value;work.entrada=osEntry.value;work.saida=osExit.value;work.local=osLocation.value;work.tecnico=osTechnician.value;work.horimetro=osHourmeter.value;work.controle=osControl.value;work.defeito_reclamado=osComplaint.value;work.defeito_constatado=osFinding.value;work.laudo=osReport.value;work.descricao_servico=osServiceDesc.value;work.recomendacao=osRecommendation.value;work.observacoes_internas=osInternal.value;work.desconto=num(globalDiscount.value);work.acrescimo=num(globalAdd.value);work.frete=num(globalFreight.value);work.pagamento=paymentType.value;
+ let t=calcTotals();work.total_servicos=t.s;work.total_outros=t.o;work.total_materiais=t.m;work.total=t.total
+}
+function diffSummary(oldw,neww){
+ let d=[];for(const [k,label] of [['situacao','Situação'],['cliente_id','Cliente'],['defeito_reclamado','Defeito reclamado'],['defeito_constatado','Defeito constatado'],['total','Total']]){if(String(oldw?.[k]??'')!==String(neww?.[k]??''))d.push(`${label}: ${oldw?.[k]??''} → ${neww?.[k]??''}`)}
+ return d.slice(0,4).join(' | ')
+}
+function applyStock(oldM,newM,osid){
+ let agg=(arr)=>{let m=new Map();for(const x of arr||[]){if(!x.produto_id)continue;let k=String(x.produto_id),v=m.get(k)||0;m.set(k,v+num(x.quantidade))}return m},a=agg(oldM),b=agg(newM),ids=new Set([...a.keys(),...b.keys()]);
+ for(const id of ids){let delta=(b.get(id)||0)-(a.get(id)||0),p=prodBy(id);if(p&&delta){p.estoque_atual=num(p.estoque_atual)-delta;S.custom.stockMoves.unshift({id:uid('M'),at:new Date().toISOString(),os_id:osid,produto_id:id,delta:-delta,origem:'OS'})}}
+}
+async function persistOS(action='save'){
+ readForm();if(!work.cliente_id){alert('Selecione o cliente.');setTab('general');return false}
+ let existing=work.id?osBy(work.id):null,old=existing?modelOS(existing):null;
+ if(!work.id){work.id=uid('OS');work.numero_os=Math.max(0,...orders().map(o=>num(o.numero_os)))+1;work.audit=[];work.audit.unshift({at:new Date().toISOString(),message:'OS criada'})}
+ if(action==='finalize'){work.situacao='Finalizada';work.saida=work.saida||nowLocal();work.audit.unshift({at:new Date().toISOString(),message:'OS finalizada',details:`Pagamento: ${work.pagamento}`})}
+ else if(action==='reopen'){work.situacao='Em andamento';work.audit.unshift({at:new Date().toISOString(),message:'OS reaberta'})}
+ else work.audit.unshift({at:new Date().toISOString(),message:existing?'OS salva/alterada':'OS criada',details:diffSummary(old,work)})
+ applyStock(old?.materiais||[],work.materiais,work.id);
+ if(existing){Object.assign(existing,deep(work),{data_entrada:(work.entrada||'').slice(0,10),hora_entrada:(work.entrada||'').slice(11),data_saida:(work.saida||'').slice(0,10),hora_saida:(work.saida||'').slice(11),observacoes:work.laudo,descricao_servico:work.descricao_servico})}
+ else S.custom.os.unshift(Object.assign(deep(work),{data_entrada:(work.entrada||'').slice(0,10),hora_entrada:(work.entrada||'').slice(11),data_saida:(work.saida||'').slice(0,10),hora_saida:(work.saida||'').slice(11),observacoes:work.laudo,descricao_servico:work.descricao_servico}));
+ await saveDB();render();work=modelOS(osBy(work.id));renderWork();osTitle.textContent=`OS ${work.numero_os}`;osSubtitle.textContent=`${clientName(work.cliente_id)} · ${work.situacao}`;markClean();return true
+}
+
+addService.onclick=()=>{work.servicos.push({id:uid('S'),servico_id:'',descricao:'',quantidade:1,valor:0,desconto:0,acrescimo:0,tecnico:work.tecnico});renderWork();dirty()}
+addOther.onclick=()=>{work.outros.push({id:uid('O'),nome:'Deslocamento',quantidade:1,valor:3.5,desconto:0,acrescimo:0,origem:'',destino:''});renderWork();dirty()}
+addMaterial.onclick=()=>{work.materiais.push({id:uid('P'),produto_id:'',quantidade:1,valor:0,desconto:0,acrescimo:0,origem:'Oficina'});renderWork();dirty()}
+addEquipment.onclick=()=>{if(!work.cliente_id){alert('Selecione o cliente primeiro.');return}work.equipamentos.push({equipamento_id:'',principal:work.equipamentos.length===0,horimetro:''});renderEquipments();dirty()}
+newEquipment.onclick=()=>{if(!work.cliente_id){alert('Selecione o cliente primeiro.');return}openEquip('',work.cliente_id)}
+osClient.onchange=()=>{work.cliente_id=osClient.value;work.equipamentos=[];renderEquipments();dirty()}
+[osSituation,osRequester,osEntry,osExit,osLocation,osTechnician,osHourmeter,osControl,osComplaint,osFinding,osReport,osServiceDesc,osRecommendation,osInternal,globalDiscount,globalAdd,globalFreight,paymentType].forEach(e=>e.addEventListener(e.tagName==='SELECT'?'change':'input',()=>{if(e===paymentType)work.pagamento=e.value;renderFinance();dirty()}))
+generateInstallments.onclick=()=>{let n=Math.max(1,num(installmentCount.value)),tot=calcTotals().total,base=Math.floor((tot/n)*100)/100,d=new Date((firstDue.value||dateOnly())+'T12:00:00'),arr=[];for(let i=0;i<n;i++){let dd=new Date(d);dd.setMonth(dd.getMonth()+i);arr.push({vencimento:dd.toISOString().slice(0,10),valor:i===n-1?Math.round((tot-base*(n-1))*100)/100:base})}work.parcelas=arr;renderInstallments();dirty()}
+photoInput.onchange=async e=>{for(const file of e.target.files){let data=await compressImage(file);work.fotos.push({id:uid('F'),nome:file.name,tipo:'Atendimento',data})}renderPhotos();dirty();photoInput.value=''}
+function compressImage(file){return new Promise(ok=>{let im=new Image(),r=new FileReader();r.onload=()=>im.src=r.result;im.onload=()=>{let max=1280,s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.72))};r.readAsDataURL(file)})}
+
+saveOS.onclick=()=>persistOS('save');finalizeOS.onclick=async()=>{if(paymentType.value==='Nenhum'&&!confirm('Finalizar sem registrar forma de pagamento?'))return;if(await persistOS('finalize'))alert('OS finalizada.')}
+reopenOS.onclick=()=>persistOS('reopen');closeOS.onclick=cancelOS.onclick=()=>osDlg.close();
+printOS.onclick=()=>printCurrentOS();shareOS.onclick=()=>shareCurrentOS();
+
+function printCurrentOS(){
+ readForm();let eq=work.equipamentos.map(x=>equipName(x.equipamento_id)).filter(Boolean).join(', '),t=calcTotals(),w=open('','_blank');
+ w.document.write(`<html><head><title>OS ${esc(work.numero_os||'Nova')}</title><style>body{font:13px Arial;margin:30px;color:#111}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #aaa;padding:6px;text-align:left}.r{text-align:right}pre{white-space:pre-wrap;font:13px Arial}</style></head><body><h1>JF MANUTENÇÕES AGRÍCOLAS — ORDEM DE SERVIÇO ${esc(work.numero_os||'')}</h1><p><b>Cliente:</b> ${esc(clientName(work.cliente_id))}<br><b>Equipamento(s):</b> ${esc(eq)}<br><b>Situação:</b> ${esc(work.situacao)}</p><h3>Defeito reclamado</h3><pre>${esc(work.defeito_reclamado)}</pre><h3>Defeito constatado</h3><pre>${esc(work.defeito_constatado)}</pre><h3>Descrição do Serviço</h3><pre>${esc(work.descricao_servico||'')}</pre><h3>Laudo técnico</h3><pre>${esc(work.laudo)}</pre><h3>Serviços</h3><table>${work.servicos.map(x=>`<tr><td>${esc(serviceBy(x.servico_id)?.descricao||x.descricao)}</td><td>${num(x.quantidade)}</td><td class=r>${money(lineTotal(x))}</td></tr>`).join('')}</table><h3>Materiais</h3><table><tr><th>Código</th><th>Produto</th><th>Quantidade</th><th>Valor unitário</th><th>Total</th></tr>${work.materiais.map(x=>{let p=prodBy(x.produto_id);return `<tr><td>${esc(productCode(p))}</td><td>${esc(p?.descricao||'')}</td><td>${num(x.quantidade)}</td><td class=r>${money(x.valor)}</td><td class=r>${money(lineTotal(x))}</td></tr>`}).join('')}</table><h2 class=r>Total: ${money(t.total)}</h2><h3>Recomendação</h3><pre>${esc(work.recomendacao)}</pre><script>print()<\/script>
+</body></html>`);w.document.close()
+}
+async function shareCurrentOS(){readForm();let text=`JF Oficina — OS ${work.numero_os||'Nova'}\nCliente: ${clientName(work.cliente_id)}\nSituação: ${work.situacao}\nDefeito: ${work.defeito_reclamado}\nTotal: ${money(calcTotals().total)}`;if(navigator.share)try{await navigator.share({title:`OS ${work.numero_os||''}`,text})}catch{}else{await navigator.clipboard.writeText(text);alert('Resumo copiado.')}}
+function openClient(id=''){let c=id?clientBy(id):null;fillClientSelects();clientId.value=c?.id||'';clientTitle.textContent=c?`Cliente — ${c.nome}`:'Novo cliente';clientCode.value=c?(c.matricula||c.codigo_cti||c.id):nextClientCode();clientName.value=c?.nome||'';clientDoc.value=c?.documento||c?.cpf_cnpj||'';clientIE.value=c?.ie||c?.inscricao_estadual||'';clientPhone.value=c?.telefone||c?.fone||'';clientEmail.value=c?.email||'';clientCity.value=c?.cidade||'';clientFarm.value=c?.fazenda||'';clientAddress.value=c?.endereco||c?.logradouro||'';clientBirth.value=c?.data_nascimento||c?.data_abertura||'';clientObs.value=c?.observacoes||'';clientRelations.classList.toggle('hidden',!c);if(c)renderClientRelations(c.id);clientDlg.showModal()}
+window.openClient=openClient;
+function renderClientRelations(id){let es=equips().filter(e=>String(equipClient(e))===String(id)),os=orders().filter(o=>String(o.cliente_id)===String(id)).sort((a,b)=>num(b.numero_os)-num(a.numero_os));clientEquipTable.innerHTML=es.length?es.map(e=>`<tr class="click" onclick="openEquip('${esc(e.id)}')"><td><b>${esc(equipName(e.id))}</b></td><td>${esc(e.numero_serie||'')}</td></tr>`).join(''):'<tr><td class="muted">Nenhum equipamento.</td></tr>';clientOsTable.innerHTML=os.length?os.slice(0,120).map(o=>`<tr class="click" onclick="clientDlg.close();openOS('${esc(o.id)}')"><td><b>OS ${esc(o.numero_os||o.id)}</b></td><td>${esc(o.data_entrada||'')}</td><td>${badge(situation(o))}</td><td>${esc((o.defeito_reclamado||'').slice(0,80))}</td></tr>`).join(''):'<tr><td class="muted">Nenhuma OS.</td></tr>'}
+clientForm.onsubmit=async e=>{e.preventDefault();let c=clientId.value?clientBy(clientId.value):null,created=!c;let fields={matricula:clientCode.value,codigo_cti:clientCode.value,nome:clientName.value,documento:clientDoc.value,cpf_cnpj:clientDoc.value,ie:clientIE.value,inscricao_estadual:clientIE.value,telefone:clientPhone.value,email:clientEmail.value,cidade:clientCity.value,fazenda:clientFarm.value,endereco:clientAddress.value,logradouro:clientAddress.value,data_nascimento:clientBirth.value,observacoes:clientObs.value};if(c)Object.assign(c,fields);else{c={id:uid('C'),...fields};S.custom.clientes.unshift(c)}log('cliente',c.id,created?'Cliente criado':'Cliente alterado');await saveDB();render();clientDlg.close();if(osDlg.open){fillClientSelects();osClient.value=c.id;work.cliente_id=c.id;renderEquipments()}}
+closeClient.onclick=clientCancel.onclick=()=>clientDlg.close();clientNewEquip.onclick=()=>openEquip('',clientId.value);quickClient.onclick=()=>openClient('');
+
+function openEquip(id='',client=''){let e=id?equipBy(id):null;fillClientSelects();equipId.value=e?.id||'';equipTitle.textContent=e?`Equipamento — ${equipName(e.id)}`:'Novo equipamento';equipClient.value=e?equipClient(e):client;equipType.value=e?.tipo||'';equipBrand.value=e?.marca||'';equipModel.value=e?.equipamento||e?.modelo||e?.descricao||'';equipSerial.value=e?.numero_serie||e?.serie||'';equipAsset.value=e?.patrimonio||'';equipYear.value=e?.ano||'';equipHour.value=e?.horimetro||'';equipLocation.value=e?.local||'';equipObs.value=e?.observacoes||'';equipDlg.showModal()}
+window.openEquip=openEquip;
+equipForm.onsubmit=async e=>{e.preventDefault();let x=equipId.value?equipBy(equipId.value):null,was=!!x;if(x)Object.assign(x,{cliente_id:equipClient.value,tipo:equipType.value,marca:equipBrand.value,equipamento:equipModel.value,modelo:equipModel.value,numero_serie:equipSerial.value,patrimonio:equipAsset.value,ano:equipYear.value,horimetro:equipHour.value,local:equipLocation.value,observacoes:equipObs.value});else{x={id:uid('E'),cliente_id:equipClient.value,tipo:equipType.value,marca:equipBrand.value,equipamento:equipModel.value,modelo:equipModel.value,numero_serie:equipSerial.value,patrimonio:equipAsset.value,ano:equipYear.value,horimetro:equipHour.value,local:equipLocation.value,observacoes:equipObs.value};S.custom.equipamentos.unshift(x)}log('equipamento',x.id,was?'Equipamento alterado':'Equipamento criado');await saveDB();render();equipDlg.close();if(clientDlg.open)renderClientRelations(equipClient.value);if(osDlg.open){work.cliente_id=equipClient.value;osClient.value=equipClient.value;work.equipamentos.push({equipamento_id:x.id,principal:work.equipamentos.length===0});renderEquipments();dirty()}}
+closeEquip.onclick=equipCancel.onclick=()=>equipDlg.close();
+
+function nextProductCode(){normalize();S.custom.productSeq=Math.max(num(S.custom.productSeq),1746,...S.produtos.map(p=>num(productCode(p))))+1;return String(S.custom.productSeq)}
+function renderProductQR(code){
+ productQR.innerHTML='';productQRText.textContent='JF-PRODUTO-'+code;
+ if(window.QRCode){new QRCode(productQR,{text:'JF-PRODUTO-'+code,width:150,height:150,correctLevel:QRCode.CorrectLevel.M})}
+ else productQR.innerHTML='<div class="muted">QR disponível quando a biblioteca carregar.</div>'
+}
+async function handleProductImage(file){
+ if(!file)return;let data=await compressProductImage(file);productImagePreview.src=data;productImagePreview.dataset.value=data;productImagePreview.style.display='block'
+}
+function compressProductImage(file){return new Promise(ok=>{let im=new Image(),r=new FileReader();r.onload=()=>im.src=r.result;im.onload=()=>{let max=900,s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.62))};r.readAsDataURL(file)})}
+function openProduct(id=''){
+ let p=id?prodBy(id):null,code=p?productCode(p):nextProductCode();
+ productId.value=p?.id||'';productTitle.textContent=p?`Produto ${code}`:'Novo produto';productCode.value=code;
+ productDesc.value=p?.descricao||'';productMaker.value=p?productMakerCode(p):'';productBarcode.value=p?.codigo_barras||'SEM GTIN';productCategory.value=p?.categoria||'';
+ productStock.value=num(p?.estoque_atual);productMin.value=num(p?.estoque_minimo);productMax.value=num(p?.estoque_maximo);productCost.value=num(p?.valor_custo);productMargin.value=num(p?.margem);productSale.value=num(p?.valor_venda);productSupplier.value=p?.fornecedor||'';productLoc.value=p?.localizacao||'';productObs.value=p?.observacoes||'';
+ productImagePreview.dataset.value=p?.imagem||'';productImagePreview.src=p?.imagem||'';productImagePreview.style.display=p?.imagem?'block':'none';
+ deleteProduct.classList.toggle('hidden',!p);renderProductQR(code);productDlg.showModal()
+}
+window.openProduct=openProduct;
+productForm.onsubmit=async e=>{
+ e.preventDefault();let code=productCode.value.trim();if(!code){alert('Código do produto obrigatório.');return}
+ let dup=S.produtos.find(x=>productCode(x)===code&&String(x.id)!==String(productId.value));if(dup){alert('Este código do produto já existe.');return}
+ let p=productId.value?prodBy(productId.value):null,created=!p;if(!p){p={id:'P'+Date.now(),ativo:1};S.produtos.unshift(p)}
+ let gtin=(productBarcode.value||'').trim()||'SEM GTIN';
+ Object.assign(p,{codigo_jf:code,descricao:productDesc.value.trim(),codigo_fabricante:productMaker.value.trim(),codigo_barras:gtin,categoria:productCategory.value.trim(),estoque_atual:num(productStock.value),estoque_minimo:num(productMin.value),estoque_maximo:num(productMax.value),valor_custo:num(productCost.value),margem:num(productMargin.value),valor_venda:num(productSale.value),fornecedor:productSupplier.value.trim(),localizacao:productLoc.value.trim(),observacoes:productObs.value.trim(),imagem:productImagePreview.dataset.value||'',qr:'JF-PRODUTO-'+code});
+ if(!isLegacyProduct(p))p.codigo_interno=productMaker.value.trim();
+ log('produto',p.id,created?'Produto criado':'Produto/estoque alterado');await saveDB();render();productDlg.close()
+}
+closeProduct.onclick=productCancel.onclick=()=>productDlg.close();
+productCamera.onchange=e=>{handleProductImage(e.target.files[0]);e.target.value=''};
+productImageFile.onchange=e=>{handleProductImage(e.target.files[0]);e.target.value=''};
+removeProductImage.onclick=()=>{productImagePreview.src='';productImagePreview.dataset.value='';productImagePreview.style.display='none'};
+productCost.oninput=()=>{let c=num(productCost.value),m=num(productMargin.value);if(c&&m)productSale.value=(c*(1+m/100)).toFixed(2)};
+productMargin.oninput=()=>{let c=num(productCost.value),m=num(productMargin.value);if(c)productSale.value=(c*(1+m/100)).toFixed(2)};
+webSearchProduct.onclick=()=>{let q=[productDesc.value,productMaker.value,productBarcode.value!=='SEM GTIN'?productBarcode.value:''].filter(Boolean).join(' ');open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank')};
+searchSupplier.onclick=()=>{let q=['comprar',productDesc.value,productMaker.value,productBarcode.value!=='SEM GTIN'?productBarcode.value:''].filter(Boolean).join(' ');open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank')};
+printOneLabel.onclick=()=>printLabelsFor([productId.value?prodBy(productId.value):{id:'TMP',codigo_jf:productCode.value,descricao:productDesc.value,localizacao:productLoc.value}]);
+deleteProduct.onclick=async()=>{let p=prodBy(productId.value);if(!p)return;if(!confirm(`Enviar o produto ${productCode(p)} para a lixeira por 30 dias?`))return;S.custom.deletedProducts.unshift({id:uid('D'),product_id:p.id,deleted_at:new Date().toISOString()});log('produto',p.id,'Produto enviado à lixeira');await saveDB();productDlg.close();render()};
+
+
+
+function deletedRecordFor(id){return S.custom.deletedProducts.find(x=>String(x.product_id)===String(id))}
+function daysRemaining(date){let elapsed=(Date.now()-new Date(date).getTime())/86400000;return Math.max(0,30-Math.floor(elapsed))}
+function renderTrash(){normalize();trashTable.innerHTML=S.custom.deletedProducts.map(d=>{let p=prodBy(d.product_id);if(!p)return'';return `<tr class="trashrow"><td>${esc(productCode(p))}</td><td>${esc(p.descricao)}</td><td>${new Date(d.deleted_at).toLocaleDateString('pt-BR')}</td><td>${daysRemaining(d.deleted_at)}</td><td><button onclick="restoreProduct('${esc(p.id)}')">Restaurar</button> <button class="danger" onclick="purgeProduct('${esc(p.id)}')">Excluir definitivamente</button></td></tr>`}).join('')}
+window.restoreProduct=async id=>{S.custom.deletedProducts=S.custom.deletedProducts.filter(x=>String(x.product_id)!==String(id));log('produto',id,'Produto restaurado da lixeira');await saveDB();renderTrash();render()}
+window.purgeProduct=async id=>{let d=deletedRecordFor(id);if(!d)return;if(!confirm('Excluir definitivamente este produto? O código continuará reservado e o histórico das OS será preservado.'))return;let p=prodBy(id);if(p)p.ativo=false;S.custom.deletedProducts=S.custom.deletedProducts.filter(x=>String(x.product_id)!==String(id));log('produto',id,'Produto excluído definitivamente');await saveDB();renderTrash();render()}
+function printLabelsFor(products){let list=products.filter(Boolean);if(!list.length){alert('Nenhum produto selecionado.');return}let w=open('','_blank');w.document.write(`<html><head><title>Etiquetas JF</title><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"><\/script><style>body{font:12px Arial}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.lab{border:1px solid #000;padding:8px;height:150px;display:grid;grid-template-columns:85px 1fr;gap:8px;align-items:center}.qr{width:80px;height:80px}.code{font-size:18px;font-weight:bold}.desc{font-weight:bold}.loc{font-size:10px}@media print{button{display:none}}</style></head><body><button onclick="print()">Imprimir</button><div class="grid">${list.map((p,i)=>`<div class="lab"><div class="qr" id="q${i}"></div><div><div class="code">${esc(productCode(p))}</div><div class="desc">${esc((p.descricao||'').slice(0,70))}</div><div class="loc">${esc(p.localizacao||'')}</div></div></div>`).join('')}</div><script>${list.map((p,i)=>`new QRCode(document.getElementById('q${i}'),{text:'JF-PRODUTO-${productCode(p)}',width:80,height:80});`).join('')}<\/script></body></html>`);w.document.close()}
+function addProductByScannedCode(code){
+ let clean=String(code||'').replace(/^JF-PRODUTO-/,'').trim(),p=activeProducts().find(x=>productCode(x)===clean);
+ if(!p){scanStatus.textContent='Produto não encontrado: '+clean;return}
+ work.materiais.push({id:uid('P'),produto_id:p.id,quantidade:1,valor:num(p.valor_venda),desconto:0,acrescimo:0,origem:'Oficina'});renderMaterials();renderFinance();dirty();stopScanner();scanDlg.close();setTab('materials')
+}
+let scanStream=null,scanTimer=null;
+async function openScanner(){
+ scanDlg.showModal();scanStatus.textContent='Abrindo câmera...';
+ try{
+  scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});
+  scanVideo.srcObject=scanStream;
+  if('BarcodeDetector'in window){
+   let det=new BarcodeDetector({formats:['qr_code']});scanStatus.textContent='Aponte a câmera para o QR da etiqueta.';
+   scanTimer=setInterval
+let APP_SW_REG=null,APP_RELOADING=false;
+
+function versionParts(v){
+ return String(v||'0').split('.').map(x=>parseInt(x,10)||0);
+}
+function isNewerVersion(remote,local){
+ let a=versionParts(remote),b=versionParts(local),n=Math.max(a.length,b.length);
+ for(let i=0;i<n;i++){let x=a[i]||0,y=b[i]||0;if(x>y)return true;if(x<y)return false}
+ return false;
+}
+function refreshInstalledVersionLabel(){
+  if(location.protocol==='https:'){
+    setUpdateStatus('Versão instalada: '+VERSION+' — atualização automática ativa.');
+  }else{
+    setUpdateStatus('Versão instalada: '+VERSION+' — modo local; atualização automática indisponível.');
+  }
+}
+
+function setUpdateStatus(msg){
+ let el=document.getElementById('updateStatus');
+ if(el)el.textContent=msg;
+}
+async function readRemoteVersion(){
+ try{
+   let r=await fetch('./version.json?ts='+Date.now(),{cache:'no-store',headers:{'cache-control':'no-cache'}});
+   if(!r.ok)return null;
+   return await r.json();
+ }catch(e){return null}
+}
+async function checkAppUpdate(showMessage=false){
+ let info=await readRemoteVersion();
+ if(!info){
+   if(showMessage)setUpdateStatus('Sem conexão para verificar. Versão instalada: '+VERSION);
+   return false;
+ }
+ if(isNewerVersion(info.version,VERSION) || String(info.version)!==String(VERSION)){
+   setUpdateStatus('Nova versão '+info.version+' encontrada. Atualizando...');
+   if(APP_SW_REG){
+     try{await APP_SW_REG.update()}catch(e){}
+     if(APP_SW_REG.waiting)APP_SW_REG.waiting.postMessage({type:'SKIP_WAITING'});
+   }
+   // If service worker has not taken control yet, reload with cache-busting query.
+   setTimeout(()=>{if(!APP_RELOADING){APP_RELOADING=true;location.replace(location.pathname+'?v='+encodeURIComponent(info.version))}},1800);
+   return true;
+ }
+ if(showMessage)setUpdateStatus('Versão instalada: '+VERSION+' — aplicativo atualizado.');
+ return false;
+}
+async function registerUpdater(){
+ if(location.protocol!=='https:' && location.hostname!=='localhost'){refreshInstalledVersionLabel();return}
+ if(!('serviceWorker' in navigator)){
+   setUpdateStatus('Atualização automática indisponível neste navegador. Versão: '+VERSION);
+   return;
+ }
+ try{
+   APP_SW_REG=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+   navigator.serviceWorker.addEventListener('controllerchange',()=>{
+     if(APP_RELOADING)return;
+     APP_RELOADING=true;
+     location.reload();
+   });
+   if(APP_SW_REG.waiting)APP_SW_REG.waiting.postMessage({type:'SKIP_WAITING'});
+   APP_SW_REG.addEventListener('updatefound',()=>{
+     let worker=APP_SW_REG.installing;
+     if(!worker)return;
+     worker.addEventListener('statechange',()=>{
+       if(worker.state==='installed' && navigator.serviceWorker.controller){
+         setUpdateStatus('Nova versão instalada. Reiniciando...');
+         worker.postMessage({type:'SKIP_WAITING'});
+       }
+     });
+   });
+   setTimeout(()=>checkAppUpdate(false),1200);
+   setInterval(()=>checkAppUpdate(false),300000);
+   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkAppUpdate(false)});
+ }catch(e){
+   setUpdateStatus('Falha ao ativar atualização automática. Versão: '+VERSION);
+ }
+}
+addEventListener('DOMContentLoaded',()=>{refreshInstalledVersionLabel();
+ let b=document.getElementById('forceUpdateCheck'),r=document.getElementById('reloadApp');
+ if(b)b.onclick=()=>checkAppUpdate(true);
+ if(r)r.onclick=()=>location.reload();
+});
+
+(async()=>{try{let arr=await det.detect(scanVideo);if(arr.length)addProductByScannedCode(arr[0].rawValue)}catch(e){}},700)
+  }else scanStatus.textContent='Leitura automática de QR não é suportada neste navegador. Digite o código do produto abaixo.'
+ }catch(e){scanStatus.textContent='Não foi possível acessar a câmera. Digite o código do produto abaixo.'}
+}
+function stopScanner(){if(scanTimer)clearInterval(scanTimer);scanTimer=null;if(scanStream)scanStream.getTracks().forEach(t=>t.stop());scanStream=null;scanVideo.srcObject=null}
+
+
+let activeRecognition=null;
+function speechText(t){return String(t||'').replace(/\bnovo parágrafo\b/gi,'\n\n').replace(/\bnova linha\b/gi,'\n').replace(/\bponto\b/gi,'.').replace(/\bvírgula\b/gi,',')}
+function startVoice(targetId){
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Reconhecimento de voz indisponível neste navegador.');return}
+ if(activeRecognition){try{activeRecognition.stop()}catch(e){}}
+ let el=document.getElementById(targetId),r=new SR();activeRecognition=r;r.lang='pt-BR';r.continuous=true;r.interimResults=false;
+ r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal){let t=speechText(e.results[i][0].transcript),a=el.selectionStart??el.value.length,b=el.selectionEnd??a,prefix=(a&&el.value[a-1]&&!/\s/.test(el.value[a-1]))?' ':'';el.value=el.value.slice(0,a)+prefix+t+el.value.slice(b);let pos=a+prefix.length+t.length;el.focus();el.selectionStart=el.selectionEnd=pos;el.dispatchEvent(new Event('input',{bubbles:true}))}};
+ r.onerror=e=>{if(e.error!=='no-speech')console.warn(e.error)};r.onend=()=>activeRecognition=null;r.start()
+}
+document.addEventListener('click',e=>{let b=e.target.closest('.voiceBtn');if(b)startVoice(b.dataset.target)});
+function technicalReportDraft(){
+ let complaintEl=document.getElementById('osComplaint'),findingEl=document.getElementById('osFinding');
+ let a=(complaintEl?.value||'').trim(),b=(findingEl?.value||'').trim(),x=[];
+ if(a)x.push('Conforme relato apresentado, o equipamento apresentou: '+a.replace(/\.$/,'')+'.');
+ if(b)x.push('Durante a avaliação técnica, foi constatado: '+b.replace(/\.$/,'')+'.');
+ if(!x.length)return '';
+ x.push('Este laudo foi elaborado exclusivamente com base nas informações registradas nesta ordem de serviço, sem presumir medições, causas ou procedimentos não documentados.');
+ return x.join('\n\n')
+}
+function serviceDescriptionDraft(){
+ if(work?.checklist?.items?.length){
+   let fromChecklist=checklistDescription();
+   if(fromChecklist)return fromChecklist;
+   return '';
+ }
+
+ let items=[];
+ for(const s of (work?.servicos||[])){
+   let name=serviceBy(s.servico_id)?.descricao||s.descricao||'';
+   if(name)items.push(name.trim());
+ }
+ for(const o of (work?.outros||[])){if(o.nome)items.push(String(o.nome).trim())}
+ if(items.length)return technicalLocalReview('Foram executados os seguintes procedimentos: '+items.join('; ')+'.');
+
+ let report=(document.getElementById('osReport')?.value||'').trim();
+ let finding=(document.getElementById('osFinding')?.value||'').trim();
+ if(report)return technicalLocalReview(report);
+ if(finding)return technicalLocalReview('Realizada avaliação técnica do equipamento. Durante a inspeção, foi constatado: '+finding+'.');
+ return '';
+}
+
+function internalDraft(){
+ let complaintEl=document.getElementById('osComplaint'),findingEl=document.getElementById('osFinding');
+ let a=(complaintEl?.value||'').trim(),b=(findingEl?.value||'').trim(),x=[];
+ if(a)x.push('Referência do cliente: '+a);
+ if(b)x.push('Constatação técnica registrada: '+b);
+ if(!x.length)return '';
+ x.push('Complementar neste campo eventuais pendências, recomendações, testes posteriores ou peças necessárias conforme evolução do atendimento.');
+ return x.join('\n')
+}
+function previewGenerated(target,text,title){
+ if(!text){alert('Preencha Defeito reclamado e/ou Defeito constatado antes de gerar.');return}
+ if(confirm(title+'\n\n'+text+'\n\nInserir no campo?')){let old=target.value.trim();target.value=old?old+'\n\n'+text:text;target.dispatchEvent(new Event('input',{bubbles:true}));dirty()}
+}
+
+
+let reviewTargetId='',reviewCandidate='';
+const JF_TECH_REPLACEMENTS=[
+ [/\b(ar|ar condicionado)\b/gi,'sistema de ar-condicionado'],
+ [/\bgás\b/gi,'fluido refrigerante'],
+ [/\bpouco fluido refrigerante\b/gi,'indício de baixa carga de fluido refrigerante'],
+ [/\bnão gela\b/gi,'apresenta baixa eficiência de refrigeração'],
+ [/\bnão funciona\b/gi,'não apresenta funcionamento'],
+ [/\bqueimado\b/gi,'danificado'],
+ [/\bfio\b/gi,'condutor'],
+ [/\bemenda\b/gi,'reparo no condutor'],
+ [/\bplug\b/gi,'conector'],
+ [/\bpeça\b/gi,'componente']
+];
+function protectedTerms(){normalize();return new Set((S.custom.dictionary||[]).map(x=>String(x.term||x).toLowerCase()))}
+function preserveTechnicalTokens(text){
+ let map=[],rx=/\b(?:[A-Z]{2,}[A-Z0-9.-]*|[A-Za-z]+\d+[A-Za-z0-9.-]*|\d+(?:[.,]\d+)?\s?(?:V|A|mA|mm²|mm|bar|psi|°C|kg|g|Hz|kPa|MPa))\b/g;
+ let out=String(text).replace(rx,m=>{let k=`§§${map.length}§§`;map.push(m);return k});
+ return [out,map]
+}
+function restoreTokens(text,map){return text.replace(/§§(\d+)§§/g,(_,i)=>map[+i]||'')}
+
+const JF_ACCENT_MAP=new Map([
+['nao','não'],['nâo','não'],['esta','está'],['estao','estão'],['ja','já'],['tambem','também'],
+['apos','após'],['atraves','através'],['ate','até'],['so','só'],['porem','porém'],['alem','além'],
+['possivel','possível'],['necessario','necessário'],['necessaria','necessária'],['tecnico','técnico'],
+['tecnica','técnica'],['diagnostico','diagnóstico'],['eletrica','elétrica'],['eletrico','elétrico'],
+['eletronica','eletrônica'],['eletronico','eletrônico'],['mecanica','mecânica'],['mecanico','mecânico'],
+['hidraulica','hidráulica'],['hidraulico','hidráulico'],['pressao','pressão'],['tensao','tensão'],
+['alimentacao','alimentação'],['comunicacao','comunicação'],['conexao','conexão'],['conexoes','conexões'],
+['protecao','proteção'],['fusivel','fusível'],['rele','relé'],['modulo','módulo'],['modulos','módulos'],
+['oxidacao','oxidação'],['oxidaçao','oxidação'],['inspecao','inspeção'],['verificacao','verificação'],
+['avaliacao','avaliação'],['condicao','condição'],['condicoes','condições'],['operacao','operação'],
+['operacoes','operações'],['funcao','função'],['funcoes','funções'],['solucao','solução'],
+['substituicao','substituição'],['instalacao','instalação'],['configuracao','configuração'],
+['calibracao','calibração'],['refrigeracao','refrigeração'],['compressao','compressão'],
+['evaporacao','evaporação'],['expansao','expansão'],['obstrucao','obstrução'],['circulacao','circulação'],
+['ventilacao','ventilação'],['iluminacao','iluminação'],['sinalizacao','sinalização'],
+['resistencia','resistência'],['medicao','medição'],['medicoes','medições'],['nitrogenio','nitrogênio'],
+['vacuo','vácuo'],['oleo','óleo'],['provisorio','provisório'],['provisoria','provisória'],
+['recomendacao','recomendação'],['recomendacoes','recomendações'],['observacao','observação'],
+['observacoes','observações'],['relatorio','relatório'],['historico','histórico'],['maquina','máquina'],
+['maquinas','máquinas'],['agricola','agrícola'],['agricolas','agrícolas'],['proprietario','proprietário'],
+['situacao','situação'],['concluida','concluída'],['pecas','peças'],['peca','peça'],['vazao','vazão'],
+['rotacao','rotação'],['pressurizacao','pressurização'],['desconexao','desconexão'],['gas','gás'],['auta','alta'],['conecçao','conexão'],['conecção','conexão'],
+['conecao','conexão'],['conexao','conexão'],['saida','saída'],['entrada','entrada'],['mangueira','mangueira'],
+['alta','alta'],['baixa','baixa'],['compressor','compressor'],['vazamento','vazamento'],['pressao','pressão']
+]);
+function applyAccentCorrections(text){
+ const protectedSet=protectedTerms();
+ return String(text).replace(/\b[\p{L}\p{N}_-]+\b/gu,word=>{
+   const lower=word.toLowerCase();
+   if(protectedSet.has(lower))return word;
+   const repl=JF_ACCENT_MAP.get(lower);if(!repl)return word;
+   if(word===word.toUpperCase())return repl.toUpperCase();
+   if(word[0]===word[0]?.toUpperCase()&&word.slice(1)===word.slice(1).toLowerCase())return repl[0].toUpperCase()+repl.slice(1);
+   return repl;
+ });
+}
+function applyCommonWritingFixes(text){
+ let t=String(text);
+ const fixes=[
+[/\batravez\b/gi,'através'],[/\bconcerteza\b/gi,'com certeza'],[/\bderrepente\b/gi,'de repente'],
+[/\bconecção\b/gi,'conexão'],[/\bconecçao\b/gi,'conexão'],[/\bconecao\b/gi,'conexão'],
+[/\bauta\b/gi,'alta'],[/\bgas\b/gi,'gás'],[/\bsaida\b/gi,'saída']
+];
+ for(const [rx,repl] of fixes)t=t.replace(rx,repl);
+ return t;
+}
+
+function basicPortugueseReview(text){
+ let [t,map]=preserveTechnicalTokens(text);
+ t=applyCommonWritingFixes(applyAccentCorrections(t));
+ t=t.replace(/[ \t]+/g,' ').replace(/\s+([,.;:!?])/g,'$1').replace(/([,.;:!?])(?=\S)/g,'$1 ')
+    .replace(/,{2,}/g,',').replace(/\.{2,}/g,'.').replace(/\s*\n\s*/g,'\n').trim();
+ t=t.replace(/(^|[.!?]\s+|\n+)([a-záàâãéêíóôõúç])/g,(m,p,c)=>p+c.toUpperCase());
+ if(t && !/[.!?]$/.test(t))t+='.';
+ return restoreTokens(t,map)
+}
+
+function normalizeTechnicalPhrases(text){
+ let t=String(text);
+
+ // Correções de erros frequentes de digitação e termos técnicos.
+ const phraseFixes=[
+   [/\bvazamento\s+(?:de\s+)?gás\b/gi,'vazamento de fluido refrigerante'],
+   [/\bmangueira\s+de\s+alta\b/gi,'mangueira de alta pressão'],
+   [/\bmangueira\s+de\s+baixa\b/gi,'mangueira de baixa pressão'],
+   [/\bconexão\s+saída\s+do\s+compressor\b/gi,'conexão de saída do compressor'],
+   [/\bconexão\s+entrada\s+do\s+compressor\b/gi,'conexão de entrada do compressor'],
+   [/\bsaída\s+compressor\b/gi,'saída do compressor'],
+   [/\bentrada\s+compressor\b/gi,'entrada do compressor'],
+   [/\bsem\s+pressão\b/gi,'ausência de pressão'],
+   [/\bbaixa\s+pressão\b/gi,'pressão abaixo do especificado'],
+   [/\bnão\s+arma\b/gi,'não apresenta acionamento'],
+   [/\bnão\s+aciona\b/gi,'não apresenta acionamento'],
+   [/\bqueimou\b/gi,'apresentou falha por dano elétrico']
+ ];
+ for(const [rx,repl] of phraseFixes)t=t.replace(rx,repl);
+
+ // Estrutura frases técnicas curtas fragmentadas por vírgulas.
+ t=t.replace(
+   /^\s*vazamento de fluido refrigerante\s+mangueira de alta pressão\s*,?\s*conexão de saída do compressor\s*\.?\s*$/i,
+   'Vazamento de fluido refrigerante na mangueira de alta pressão, na conexão de saída do compressor.'
+ );
+ t=t.replace(
+   /^\s*vazamento de fluido refrigerante\s+(?:na\s+)?mangueira de alta pressão\s*,?\s*(?:na\s+)?conexão de saída do compressor\s*\.?\s*$/i,
+   'Vazamento de fluido refrigerante na mangueira de alta pressão, na conexão de saída do compressor.'
+ );
+
+ // Ajustes simples de preposição em construções nominais.
+ t=t.replace(/\bvazamento de fluido refrigerante mangueira\b/gi,'vazamento de fluido refrigerante na mangueira');
+ t=t.replace(/\bmangueira de alta pressão,\s*conexão\b/gi,'mangueira de alta pressão, na conexão');
+
+ return t;
+}
+
+function technicalLocalReview(text){
+ let t=basicPortugueseReview(text),dict=protectedTerms();
+ for(let [rx,repl] of JF_TECH_REPLACEMENTS){
+   t=t.replace(rx,m=>dict.has(m.toLowerCase())?m:repl)
+ }
+ t=normalizeTechnicalPhrases(t);
+ return basicPortugueseReview(t)
+}
+function openReview(targetId,technical){
+ let el=document.getElementById(targetId),src=(el?.value||'').trim();
+ if(!src){alert('O campo está vazio.');return}
+ reviewTargetId=targetId;reviewCandidate=technical?technicalLocalReview(src):basicPortugueseReview(src);
+ const title=document.getElementById('reviewTitle'),preview=document.getElementById('reviewPreview'),dlg=document.getElementById('reviewDlg');
+ if(!title||!preview||!dlg){alert('Falha interna ao abrir o revisor. Recarregue o aplicativo.');return}
+ title.textContent=technical?'Revisão técnica — prévia':'Correção de escrita — prévia';
+ preview.innerHTML=`<div><b>Original</b><div style="margin:6px 0 14px;white-space:pre-wrap">${esc(src)}</div><b>Corrigido</b><div style="margin-top:6px;white-space:pre-wrap">${esc(reviewCandidate)}</div></div>`;
+ if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','open')
+}
+function renderDictionary(){
+ normalize();let list=document.getElementById('dictList');if(!list)return;list.innerHTML=(S.custom.dictionary||[]).length?(S.custom.dictionary||[]).map((x,i)=>`<div class="toolbar"><b>${esc(x.term||x)}</b><button type="button" onclick="removeDictTerm(${i})">Excluir</button></div>`).join(''):'<p class="muted">Nenhum termo personalizado.</p>'
+}
+window.removeDictTerm=async i=>{S.custom.dictionary.splice(i,1);await saveDB();renderDictionary()}
+document.addEventListener('click',e=>{
+ let a=e.target.closest('.spellReview');if(a){openReview(a.dataset.review,false);return}
+ let b=e.target.closest('.techReview');if(b){openReview(b.dataset.review,true);return}
+ let c=e.target.closest('.dictAdd');if(c){e.preventDefault();let field=document.getElementById(c.dataset.review),sel=field?.value?.slice(field.selectionStart||0,field.selectionEnd||0).trim(),term=document.getElementById('dictTerm'),dlg=document.getElementById('dictDlg');if(!term||!dlg)return;term.value=sel||'';renderDictionary();if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','open')}
+});
+
+
+const DEFAULT_TECH_LIBRARY=[
+ {id:'ac_pressostato',category:'Ar-condicionado',name:'Pressostato aberto / danificado',
+  keywords:['pressostato','pressostato aberto','pressostato danificado','circuito aberto pressostato'],
+  specificity:100,
+  steps:[
+   'Analisadas as pressões do sistema',
+   'Analisado o circuito elétrico de acionamento do compressor',
+   'Verificada a alimentação do pressostato',
+   'Verificado o sinal de saída do pressostato',
+   'Confirmada falha do pressostato',
+   'Substituído o pressostato',
+   'Testado o acionamento do compressor após o reparo',
+   'Verificadas as pressões de trabalho após o reparo',
+   'Realizado teste final de eficiência do sistema'
+  ]},
+ {id:'ac_baixa_carga',category:'Ar-condicionado',name:'Baixa carga de fluido refrigerante',
+  keywords:['baixa carga','falta de fluido','pouco fluido','sem fluido','baixa pressão','vazamento'],
+  steps:[
+   'Analisadas as pressões de alta e baixa do sistema',
+   'Realizada inspeção para localização de vazamento',
+   'Identificado o ponto de fuga do fluido refrigerante',
+   'Reparado ou substituído o componente responsável pelo vazamento',
+   'Realizado teste de estanqueidade com nitrogênio',
+   'Confirmada estanqueidade do sistema após o reparo',
+   'Realizado vácuo no sistema',
+   'Verificada a necessidade de complemento ou substituição do óleo lubrificante',
+   'Realizada carga de fluido refrigerante conforme especificação do equipamento',
+   'Verificadas as pressões de trabalho após a carga',
+   'Verificada a temperatura de insuflamento',
+   'Realizado teste final de eficiência do sistema'
+  ]},
+ {id:'ac_ventilacao',category:'Ar-condicionado',name:'Falha de ventilação / baixo fluxo de ar',
+  keywords:['ventilação','ventilador','baixo fluxo','sem ventilação','evaporador obstruído','filtro obstruído'],
+  steps:[
+   'Verificado o fluxo de ar na cabine',
+   'Inspecionados os filtros de ar interno e externo',
+   'Inspecionada a caixa evaporadora',
+   'Verificados os drenos da caixa evaporadora',
+   'Verificada a alimentação elétrica dos ventiladores',
+   'Verificado o comando de velocidade dos ventiladores',
+   'Verificado o estado dos motores dos ventiladores',
+   'Realizada limpeza do evaporador, filtros e drenos quando necessário',
+   'Reparado o circuito elétrico de ventilação quando necessário',
+   'Realizado teste final de ventilação e eficiência'
+  ]},
+ {id:'eletrica_partida',category:'Elétrica',name:'Falha no sistema de partida',
+  keywords:['não pega','nao pega','não dá partida','nao da partida','partida','motor de partida','arranque'],
+  steps:[
+   'Verificada a tensão da bateria em repouso',
+   'Verificada a tensão da bateria durante a partida',
+   'Verificada a alimentação positiva do circuito de partida',
+   'Verificado o aterramento do motor e da cabine',
+   'Verificado o comando de partida',
+   'Verificado o relé de partida',
+   'Verificada a alimentação do solenoide do motor de partida',
+   'Realizado teste de queda de tensão no circuito positivo',
+   'Realizado teste de queda de tensão no circuito negativo',
+   'Verificados os intertravamentos de segurança do sistema',
+   'Reparado o circuito ou componente identificado',
+   'Realizado teste final do sistema de partida'
+  ]},
+ {id:'eletrica_carga',category:'Elétrica',name:'Falha no sistema de carga',
+  keywords:['alternador','não carrega','nao carrega','baixa carga bateria','queda de tensão carga','sistema de carga'],
+  steps:[
+   'Verificada a tensão da bateria com o equipamento desligado',
+   'Verificada a tensão de carga do alternador',
+   'Verificada a queda de tensão entre alternador e bateria',
+   'Inspecionados os cabos positivos e aterramentos',
+   'Inspecionados fusíveis e porta-fusíveis do circuito de carga',
+   'Verificado o sinal de excitação do alternador',
+   'Verificado o regulador de tensão quando aplicável',
+   'Reparadas conexões ou cabos com perda de alimentação',
+   'Realizado teste do sistema após o reparo'
+  ]},
+ {id:'eletrica_iluminacao',category:'Elétrica',name:'Falha de iluminação / sinalização',
+  keywords:['iluminação','farol','luz','lanterna','sinalização','lampada','lâmpada'],
+  steps:[
+   'Verificada a alimentação do circuito de iluminação',
+   'Verificado o comando/interruptor do circuito',
+   'Verificado o relé de iluminação quando aplicável',
+   'Verificados fusíveis e porta-fusíveis',
+   'Verificada a continuidade dos condutores',
+   'Verificados os aterramentos dos pontos de iluminação',
+   'Verificada a carga instalada e condição das lâmpadas/faróis',
+   'Reparado o circuito ou substituído o componente danificado',
+   'Realizado teste final de iluminação e sinalização'
+  ]},
+ {id:'eletronica_can',category:'Eletrônica',name:'Falha de comunicação / Rede CAN',
+  keywords:['can','rede can','sem comunicação','sem comunicacao','falha de comunicação','falha comunicacao','módulo offline','modulo offline'],
+  steps:[
+   'Realizada leitura dos códigos de falha dos módulos',
+   'Verificadas as alimentações positivas dos módulos envolvidos',
+   'Verificados os aterramentos dos módulos envolvidos',
+   'Medida a resistência da rede CAN com o sistema desenergizado',
+   'Verificadas as tensões CAN High e CAN Low',
+   'Inspecionados conectores e derivações da rede',
+   'Realizado isolamento dos ramos da rede para localização da falha',
+   'Reparado o chicote, conector ou terminação identificada',
+   'Apagados os códigos de falha quando aplicável',
+   'Realizado teste final de comunicação entre os módulos'
+  ]},
+ {id:'eletronica_sensor',category:'Eletrônica',name:'Falha de sensor / atuador',
+  keywords:['sensor','atuador','sinal do sensor','circuito sensor','circuito atuador'],
+  steps:[
+   'Realizada leitura dos códigos de falha',
+   'Verificada a alimentação de referência do sensor',
+   'Verificado o aterramento do sensor/atuador',
+   'Verificado o sinal do componente',
+   'Testada a continuidade do chicote até o módulo',
+   'Verificada a presença de curto para positivo ou aterramento',
+   'Comparado o sinal com o valor esperado quando disponível',
+   'Realizado comando do atuador por ferramenta de diagnóstico quando disponível',
+   'Reparado o circuito ou substituído o componente identificado',
+   'Realizado teste final do sistema'
+  ]}
+];
+
+function normalizeTextTech(s){
+ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function techLibrary(){
+ normalize();
+ let custom=(S.custom.techLibrary||[]).filter(x=>!x.deleted);
+ return [...DEFAULT_TECH_LIBRARY,...custom];
+}
+function scoreRule(rule,found,complaint){
+ let f=normalizeTextTech(found),c=normalizeTextTech(complaint),score=0,hits=[],foundHits=0,complaintHits=0;
+ for(const kw of rule.keywords||[]){
+   let k=normalizeTextTech(kw);
+   if(!k)continue;
+   if(f.includes(k)){foundHits++;score+=100;hits.push(kw)}
+   else if(c.includes(k)){complaintHits++;score+=5;hits.push(kw)}
+ }
+ score+=(rule.specificity||0);
+ return {score,hits,foundHits,complaintHits}
+}
+function identifyBestRule(){
+ let found=document.getElementById('osFinding')?.value||'';
+ let complaint=document.getElementById('osComplaint')?.value||'';
+ let category=document.getElementById('checkCategory')?.value||'';
+ let candidates=techLibrary().filter(r=>!category||r.category===category);
+
+ let scored=candidates
+   .map(r=>({rule:r,...scoreRule(r,found,complaint)}))
+   .sort((a,b)=>b.score-a.score);
+
+ // Regra 1: se o defeito constatado tem correspondência, ignorar o reclamado.
+ let exact=scored.filter(x=>x.foundHits>0).sort((a,b)=>{
+   if(b.foundHits!==a.foundHits)return b.foundHits-a.foundHits;
+   return (b.rule.specificity||0)-(a.rule.specificity||0);
+ });
+ if(exact.length)return exact[0];
+
+ // Regra 2: só usa o defeito reclamado quando não existe correspondência no constatado.
+ let fallback=scored.filter(x=>x.complaintHits>0);
+ return fallback.length?fallback[0]:null;
+}
+function fillRuleSelect(selected=''){
+ let cat=document.getElementById('checkCategory')?.value||'';
+ let list=techLibrary().filter(r=>!cat||r.category===cat);
+ let sel=document.getElementById('checkRule'); if(!sel)return;
+ sel.innerHTML='<option value="">Selecione...</option>'+list.map(r=>`<option value="${esc(r.id)}" ${String(r.id)===String(selected)?'selected':''}>${esc(r.category)} — ${esc(r.name)}</option>`).join('');
+}
+function renderChecklist(){
+ if(!work.checklist)work.checklist={rule_id:'',category:'',items:[]};
+ let box=document.getElementById('checkItems');if(!box)return;
+ box.innerHTML=(work.checklist.items||[]).length
+ ? work.checklist.items.map((x,i)=>`<div class="section" style="padding:8px;margin-bottom:6px"><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" class="checkDone" data-i="${i}" ${x.done?'checked':''} style="width:auto;margin-top:4px"><span style="flex:1">${esc(x.text)}</span></label><input class="checkNote" data-i="${i}" value="${esc(x.note||'')}" placeholder="Observação / medição opcional"></div>`).join('')
+ : '<p class="muted">Nenhum procedimento sugerido ainda.</p>';
+ document.querySelectorAll('.checkDone').forEach(e=>e.onchange=()=>{let i=+e.dataset.i;work.checklist.items[i].done=e.checked;dirty()});
+ document.querySelectorAll('.checkNote').forEach(e=>e.oninput=()=>{let i=+e.dataset.i;work.checklist.items[i].note=e.value;dirty()});
+}
+function loadChecklistRule(rule,reason=''){
+ if(!rule)return;
+ work.checklist={rule_id:rule.id,category:rule.category,items:(rule.steps||[]).map(t=>({text:t,done:false,note:''}))};
+ document.getElementById('checkCategory').value=rule.category;
+ fillRuleSelect(rule.id);
+ document.getElementById('checkRule').value=rule.id;
+ document.getElementById('checkReason').innerHTML=`<b>${esc(rule.category)} — ${esc(rule.name)}</b>${reason?'<br><span class="small">'+esc(reason)+'</span>':''}`;
+ renderChecklist();dirty()
+}
+function checklistDescription(){
+ let done=(work.checklist?.items||[]).filter(x=>x.done);
+ if(!done.length)return '';
+ let parts=done.map(x=>x.note?`${x.text} (${x.note})`:x.text);
+ return technicalLocalReview(parts.join('. ')+'.');
+}
+function applyChecklistDescription(){
+ let text=checklistDescription();
+ if(!text){alert('Marque os procedimentos que realmente foram executados.');return}
+ let target=document.getElementById('osServiceDesc');
+ if(!target)return;
+ previewGenerated(target,text,'Prévia da Descrição do Serviço');
+}
+function renderLibraryList(){
+ let box=document.getElementById('libraryList');if(!box)return;
+ let custom=(S.custom.techLibrary||[]).filter(x=>!x.deleted);
+ box.innerHTML=custom.length?custom.map(r=>`<div class="section"><b>${esc(r.category)} — ${esc(r.name)}</b><br><span class="small muted">${esc((r.keywords||[]).join(', '))}</span><div class="toolbar"><button type="button" onclick="deleteLibraryRule('${esc(r.id)}')">Excluir regra personalizada</button></div></div>`).join(''):'<p class="muted">Nenhuma regra personalizada. As regras padrão continuam disponíveis.</p>';
+}
+window.deleteLibraryRule=async id=>{let r=(S.custom.techLibrary||[]).find(x=>x.id===id);if(r)r.deleted=true;await saveDB();fillRuleSelect();renderLibraryList()}
+
+function showView(id){$$('.view').forEach(v=>v.classList.toggle('on',v.id===id));$$('nav [data-view]').forEach(b=>b.classList.toggle('primary',b.dataset.view===id));render()}
+$$('nav [data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));homeNewOS.onclick=newOS.onclick=()=>openOS();homeNewClient.onclick=newClient.onclick=()=>openClient();
+{
+ const reportBtn=document.getElementById('generateReport'),internalBtn=document.getElementById('generateInternal'),serviceBtn=document.getElementById('generateServiceDesc');
+ const reportEl=document.getElementById('osReport'),internalEl=document.getElementById('osInternal'),serviceEl=document.getElementById('osServiceDesc');
+ if(reportBtn&&reportEl)reportBtn.onclick=()=>previewGenerated(reportEl,technicalReportDraft(),'Prévia do Laudo Técnico');
+ if(internalBtn&&internalEl)internalBtn.onclick=()=>previewGenerated(internalEl,internalDraft(),'Prévia das Observações Internas');
+ if(serviceBtn&&serviceEl)serviceBtn.onclick=()=>{
+   let draft=serviceDescriptionDraft();
+   if(!draft){
+     alert('Para gerar a Descrição do Serviço, registre ao menos um serviço executado, outro serviço ou uma informação técnica na OS.');
+     return;
+   }
+   previewGenerated(serviceEl,draft,'Prévia da Descrição do Serviço');
+ };
+}
+addEventListener('DOMContentLoaded',()=>{
+ const dictDlgEl=document.getElementById('dictDlg'),reviewDlgEl=document.getElementById('reviewDlg');
+ const closeDictEl=document.getElementById('closeDict'),saveDictEl=document.getElementById('saveDictTerm');
+ const closeReviewEl=document.getElementById('closeReview'),cancelReviewEl=document.getElementById('cancelReview'),applyReviewEl=document.getElementById('applyReview');
+ if(closeDictEl)closeDictEl.onclick=()=>dictDlgEl?.close();
+ if(saveDictEl)saveDictEl.onclick=async()=>{let input=document.getElementById('dictTerm'),term=(input?.value||'').trim();if(!term)return;normalize();if(!S.custom.dictionary.some(x=>String(x.term||x).toLowerCase()===term.toLowerCase()))S.custom.dictionary.push({term});if(input)input.value='';await saveDB();renderDictionary()};
+ if(closeReviewEl)closeReviewEl.onclick=()=>reviewDlgEl?.close();
+ if(cancelReviewEl)cancelReviewEl.onclick=()=>reviewDlgEl?.close();
+ if(applyReviewEl)applyReviewEl.onclick=()=>{let field=document.getElementById(reviewTargetId);if(field){field.value=reviewCandidate;field.dispatchEvent(new Event('input',{bubbles:true}));dirty()}reviewDlgEl?.close()};
+});
+
+if(document.getElementById('checkCategory'))checkCategory.onchange=()=>fillRuleSelect();
+if(document.getElementById('checkRule'))checkRule.onchange=()=>{let r=techLibrary().find(x=>String(x.id)===String(checkRule.value));if(r)loadChecklistRule(r,'Regra selecionada manualmente.')};
+if(document.getElementById('identifyChecklist'))identifyChecklist.onclick=()=>{
+ let best=identifyBestRule();
+ if(best){
+   let origem=best.foundHits>0?'defeito constatado':'defeito reclamado';
+   loadChecklistRule(best.rule,`Caminho direto definido pelo ${origem}: ${best.hits.join(', ')}.`);
+ }else{
+   fillRuleSelect();
+   checkReason.textContent='Nenhuma regra específica foi identificada. Selecione uma regra manualmente ou cadastre uma nova regra técnica.';
+ }
+};
+if(document.getElementById('markAllChecklist'))markAllChecklist.onclick=()=>{for(const x of work.checklist?.items||[])x.done=true;renderChecklist();dirty()};
+if(document.getElementById('clearChecklist'))clearChecklist.onclick=()=>{for(const x of work.checklist?.items||[]){x.done=false;x.note=''}renderChecklist();dirty()};
+if(document.getElementById('applyChecklistToService'))applyChecklistToService.onclick=applyChecklistDescription;
+if(document.getElementById('openLibrary'))openLibrary.onclick=()=>{renderLibraryList();libraryDlg.showModal()};
+if(document.getElementById('closeLibrary'))closeLibrary.onclick=()=>libraryDlg.close();
+if(document.getElementById('saveLibraryRule'))saveLibraryRule.onclick=async()=>{
+ let name=libName.value.trim(),cat=libCategory.value,kws=libKeywords.value.split(',').map(x=>x.trim()).filter(Boolean),steps=libSteps.value.split('\n').map(x=>x.trim()).filter(Boolean);
+ if(!name||!kws.length||!steps.length){alert('Informe nome, palavras-chave e procedimentos.');return}
+ normalize();S.custom.techLibrary.push({id:uid('TL'),category:cat,name,keywords:kws,steps});libName.value='';libKeywords.value='';libSteps.value='';await saveDB();fillRuleSelect();renderLibraryList()
+};
+
+newProduct.onclick=()=>openProduct('');
+trashProducts.onclick=()=>{renderTrash();trashDlg.showModal()};
+closeTrash.onclick=()=>trashDlg.close();
+printLabels.onclick=()=>printLabelsFor(activeProducts());
+clearProdFilters.onclick=()=>{[filterProdCode,filterInternalCode,filterGTIN,filterName,filterCategory,filterLocation].forEach(x=>x.value='');render()};
+[filterProdCode,filterInternalCode,filterGTIN,filterName,filterCategory,filterLocation].forEach(x=>x.oninput=render);
+scanMaterialQR.onclick=openScanner;closeScan.onclick=()=>{stopScanner();scanDlg.close()};manualAddProduct.onclick=()=>addProductByScannedCode(manualScanCode.value);
+[osSearch,osStatus,clientSearch,stockFilter].forEach(e=>e.addEventListener(e.tagName==='SELECT'?'change':'input',render));
+
+importData.onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(!o.clientes||!o.ordens_servico)throw Error('estrutura');S=o;normalize();await saveDB();render();alert('Histórico importado com sucesso.')}catch(err){alert('Arquivo inválido ou incompatível.')}finally{e.target.value=''}}
+exportData.onclick=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download=`JF-Oficina-backup-${dateOnly()}.json`;a.click()}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;installBtn.classList.remove('hidden')});installBtn.onclick=async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;installBtn.classList.add('hidden')}}
+
+async function checkForUpdate(show=false){if(!swreg)return;try{if(show)updateState.textContent='Verificando atualização...';await swreg.update();if(swreg.waiting)swreg.waiting.postMessage({type:'SKIP_WAITING'});else if(show)updateState.textContent='Você já está na versão mais recente.'}catch{if(show)updateState.textContent='Sem conexão para verificar. O app continua funcionando offline.'}}
+checkUpdate.onclick=()=>checkForUpdate(true);
+
+(async()=>{S=await loadDB()||S;normalize();render();firstDue.value=dateOnly();
+ await registerUpdater();})();
+</script>
+</body></html>

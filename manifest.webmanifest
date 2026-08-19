@@ -1,0 +1,10 @@
+{
+  "name": "JF Oficina",
+  "short_name": "JF Oficina",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#16202a",
+  "lang": "pt-BR",
+  "description": "Gerenciamento de oficina agrícola, elétrica e ar-condicionado."
+}
