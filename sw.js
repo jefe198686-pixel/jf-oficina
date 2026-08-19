@@ -1,4 +1,4 @@
-const VERSION='0.9.7';
+const VERSION='0.9.6';
 const CACHE='jf-oficina-'+VERSION;
 const CORE=['./','./index.html','./manifest.webmanifest'];
 
@@ -24,11 +24,13 @@ self.addEventListener('fetch',event=>{
   if(req.method!=='GET')return;
   const url=new URL(req.url);
 
+  // Version metadata must never come from cache.
   if(url.origin===location.origin && url.pathname.endsWith('/version.json')){
     event.respondWith(fetch(req,{cache:'no-store'}));
     return;
   }
 
+  // HTML/navigation: network first so a published version wins immediately.
   if(req.mode==='navigate' || (url.origin===location.origin && url.pathname.endsWith('/index.html'))){
     event.respondWith(
       fetch(req,{cache:'no-store'}).then(resp=>{
@@ -42,6 +44,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
+  // Same-origin static assets: stale-while-revalidate.
   if(url.origin===location.origin){
     event.respondWith(
       caches.match(req).then(cached=>{
