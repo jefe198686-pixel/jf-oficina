@@ -1,8 +1,8 @@
 {
-  "version": "0.15.5",
-  "build": 1787267600,
+  "version": "0.15.6",
+  "build": 1787269000,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "force-visible-material-qr-reader",
-  "feature": "visible-qr-toolbar-os-budget-and-cache-refresh"
+  "migration": "fix-qr-open-os-binding",
+  "feature": "qr-reader-adds-product-to-current-open-os"
 }
