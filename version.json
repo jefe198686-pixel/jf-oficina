@@ -1,8 +1,8 @@
 {
-  "version": "0.15.0",
-  "build": 1787230400,
+  "version": "0.15.1",
+  "build": 1787247420,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "shared-os-budget-core",
-  "feature": "budget-mirrors-os-contextual-search-no-stock-no-finance"
+  "migration": "multi-field-context-search",
+  "feature": "split-search-by-code-description-and-reference"
 }
