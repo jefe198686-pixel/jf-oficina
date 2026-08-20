@@ -16,6 +16,7 @@ document.write([
   '<script src="search-pro.js?v=0.15.0"><\/script>',
   '<script src="budgets.js?v=0.15.0"><\/script>',
   '<script src="shared-doc.js?v=0.15.0"><\/script>',
+  '<script src="shared-doc-fix.js?v=0.15.0"><\/script>',
   '<script src="release.js?v=0.15.0"><\/script>',
   '<script src="init.js?v=0.15.0"><\/script>'
 ].join(''));
