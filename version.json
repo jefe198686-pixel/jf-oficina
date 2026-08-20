@@ -1,8 +1,8 @@
 {
-  "version": "0.13.1",
-  "build": 1787190200,
+  "version": "0.14.0",
+  "build": 1787215200,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "advanced-management",
-  "feature": "complete-os-global-search"
+  "migration": "budgets-module",
+  "feature": "independent-budget-sequence-no-stock-no-finance"
 }
