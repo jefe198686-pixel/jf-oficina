@@ -1,8 +1,8 @@
 {
-  "version": "0.15.3",
-  "build": 1787253900,
+  "version": "0.15.4",
+  "build": 1787267000,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "label-selection-and-print-projects",
-  "feature": "select-products-label-quantity-pimaco-letter-20-start-position"
+  "migration": "restore-material-qr-reader",
+  "feature": "qr-reader-materials-os-budget"
 }
