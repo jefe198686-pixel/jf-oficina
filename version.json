@@ -1,8 +1,8 @@
 {
-  "version": "0.15.1",
-  "build": 1787247420,
+  "version": "0.15.2",
+  "build": 1787252200,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "multi-field-context-search",
-  "feature": "split-search-by-code-description-and-reference"
+  "migration": "search-selection-layout-fix",
+  "feature": "collapse-single-selection-and-keep-multi-item-results-visible"
 }
