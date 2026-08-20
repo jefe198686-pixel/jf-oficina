@@ -1,8 +1,8 @@
 {
-  "version": "0.15.2",
-  "build": 1787252200,
+  "version": "0.15.3",
+  "build": 1787253900,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "search-selection-layout-fix",
-  "feature": "collapse-single-selection-and-keep-multi-item-results-visible"
+  "migration": "label-selection-and-print-projects",
+  "feature": "select-products-label-quantity-pimaco-letter-20-start-position"
 }
