@@ -1,8 +1,8 @@
 {
-  "version": "0.13.0",
-  "build": 1787189800,
+  "version": "0.13.1",
+  "build": 1787190200,
   "channel": "stable-test",
   "app": "JF Oficina",
   "migration": "advanced-management",
-  "feature": "os-search-master-data-complete-reports"
+  "feature": "complete-os-global-search"
 }
