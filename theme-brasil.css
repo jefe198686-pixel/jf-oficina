@@ -1,0 +1,204 @@
+/* JF Oficina v0.15.13 — tema visual Brasil
+   Referência cromática: verde, amarelo, azul e branco da bandeira do Brasil.
+   Aplicação profissional: contraste alto, pouca saturação em áreas grandes e cores fortes só em ações/estado. */
+:root{
+  --br-green:#009c3b;
+  --br-green-dark:#08752f;
+  --br-green-soft:#eaf7ef;
+  --br-yellow:#ffdf00;
+  --br-yellow-soft:#fff8cc;
+  --br-blue:#002776;
+  --br-blue-dark:#071e45;
+  --br-blue-soft:#eef3ff;
+  --br-white:#ffffff;
+  --bg:#f4f7f5;
+  --card:#ffffff;
+  --ink:#142033;
+  --muted:#657386;
+  --line:#dbe4df;
+  --brand:var(--br-green);
+  --dark:var(--br-blue-dark);
+  --ok:#e8f7ed;
+  --warn:#fff6c7;
+  --danger:#fde8e8;
+}
+
+body{
+  background:linear-gradient(180deg,#f8faf9 0,#f3f7f5 100%);
+  color:var(--ink);
+  letter-spacing:.005em;
+}
+
+/* Cabeçalho principal */
+header{
+  background:linear-gradient(105deg,var(--br-blue-dark) 0%,var(--br-blue) 68%,#0b3a82 100%);
+  border-bottom:3px solid var(--br-yellow);
+  box-shadow:0 3px 14px rgba(0,39,118,.16);
+}
+header b{font-weight:800;letter-spacing:.01em}
+.ver{opacity:.88}
+
+/* Navegação */
+nav{
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid #d9e4de;
+  box-shadow:0 2px 8px rgba(20,55,40,.06);
+}
+nav button{
+  background:#eef3f1;
+  color:#243546;
+  transition:transform .12s ease,background .12s ease,box-shadow .12s ease;
+}
+nav button.primary{
+  background:var(--br-green);
+  color:#fff;
+  box-shadow:0 3px 8px rgba(0,156,59,.22);
+}
+nav button:hover{transform:translateY(-1px)}
+
+/* Botões */
+button,.btn{border-radius:10px;transition:transform .12s ease,box-shadow .12s ease,filter .12s ease}
+button:hover,.btn:hover{transform:translateY(-1px)}
+button:active,.btn:active{transform:translateY(0)}
+.primary{
+  background:var(--br-green);
+  color:#fff;
+  box-shadow:0 2px 7px rgba(0,156,59,.18);
+}
+.primary:hover{background:var(--br-green-dark)}
+.success{background:var(--br-green-soft);color:var(--br-green-dark)}
+.ghost{border-color:#cbd8d1;background:#fff}
+.danger{color:#8f2222}
+
+/* Cartões e seções */
+.card,.box,.section,.tablewrap{
+  border-color:var(--line);
+  box-shadow:0 3px 12px rgba(16,56,38,.045);
+}
+.card{
+  position:relative;
+  overflow:hidden;
+  min-height:88px;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--br-green);
+}
+.card:nth-child(2n)::before{background:var(--br-blue)}
+.card:nth-child(3n)::before{background:#e8c900}
+.card b{color:var(--br-blue-dark)}
+.section h3{color:var(--br-blue-dark);font-weight:800}
+
+/* Inputs */
+input,select,textarea{
+  border-color:#cbd9d1;
+  background:#fff;
+  transition:border-color .12s ease,box-shadow .12s ease,background .12s ease;
+}
+input:focus,select:focus,textarea:focus{
+  outline:0;
+  border-color:var(--br-green);
+  box-shadow:0 0 0 3px rgba(0,156,59,.12);
+  background:#fff;
+}
+label{color:#304153}
+
+/* Tabelas */
+th{
+  background:#eef5f2;
+  color:var(--br-blue-dark);
+  font-weight:800;
+  border-bottom:2px solid #d4e3da;
+}
+.click:hover{background:#f4faf6}
+
+/* Modais / OS */
+dialog{
+  box-shadow:0 24px 80px rgba(3,28,61,.28);
+}
+.dhead{
+  background:linear-gradient(100deg,var(--br-blue-dark),var(--br-blue));
+  border-bottom:3px solid var(--br-yellow);
+}
+.dhead b{font-weight:800;letter-spacing:.01em}
+.tabs{
+  background:#fbfdfc;
+  gap:6px;
+  padding:9px 12px;
+  box-shadow:inset 0 -1px 0 var(--line);
+}
+.tab{
+  background:#eef3f1;
+  color:#243646;
+  border:1px solid transparent;
+  box-shadow:none;
+}
+.tab:hover{background:#e7f0ec}
+.tab.active{
+  background:var(--br-yellow);
+  color:var(--br-blue-dark);
+  border-color:#d4b900;
+  box-shadow:0 2px 7px rgba(255,223,0,.22),inset 0 0 0 1px rgba(255,255,255,.45);
+}
+
+/* Rodapé do modal */
+.dfoot{
+  border-top:1px solid #d8e3dd;
+  box-shadow:0 -4px 16px rgba(10,44,29,.06);
+}
+#finalizeOS,#finalizeBudget{
+  background:var(--br-yellow);
+  color:var(--br-blue-dark);
+  box-shadow:0 2px 8px rgba(212,185,0,.2);
+}
+#saveOS,#saveBudget{background:var(--br-green);color:#fff}
+
+/* Busca de materiais e serviços */
+.matQuickPicker,.srvQuickPicker{
+  padding:10px;
+  border:1px solid #d7e4dc;
+  border-radius:12px;
+  background:linear-gradient(180deg,#fbfefc,#f6faf8);
+}
+.matQuickFields label,.srvQuickFields label{font-weight:700;color:#496052}
+.matQuickResults,.srvQuickResults{box-shadow:0 10px 28px rgba(0,39,118,.12)}
+.matQuickResult:hover,.srvQuickResult:hover{background:var(--br-green-soft)}
+.matIdentity b,.srvIdentity b{color:var(--br-blue-dark)}
+.matCompact,.srvCompact{border-bottom-color:#dce7e1}
+
+/* QR */
+#scanMaterialQR,#scanBudgetQR,[id*="scan"][id*="QR"]{
+  background:var(--br-yellow);
+  color:var(--br-blue-dark);
+  border:1px solid #e0c400;
+  box-shadow:0 2px 7px rgba(212,185,0,.18);
+}
+
+/* Estados */
+.badge.andamento{background:var(--br-blue-soft);color:#174b9a}
+.badge.aguardando{background:var(--br-yellow-soft);color:#725f00}
+.badge.concluida,.badge.finalizada{background:var(--br-green-soft);color:var(--br-green-dark)}
+.badge.cancelada{background:#fdeaea;color:#9a2b2b}
+.statusnote{border-left:4px solid var(--br-blue);background:#f4f7fd}
+
+/* Barras de rolagem discretas */
+*{scrollbar-width:thin;scrollbar-color:#a9beb2 transparent}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#a9beb2;border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+
+/* Mobile: controles mais compactos e melhor aproveitamento */
+@media(max-width:800px){
+  main{padding:9px}
+  .section{padding:10px;border-radius:10px}
+  .tabs{padding:7px 8px;gap:4px}
+  .tab{padding:8px 10px}
+  input,select,textarea{padding:8px}
+  button,.btn{padding:8px 10px}
+  .dhead{padding:10px 12px}
+  .dfoot{padding:8px 9px}
+  .card{min-height:80px;padding:11px}
+  .card b{font-size:22px}
+}
