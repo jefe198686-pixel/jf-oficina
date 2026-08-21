@@ -1,8 +1,8 @@
 {
-  "version": "0.15.7",
-  "build": 1787269600,
+  "version": "0.15.8",
+  "build": 1787270400,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "persistent-qr-material-button",
-  "feature": "qr-toolbar-persistent-os-budget"
+  "migration": "compact-material-entry",
+  "feature": "three-field-product-search-newest-first-compact-materials"
 }
