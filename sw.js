@@ -1,6 +1,6 @@
-const VERSION='0.15.7';
+const VERSION='0.15.10';
 const CACHE='jf-oficina-'+VERSION;
-const CORE=["./", "./index.html", "./manifest.webmanifest", "./styles.css", "./app.js", "./core.js", "./os.js", "./clients.js", "./products.js", "./updater-tech.js", "./library.js", "./service-intelligence.js", "./recovery.js", "./sync.js", "./sync-numbering.js", "./sync-integrity.js", "./admin.js", "./management.js", "./search-pro.js", "./budgets.js", "./shared-doc.js", "./shared-doc-fix.js", "./search-fields.js", "./release.js", "./init.js", "./qr-materials.js", "./labels.js"];
+const CORE=["./", "./index.html", "./manifest.webmanifest", "./styles.css", "./app.js", "./core.js", "./os.js", "./clients.js", "./products.js", "./updater-tech.js", "./library.js", "./service-intelligence.js", "./recovery.js", "./sync.js", "./sync-numbering.js", "./sync-integrity.js", "./admin.js", "./management.js", "./search-pro.js", "./budgets.js", "./shared-doc.js", "./shared-doc-fix.js", "./search-fields.js", "./release.js", "./init.js", "./qr-materials.js", "./materials-compact.js", "./services-compact.js", "./ui-cleanup.js", "./labels.js"];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('jf-oficina-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
