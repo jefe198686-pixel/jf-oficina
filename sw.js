@@ -1,4 +1,4 @@
-const VERSION='0.15.10';
+const VERSION='0.15.11';
 const CACHE='jf-oficina-'+VERSION;
 const CORE=["./", "./index.html", "./manifest.webmanifest", "./styles.css", "./app.js", "./core.js", "./os.js", "./clients.js", "./products.js", "./updater-tech.js", "./library.js", "./service-intelligence.js", "./recovery.js", "./sync.js", "./sync-numbering.js", "./sync-integrity.js", "./admin.js", "./management.js", "./search-pro.js", "./budgets.js", "./shared-doc.js", "./shared-doc-fix.js", "./search-fields.js", "./release.js", "./init.js", "./qr-materials.js", "./materials-compact.js", "./services-compact.js", "./ui-cleanup.js", "./labels.js"];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
