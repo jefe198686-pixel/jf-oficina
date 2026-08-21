@@ -1,8 +1,8 @@
 {
-  "version": "0.15.9",
-  "build": 1787272320,
+  "version": "0.15.10",
+  "build": 1787273100,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "compact-service-entry-ui-cleanup",
-  "feature": "remove-obsolete-material-quick-search-and-compact-three-field-services"
+  "migration": "remove-obsolete-material-quick-search-definitive",
+  "feature": "materials-three-field-search-only-and-compact-services"
 }
