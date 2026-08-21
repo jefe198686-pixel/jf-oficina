@@ -1,5 +1,5 @@
 // JF Oficina — identidade da versão atual
-const JF_RELEASE_VERSION='0.15.7';
+const JF_RELEASE_VERSION='0.15.8';
 function jfReleaseIdentity(){
  document.title='JF Oficina v'+JF_RELEASE_VERSION;
  const ver=document.querySelector('.ver');if(ver)ver.textContent='v'+JF_RELEASE_VERSION+' • Agrícola • Elétrica • Ar-condicionado';
