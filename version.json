@@ -1,8 +1,8 @@
 {
-  "version": "0.15.11",
-  "build": 1787274000,
+  "version": "0.15.12",
+  "build": 1787275200,
   "channel": "stable-test",
   "app": "JF Oficina",
-  "migration": "restore-material-three-field-picker-after-legacy-cleanup",
-  "feature": "material-search-code-description-application-plus-qr"
+  "migration": "remove-management-legacy-quick-search-product-service",
+  "feature": "materials-and-services-use-only-three-field-compact-search"
 }
