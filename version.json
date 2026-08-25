@@ -1,8 +1,8 @@
 {
-  "version": "0.15.13",
-  "build": 1787277600,
-  "channel": "stable-test",
-  "app": "JF Oficina",
-  "migration": "visual-theme-brasil",
-  "feature": "professional-green-yellow-blue-white-ui-theme"
+  "version":"0.15.14",
+  "build":1787641680,
+  "channel":"stable-test",
+  "app":"JF Oficina",
+  "migration":"visual-theme-brasil-agro-robusto",
+  "feature":"robust-agricultural-industrial-ui-green-yellow-blue"
 }
