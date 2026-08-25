@@ -1,8 +1,8 @@
 {
-  "version":"0.16.5",
-  "build":1787700300,
+  "version":"0.17.0",
+  "build":1787701860,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"pdf-equipment-full-details",
-  "feature":"print-all-saved-equipment-details-in-os-and-budget-documents"
+  "migration":"quick-direct-parts-sales",
+  "feature":"direct-parts-only-sale-with-optional-client-stock-movement-and-independent-numbering"
 }
