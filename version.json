@@ -1,8 +1,8 @@
 {
-  "version":"0.16.0",
-  "build":1787675160,
+  "version":"0.16.1",
+  "build":1787683400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technicians-auth-and-commissions",
-  "feature":"technician-registration-login-password-reset-own-password-change-and-commission-rates"
+  "migration":"technicians-bootstrap-username-auth",
+  "feature":"initial-admin-uses-username-internal-auth-email-contact-email-separated-and-version-url-normalized"
 }
