@@ -1,8 +1,8 @@
 {
-  "version":"0.15.16",
-  "build":1787642900,
+  "version":"0.15.17",
+  "build":1787643900,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"payment-qr-in-client-documents",
-  "feature":"configurable-payment-qr-on-right-side-of-payment-block"
+  "migration":"company-profile-persistence-and-recovery",
+  "feature":"preserve-company-profile-across-updates-sync-and-legacy-snapshots"
 }
