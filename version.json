@@ -1,8 +1,8 @@
 {
-  "version":"0.15.21",
-  "build":1787646900,
+  "version":"0.15.22",
+  "build":1787647500,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"integrated-pdf-subtotals-and-financial-summary",
-  "feature":"service-material-subtotals-and-transparent-grand-total-direct-in-pdf-generator"
+  "migration":"customer-pdf-show-displacement-and-others",
+  "feature":"show-other-service-lines-origin-destination-quantity-value-total-and-subtotal"
 }
