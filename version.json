@@ -1,8 +1,8 @@
 {
-  "version":"0.15.15",
-  "build":1787642100,
+  "version":"0.15.16",
+  "build":1787642900,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"company-profile-pdf-client-documents",
-  "feature":"editable-logo-address-tax-contact-and-payment-data-in-pdf"
+  "migration":"payment-qr-in-client-documents",
+  "feature":"configurable-payment-qr-on-right-side-of-payment-block"
 }
