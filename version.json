@@ -1,8 +1,8 @@
 {
-  "version":"0.15.26",
-  "build":1787651460,
+  "version":"0.16.0",
+  "build":1787675160,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"compact-entire-customer-document-layout",
-  "feature":"reduce-vertical-whitespace-in-header-sections-tables-subtotals-summary-and-footer-without-reducing-font"
+  "migration":"technicians-auth-and-commissions",
+  "feature":"technician-registration-login-password-reset-own-password-change-and-commission-rates"
 }
