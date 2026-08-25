@@ -1,8 +1,8 @@
 {
-  "version":"0.16.3",
-  "build":1787697000,
+  "version":"0.16.4",
+  "build":1787698200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-equipment-edit-fix",
-  "feature":"equipment-keeps-owner-client-when-edited-from-client-list-and-client-name-remains-editable"
+  "migration":"os-equipment-full-saved-details",
+  "feature":"show-all-saved-equipment-details-in-os-after-selection"
 }
