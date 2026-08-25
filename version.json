@@ -1,8 +1,8 @@
 {
-  "version":"0.15.17",
-  "build":1787643900,
+  "version":"0.15.18",
+  "build":1787644500,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"company-profile-persistence-and-recovery",
-  "feature":"preserve-company-profile-across-updates-sync-and-legacy-snapshots"
+  "migration":"pdf-payment-qr-and-header-layout",
+  "feature":"show-payment-qr-right-and-enlarge-logo-with-shifted-company-info"
 }
