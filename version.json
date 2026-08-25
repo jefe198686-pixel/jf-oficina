@@ -1,8 +1,8 @@
 {
-  "version":"0.15.22",
-  "build":1787647500,
+  "version":"0.15.23",
+  "build":1787648100,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"customer-pdf-show-displacement-and-others",
-  "feature":"show-other-service-lines-origin-destination-quantity-value-total-and-subtotal"
+  "migration":"compact-customer-pdf-margins",
+  "feature":"reduce-print-page-margin-from-14mm-to-5mm-for-better-page-use"
 }
