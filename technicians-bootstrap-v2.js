@@ -1,0 +1,18 @@
+// JF Oficina v0.16.1 — correção do primeiro administrador: usuário próprio, e-mail apenas contato
+(function(){
+ const SUPA_URL='https://vfswmnkbwtlzensycnfj.supabase.co';
+ const SUPA_KEY='sb_publishable_rO1NER3IpMO8HkRWwzVqvA_jDUqnyba';
+ const FN=SUPA_URL+'/functions/v1/jf-technicians';
+ const SESSION_KEY='jf-auth-session-v1', PROFILE_KEY='jf-auth-profile-v1', ENABLED_KEY='jf-auth-enabled-v1';
+ const $=id=>document.getElementById(id);
+ const syncKey=()=>localStorage.getItem('jf-sync-key')||'';
+ async function callFn(action,data={}){const r=await fetch(FN,{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json','x-jf-sync-key':syncKey()},body:JSON.stringify({action,...data})});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.message||d.error||('HTTP '+r.status));return d}
+ async function signIn(email,password){const r=await fetch(SUPA_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.msg||d.message||d.error_description||d.error||('HTTP '+r.status));d.expires_at=Date.now()+(Number(d.expires_in)||3600)*1000;localStorage.setItem(SESSION_KEY,JSON.stringify(d));return d}
+ async function me(token){const r=await fetch(FN,{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json','x-jf-sync-key':syncKey(),'Authorization':'Bearer '+token},body:JSON.stringify({action:'me'})});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.message||d.error||('HTTP '+r.status));return d}
+ function install(){const email=$('jfBootEmail'),btn=$('jfBootBtn');if(!email||!btn||btn.dataset.v161)return;btn.dataset.v161='1';
+   const label=email.closest('label');if(label)label.innerHTML='E-mail de contato <span class="small muted">(não será usado para login)</span><input id="jfBootEmail" type="email" placeholder="exemplo@empresa.com">';
+   const name=$('jfBootName');if(name&&!$('jfBootUser')){const nameLabel=name.closest('label');nameLabel?.insertAdjacentHTML('afterend','<label>Usuário do administrador<input id="jfBootUser" autocomplete="username" value="jeferson" placeholder="ex.: jeferson"></label>')}
+   const msg=$('jfBootMsg');btn.onclick=async()=>{const n=$('jfBootName')?.value.trim()||'Administrador',u=$('jfBootUser')?.value.trim().toLowerCase()||'',e=$('jfBootEmail')?.value.trim()||'',a=$('jfBootPass')?.value||'',b=$('jfBootPass2')?.value||'';if(!u)return alert('Informe um usuário para o administrador.');if(!/^[a-z0-9._-]{3,40}$/.test(u))return alert('Usuário: use pelo menos 3 caracteres, apenas letras minúsculas, números, ponto, hífen ou sublinhado.');if(a.length<8)return alert('A senha precisa ter pelo menos 8 caracteres.');if(a!==b)return alert('As senhas não conferem.');if(msg)msg.textContent='Criando administrador...';try{const created=await callFn('bootstrap_admin',{name:n,username:u,email:e,password:a});const s=await signIn(created.auth_email,a);const profile=await me(s.access_token);localStorage.setItem(PROFILE_KEY,JSON.stringify(profile.item));localStorage.setItem(ENABLED_KEY,'1');if(msg)msg.textContent='Administrador criado. Entrando...';setTimeout(()=>location.replace(location.pathname+'?v=0.16.1'),450)}catch(err){if(msg)msg.textContent='Falha: '+err.message}}
+ }
+ addEventListener('DOMContentLoaded',()=>setTimeout(install,900));new MutationObserver(()=>install()).observe(document.documentElement,{childList:true,subtree:true});
+})();
