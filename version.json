@@ -1,8 +1,8 @@
 {
-  "version":"0.15.14",
-  "build":1787641680,
+  "version":"0.15.15",
+  "build":1787642100,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"visual-theme-brasil-agro-robusto",
-  "feature":"robust-agricultural-industrial-ui-green-yellow-blue"
+  "migration":"company-profile-pdf-client-documents",
+  "feature":"editable-logo-address-tax-contact-and-payment-data-in-pdf"
 }
