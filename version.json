@@ -1,8 +1,8 @@
 {
-  "version":"0.15.18",
-  "build":1787644500,
+  "version":"0.15.19",
+  "build":1787645940,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"pdf-payment-qr-and-header-layout",
-  "feature":"show-payment-qr-right-and-enlarge-logo-with-shifted-company-info"
+  "migration":"pdf-separated-subtotals",
+  "feature":"service-subtotal-material-subtotal-and-grand-total"
 }
