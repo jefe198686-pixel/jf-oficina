@@ -1,8 +1,8 @@
 {
-  "version":"0.16.2",
-  "build":1787694300,
+  "version":"0.16.3",
+  "build":1787697000,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-granular-permissions",
-  "feature":"per-technician-menu-action-os-tab-stock-field-and-registration-visibility-permissions"
+  "migration":"client-equipment-edit-fix",
+  "feature":"equipment-keeps-owner-client-when-edited-from-client-list-and-client-name-remains-editable"
 }
