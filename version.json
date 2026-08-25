@@ -1,8 +1,8 @@
 {
-  "version":"0.15.19",
-  "build":1787645940,
+  "version":"0.15.20",
+  "build":1787646360,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"pdf-separated-subtotals",
-  "feature":"service-subtotal-material-subtotal-and-grand-total"
+  "migration":"pdf-transparent-financial-summary",
+  "feature":"services-materials-others-adjustments-and-grand-total"
 }
