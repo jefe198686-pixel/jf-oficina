@@ -1,8 +1,8 @@
 {
-  "version":"0.15.25",
-  "build":1787650860,
+  "version":"0.15.26",
+  "build":1787651460,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"tighter-payment-lines-in-customer-pdf",
-  "feature":"keep-font-size-and-reduce-payment-block-height-with-two-column-layout"
+  "migration":"compact-entire-customer-document-layout",
+  "feature":"reduce-vertical-whitespace-in-header-sections-tables-subtotals-summary-and-footer-without-reducing-font"
 }
