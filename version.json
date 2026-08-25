@@ -1,8 +1,8 @@
 {
-  "version":"0.15.24",
-  "build":1787648700,
+  "version":"0.15.25",
+  "build":1787650860,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"compact-payment-block-in-customer-pdf",
-  "feature":"reduce-payment-block-height-and-keep-pix-qr-readable"
+  "migration":"tighter-payment-lines-in-customer-pdf",
+  "feature":"keep-font-size-and-reduce-payment-block-height-with-two-column-layout"
 }
