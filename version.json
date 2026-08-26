@@ -1,8 +1,8 @@
 {
-  "version":"0.18.5",
-  "build":1787713640,
+  "version":"0.18.6",
+  "build":1787714820,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-settings-hard-lock",
-  "feature":"settings-menu-is-admin-only-and-cannot-be-opened-by-technician"
+  "migration":"dashboard-drilldown-navigation",
+  "feature":"dashboard-cards-open-their-detailed-filtered-destination-including-waiting-parts-and-low-stock"
 }
