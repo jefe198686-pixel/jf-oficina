@@ -1,8 +1,8 @@
 {
-  "version":"0.19.4",
-  "build":1787741800,
+  "version":"0.19.5",
+  "build":1787743400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-editor-clean-state-unicode",
-  "feature":"client-editor-clears-previous-record-before-loading-and-preserves-portuguese-unicode-characters"
+  "migration":"client-editor-overlay-and-autofill-fix",
+  "feature":"client-edits-are-saved-as-local-overlays-preserving-unicode-and-each-client-editor-opens-with-an-isolated-clean-state"
 }
