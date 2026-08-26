@@ -1,8 +1,8 @@
 {
-  "version":"0.18.4",
-  "build":1787712780,
+  "version":"0.18.5",
+  "build":1787713640,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-session-permissions-fix",
-  "feature":"technician-profile-and-permissions-remain-active-after-login-and-reload-on-devices-without-local-sync-code"
+  "migration":"technician-settings-hard-lock",
+  "feature":"settings-menu-is-admin-only-and-cannot-be-opened-by-technician"
 }
