@@ -1,8 +1,8 @@
 {
-  "version":"0.17.0",
-  "build":1787701860,
+  "version":"0.17.1",
+  "build":1787703120,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"quick-direct-parts-sales",
-  "feature":"direct-parts-only-sale-with-optional-client-stock-movement-and-independent-numbering"
+  "migration":"quick-sales-qr-reader",
+  "feature":"scan-product-qr-in-direct-parts-sale-and-add-item-automatically"
 }
