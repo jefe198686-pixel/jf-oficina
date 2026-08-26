@@ -1,8 +1,8 @@
 {
-  "version":"0.18.3",
-  "build":1787711580,
+  "version":"0.18.4",
+  "build":1787712780,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"authenticated-workspace-auto-sync",
-  "feature":"technician-login-automatically-identifies-workspace-downloads-central-data-and-syncs-without-manual-sync-code"
+  "migration":"technician-session-permissions-fix",
+  "feature":"technician-profile-and-permissions-remain-active-after-login-and-reload-on-devices-without-local-sync-code"
 }
