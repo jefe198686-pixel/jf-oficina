@@ -1,8 +1,8 @@
 {
-  "version":"0.19.0",
-  "build":1787715900,
+  "version":"0.19.1",
+  "build":1787720400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"multi-technicians-os-and-services",
-  "feature":"os-can-have-multiple-technicians-and-each-service-can-have-one-or-more-technicians-with-inline-new-technician-registration-when-permitted"
+  "migration":"client-search-stack-fix",
+  "feature":"restore-dashboard-cards-and-stack-client-search-fields-vertically-in-os-and-budget"
 }
