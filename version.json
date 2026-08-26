@@ -1,8 +1,8 @@
 {
-  "version":"0.19.6",
-  "build":1787752800,
+  "version":"0.19.7",
+  "build":1787755200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-single-identity-merge",
-  "feature":"client-name-loads-from-unified-record-duplicate-overlays-are-merged-and-edits-update-the-existing-client"
+  "migration":"global-text-encoding-repair",
+  "feature":"repairs-common-mojibake-and-corrupted-portuguese-characters-across-legacy-client-equipment-product-service-and-os-texts"
 }
