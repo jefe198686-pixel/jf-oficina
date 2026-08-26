@@ -1,8 +1,8 @@
 {
-  "version":"0.19.2",
-  "build":1787730000,
+  "version":"0.19.3",
+  "build":1787740200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-list-sorting",
-  "feature":"client-list-can-sort-by-name-registration-number-recent-service-os-count-and-equipment-count"
+  "migration":"stock-advanced-filters-and-sorting",
+  "feature":"stock-can-filter-and-sort-by-initial-category-location-stock-status-code-description-quantity-and-sale-price"
 }
