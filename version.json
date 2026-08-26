@@ -1,8 +1,8 @@
 {
-  "version":"0.18.1",
-  "build":1787708400,
+  "version":"0.18.2",
+  "build":1787710200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"nfe-item-cost-and-linking-enhancements",
-  "feature":"editable-cost-new-internal-code-preview-searchable-existing-item-assignment-in-nfe-entry"
+  "migration":"technician-first-access-login-fix",
+  "feature":"new-users-see-username-and-initial-password-login-and-can-login-without-preexisting-sync-code"
 }
