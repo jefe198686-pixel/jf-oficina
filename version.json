@@ -1,8 +1,8 @@
 {
-  "version":"0.18.2",
-  "build":1787710200,
+  "version":"0.18.3",
+  "build":1787711580,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-first-access-login-fix",
-  "feature":"new-users-see-username-and-initial-password-login-and-can-login-without-preexisting-sync-code"
+  "migration":"authenticated-workspace-auto-sync",
+  "feature":"technician-login-automatically-identifies-workspace-downloads-central-data-and-syncs-without-manual-sync-code"
 }
