@@ -1,4 +1,4 @@
-// JF Oficina v0.15.2 — pesquisas por campos com seleção visível e sem sobreposição
+// JF Oficina v0.19.1 — pesquisas por campos com seleção visível e sem sobreposição
 (function(){
  const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  const match=(v,q)=>!norm(q)||norm(v).includes(norm(q));
@@ -36,7 +36,7 @@
    if(!wrap||wrap.dataset.multi==='2')return;const sel=wrap.nextElementSibling;if(!sel||sel.tagName!=='SELECT')return;
    const kind=sel.id==='osClient'?'client':sel.classList.contains('eqSel')?'equipment':sel.classList.contains('matSel')?'product':sel.classList.contains('srvSel')?'service':'';if(!kind)return;
    wrap.dataset.multi='2';const old=wrap.querySelector('input[type="search"]');if(old)old.style.display='none';const box=wrap.querySelector('.ctxResults');
-   const grid=document.createElement('div');grid.className='ctxMultiGrid';const ds=defs(kind);
+   const grid=document.createElement('div');grid.className='ctxMultiGrid'+(kind==='client'?' ctxClientGrid':'');const ds=defs(kind);
    grid.innerHTML=ds.map((d,i)=>`<label><span>${esc(d.label)}</span><input type="search" data-mf="${i}" placeholder="${esc(d.ph)}" autocomplete="off"></label>`).join('');
    const chosen=document.createElement('div');chosen.className='ctxChosen hidden';
    wrap.insertBefore(grid,box);wrap.insertBefore(chosen,box);
@@ -51,5 +51,5 @@
  }
  function install(){document.querySelectorAll('.ctxFinder').forEach(enhance)}
  const mo=new MutationObserver(()=>setTimeout(install,0));addEventListener('DOMContentLoaded',()=>{install();mo.observe(document.body,{childList:true,subtree:true})});
- const style=document.createElement('style');style.textContent=`.ctxMultiGrid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:7px;position:relative;z-index:2}.ctxMultiGrid label{display:block;font-size:11px;color:#5b6770}.ctxMultiGrid label span{display:block;margin:0 0 3px 2px;font-weight:600}.ctxMultiGrid input{width:100%;margin:0!important}.ctxFinder{min-width:min(720px,100%);position:relative}.ctxResults{top:auto!important;margin-top:6px;position:relative!important;left:auto!important;right:auto!important;max-height:280px}.ctxChosen{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f5f7f8;border:1px solid #d9e0e6;border-radius:9px;padding:9px 11px;margin-top:6px}.ctxChosen.hidden,.ctxMultiGrid.hidden{display:none!important}.ctxChange{white-space:nowrap}.itemrow .ctxFinder{min-width:300px}.itemrow .ctxChosen{margin-top:4px}@media(max-width:850px){.ctxMultiGrid{grid-template-columns:1fr}.ctxFinder{min-width:100%}.ctxChosen{align-items:flex-start;flex-direction:column}}`;document.head.appendChild(style);
+ const style=document.createElement('style');style.textContent=`.ctxMultiGrid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:7px;position:relative;z-index:2}.ctxClientGrid{grid-template-columns:1fr!important}.ctxMultiGrid label{display:block;font-size:11px;color:#5b6770}.ctxMultiGrid label span{display:block;margin:0 0 3px 2px;font-weight:600}.ctxMultiGrid input{width:100%;margin:0!important}.ctxFinder{min-width:min(720px,100%);position:relative}.ctxResults{top:auto!important;margin-top:6px;position:relative!important;left:auto!important;right:auto!important;max-height:280px}.ctxChosen{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f5f7f8;border:1px solid #d9e0e6;border-radius:9px;padding:9px 11px;margin-top:6px}.ctxChosen.hidden,.ctxMultiGrid.hidden{display:none!important}.ctxChange{white-space:nowrap}.itemrow .ctxFinder{min-width:300px}.itemrow .ctxChosen{margin-top:4px}@media(max-width:850px){.ctxMultiGrid{grid-template-columns:1fr}.ctxFinder{min-width:100%}.ctxChosen{align-items:flex-start;flex-direction:column}}`;document.head.appendChild(style);
 })();
