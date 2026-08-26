@@ -1,8 +1,8 @@
 {
-  "version":"0.17.1",
-  "build":1787703120,
+  "version":"0.18.0",
+  "build":1787706660,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"quick-sales-qr-reader",
-  "feature":"scan-product-qr-in-direct-parts-sale-and-add-item-automatically"
+  "migration":"stock-replenisher-nfe-counting",
+  "feature":"manual-or-nfe-xml-stock-entry-existing-item-linking-new-item-registration-location-margin-counting-qr-barcode-stock-adjustment-price-margin-min-max-relocation"
 }
