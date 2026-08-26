@@ -1,8 +1,8 @@
 {
-  "version":"0.19.5",
-  "build":1787743400,
+  "version":"0.19.6",
+  "build":1787752800,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-editor-overlay-and-autofill-fix",
-  "feature":"client-edits-are-saved-as-local-overlays-preserving-unicode-and-each-client-editor-opens-with-an-isolated-clean-state"
+  "migration":"client-single-identity-merge",
+  "feature":"client-name-loads-from-unified-record-duplicate-overlays-are-merged-and-edits-update-the-existing-client"
 }
