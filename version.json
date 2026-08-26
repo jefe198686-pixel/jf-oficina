@@ -1,8 +1,8 @@
 {
-  "version":"0.19.7",
-  "build":1787755200,
+  "version":"0.19.8",
+  "build":1787758800,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"global-text-encoding-repair",
-  "feature":"repairs-common-mojibake-and-corrupted-portuguese-characters-across-legacy-client-equipment-product-service-and-os-texts"
+  "migration":"persistent-text-encoding-repair",
+  "feature":"repairs-and-persists-corrupted-portuguese-characters-including-mecanizacao-hidraulica-and-double-replacement-sequences"
 }
