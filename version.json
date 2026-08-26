@@ -1,8 +1,8 @@
 {
-  "version":"0.18.0",
-  "build":1787706660,
+  "version":"0.18.1",
+  "build":1787708400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"stock-replenisher-nfe-counting",
-  "feature":"manual-or-nfe-xml-stock-entry-existing-item-linking-new-item-registration-location-margin-counting-qr-barcode-stock-adjustment-price-margin-min-max-relocation"
+  "migration":"nfe-item-cost-and-linking-enhancements",
+  "feature":"editable-cost-new-internal-code-preview-searchable-existing-item-assignment-in-nfe-entry"
 }
