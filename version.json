@@ -1,8 +1,8 @@
 {
-  "version":"0.19.3",
-  "build":1787740200,
+  "version":"0.19.4",
+  "build":1787741800,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"stock-advanced-filters-and-sorting",
-  "feature":"stock-can-filter-and-sort-by-initial-category-location-stock-status-code-description-quantity-and-sale-price"
+  "migration":"client-editor-clean-state-unicode",
+  "feature":"client-editor-clears-previous-record-before-loading-and-preserves-portuguese-unicode-characters"
 }
