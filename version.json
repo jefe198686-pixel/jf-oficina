@@ -1,8 +1,8 @@
 {
-  "version":"0.19.1",
-  "build":1787720400,
+  "version":"0.19.2",
+  "build":1787730000,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"client-search-stack-fix",
-  "feature":"restore-dashboard-cards-and-stack-client-search-fields-vertically-in-os-and-budget"
+  "migration":"client-list-sorting",
+  "feature":"client-list-can-sort-by-name-registration-number-recent-service-os-count-and-equipment-count"
 }
