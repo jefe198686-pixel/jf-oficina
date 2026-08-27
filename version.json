@@ -1,8 +1,8 @@
 {
-  "version":"0.19.9",
-  "build":1787763660,
+  "version":"0.20.0",
+  "build":1787843400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"auth-prelogin-hard-lock",
-  "feature":"hide-and-disable-entire-application-until-authentication-is-validated"
+  "migration":"authenticated-workspace-for-technicians",
+  "feature":"technician-management-uses-authenticated-user-workspace-and-ignores-stale-local-sync-key"
 }
