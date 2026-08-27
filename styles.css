@@ -1,4 +1,5 @@
 :root{--bg:#f4f6f8;--card:#fff;--ink:#17202a;--muted:#65727f;--line:#dce2e8;--brand:#f2a51a;--dark:#16202a;--ok:#e8f7ed;--warn:#fff4d8;--danger:#fde8e8}
+html:not(.jf-auth-ready) body>*:not(#jfAuthGate){visibility:hidden!important;pointer-events:none!important}html:not(.jf-auth-ready) #jfAuthGate{visibility:visible!important;pointer-events:auto!important}html:not(.jf-auth-ready) body{overflow:hidden!important;background:linear-gradient(135deg,#102d4b,#0b5d34)!important}
 *{box-sizing:border-box}body{margin:0;font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
 header{background:var(--dark);color:#fff;padding:14px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
 header b{font-size:18px}.ver{font-size:11px;opacity:.75}
