@@ -1,8 +1,8 @@
 {
-  "version":"0.20.1",
-  "build":1787932800,
+  "version":"0.20.2",
+  "build":1787958060,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"inline-create-and-writing-review-fix",
-  "feature":"cadastro rápido de produto/equipamento em OS e orçamento; revisão de escrita ampliada"
+  "migration":"report-drilldown-all",
+  "feature":"todos os relatórios gerenciais com navegação por cliente, equipamento, OS, produto, técnico, serviço, fornecedor e falha"
 }
