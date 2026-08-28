@@ -1,8 +1,8 @@
 {
-  "version":"0.20.0",
-  "build":1787843400,
+  "version":"0.20.1",
+  "build":1787932800,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"authenticated-workspace-for-technicians",
-  "feature":"technician-management-uses-authenticated-user-workspace-and-ignores-stale-local-sync-key"
+  "migration":"inline-create-and-writing-review-fix",
+  "feature":"cadastro rápido de produto/equipamento em OS e orçamento; revisão de escrita ampliada"
 }
