@@ -1,8 +1,8 @@
 {
-  "version":"0.20.5",
-  "build":1788201000,
+  "version":"0.20.6",
+  "build":1788220080,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"quick-service-create",
-  "feature":"cadastro rápido de novo serviço dentro da OS e do orçamento"
+  "migration":"modal-scroll-layout",
+  "feature":"conteúdo rolável de OS e orçamento sem sobreposição do rodapé"
 }
