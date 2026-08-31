@@ -1,8 +1,8 @@
 {
-  "version":"0.20.2",
-  "build":1787958060,
+  "version":"0.20.3",
+  "build":1788185160,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"report-drilldown-all",
-  "feature":"todos os relatórios gerenciais com navegação por cliente, equipamento, OS, produto, técnico, serviço, fornecedor e falha"
+  "migration":"writing-correction-fix",
+  "feature":"correção reforçada de ortografia, concordância e frases técnicas"
 }
