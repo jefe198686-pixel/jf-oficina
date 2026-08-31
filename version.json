@@ -1,8 +1,8 @@
 {
-  "version":"0.20.3",
-  "build":1788185160,
+  "version":"0.20.4",
+  "build":1788200000,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"writing-correction-fix",
-  "feature":"correção reforçada de ortografia, concordância e frases técnicas"
+  "migration":"writing-correction-fix-v2",
+  "feature":"correção de confecionar/confeccionar e separação de número com vias/metros"
 }
