@@ -1,8 +1,8 @@
 {
-  "version":"0.20.4",
-  "build":1788200000,
+  "version":"0.20.5",
+  "build":1788201000,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"writing-correction-fix-v2",
-  "feature":"correção de confecionar/confeccionar e separação de número com vias/metros"
+  "migration":"quick-service-create",
+  "feature":"cadastro rápido de novo serviço dentro da OS e do orçamento"
 }
