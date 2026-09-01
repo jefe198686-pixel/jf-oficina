@@ -1,8 +1,8 @@
 {
-  "version":"0.20.10",
-  "build":1788265500,
+  "version":"0.20.11",
+  "build":1788266400,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"jwt-edge-clock-retry",
-  "feature":"retentativa automática quando Edge Function rejeita JWT recém emitido por diferença de relógio"
+  "migration":"jwt-auth-clock-retry",
+  "feature":"retentativa automática no próprio login do Supabase e na Edge Function quando houver JWT issued at future"
 }
