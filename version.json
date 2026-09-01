@@ -1,8 +1,8 @@
 {
-  "version":"0.20.12",
-  "build":1788274500,
+  "version":"0.20.13",
+  "build":1788286500,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"auth-stale-session-root-fix",
-  "feature":"remove sessão JWT antiga imediatamente antes de iniciar novo login"
+  "migration":"none",
+  "feature":"etiquetas A4 5x7, 35 unidades 40x40 mm, QR 25x25, código vertical e descrição em duas linhas"
 }
