@@ -1,8 +1,8 @@
 {
-  "version":"0.20.7",
-  "build":1788220800,
+  "version":"0.20.8",
+  "build":1788264180,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"service-auto-codes",
-  "feature":"códigos automáticos sequenciais para serviços novos e existentes sem código"
+  "migration":"a4-40mm-label-layout",
+  "feature":"folha A4 5x7 com 35 etiquetas 40x40, QR 25mm, código vertical e perfil Epson L3150"
 }
