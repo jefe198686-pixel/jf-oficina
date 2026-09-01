@@ -1,8 +1,8 @@
 {
-  "version":"0.20.13",
-  "build":1788286500,
+  "version":"0.20.14",
+  "build":1788287200,
   "channel":"stable-test",
   "app":"JF Oficina",
   "migration":"none",
-  "feature":"etiquetas A4 5x7, 35 unidades 40x40 mm, QR 25x25, código vertical e descrição em duas linhas"
+  "feature":"OS, orçamento e venda: perguntar quantidade ao adicionar, manter pesquisa aberta e editar item ao clicar"
 }
