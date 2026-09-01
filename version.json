@@ -1,8 +1,8 @@
 {
-  "version":"0.20.14",
-  "build":1788287200,
+  "version":"0.20.15",
+  "build":1788289000,
   "channel":"stable-test",
   "app":"JF Oficina",
   "migration":"none",
-  "feature":"OS, orçamento e venda: perguntar quantidade ao adicionar, manter pesquisa aberta e editar item ao clicar"
+  "feature":"Etiquetas: manter filtros e lista de seleção abertos após adicionar produto"
 }
