@@ -37,3 +37,9 @@ dialog{border:0;border-radius:14px;padding:0;box-shadow:0 22px 70px #0004}.modal
 .cards{grid-template-columns:1fr 1fr}.grid2,.grid3,.grid4{grid-template-columns:1fr}.itemrow,.itemrow.other,.itemrow.eq{grid-template-columns:1fr 1fr}.itemrow>*:first-child{grid-column:1/-1}
 .osmodal{width:100vw;height:100vh;max-height:100vh;border-radius:0}.toolbar input,.toolbar select{width:100%;min-width:0}header{position:static}nav{top:0}
 }
+/* v0.20.16 — filtros avançados do estoque compactos, alinhados aos campos superiores */
+#stockAdvancedFilters .stockFilterGrid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;align-items:end!important}
+#stockAdvancedFilters .stockFilterGrid label{min-width:0!important}
+#stockAdvancedFilters .stockFilterGrid select{width:100%!important;min-width:0!important}
+@media(max-width:800px){#stockAdvancedFilters .stockFilterGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:520px){#stockAdvancedFilters .stockFilterGrid{grid-template-columns:1fr!important}}
