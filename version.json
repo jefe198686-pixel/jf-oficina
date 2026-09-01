@@ -1,8 +1,8 @@
 {
-  "version":"0.20.8",
-  "build":1788264180,
+  "version":"0.20.9",
+  "build":1788264720,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"a4-40mm-label-layout",
-  "feature":"folha A4 5x7 com 35 etiquetas 40x40, QR 25mm, código vertical e perfil Epson L3150"
+  "migration":"jwt-login-clock-fix",
+  "feature":"remove JWT antigo das requisições de login e renovação do Supabase"
 }
