@@ -1,8 +1,8 @@
 {
-  "version":"0.20.7",
-  "build":1788220800,
+  "version":"0.20.12",
+  "build":1788274500,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"service-auto-codes",
-  "feature":"códigos automáticos sequenciais para serviços novos e existentes sem código"
+  "migration":"auth-stale-session-root-fix",
+  "feature":"remove sessão JWT antiga imediatamente antes de iniciar novo login"
 }
