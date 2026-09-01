@@ -1,8 +1,8 @@
 {
-  "version":"0.20.15",
-  "build":1788289000,
+  "version":"0.20.16",
+  "build":1788290400,
   "channel":"stable-test",
   "app":"JF Oficina",
   "migration":"none",
-  "feature":"Etiquetas: manter filtros e lista de seleção abertos após adicionar produto"
+  "feature":"Estoque: filtros Ordem, Inicial, Categoria, Locação e Situação em grade compacta de 3 colunas"
 }
