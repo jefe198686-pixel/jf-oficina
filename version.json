@@ -1,8 +1,8 @@
 {
-  "version":"0.20.9",
-  "build":1788264720,
+  "version":"0.20.10",
+  "build":1788265500,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"jwt-login-clock-fix",
-  "feature":"remove JWT antigo das requisições de login e renovação do Supabase"
+  "migration":"jwt-edge-clock-retry",
+  "feature":"retentativa automática quando Edge Function rejeita JWT recém emitido por diferença de relógio"
 }
