@@ -1,8 +1,8 @@
 {
-  "version":"0.20.6",
-  "build":1788220080,
+  "version":"0.20.7",
+  "build":1788220800,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"modal-scroll-layout",
-  "feature":"conteúdo rolável de OS e orçamento sem sobreposição do rodapé"
+  "migration":"service-auto-codes",
+  "feature":"códigos automáticos sequenciais para serviços novos e existentes sem código"
 }
