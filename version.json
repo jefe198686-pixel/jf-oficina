@@ -1,8 +1,8 @@
 {
-  "version":"0.20.17",
-  "build":1788291000,
+  "version":"0.20.18",
+  "build":1788292200,
   "channel":"stable-test",
   "app":"JF Oficina",
   "migration":"none",
-  "feature":"Cadastro mestre de locações do estoque com código interno, endereço, observação, ativo/inativo e importação das locações existentes"
+  "feature":"Corrige painel de técnicos autenticado sem depender da chave local de sincronização"
 }
