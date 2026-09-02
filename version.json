@@ -1,8 +1,8 @@
 {
-  "version":"0.20.19",
-  "build":1788307200,
+  "version":"0.20.20",
+  "build":1788309300,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"location-alias-reconcile",
-  "feature":"Renomear locações atualiza produtos, evita duplicação e permite mesclagem"
+  "migration":"global-login-hint-session-scope",
+  "feature":"Login em navegador novo sem jf-sync-key e sessão limitada ao navegador"
 }
