@@ -1,7 +1,8 @@
-// JF Oficina v0.20.12 — carregador modular síncrono
+// JF Oficina v0.20.20 — carregador modular síncrono
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v=0.20.12">',
   '<script src="auth-prelock.js?v=0.20.12"><\/script>',
+  '<script src="auth-session-scope.js?v=0.20.20"><\/script>',
   '<script src="workspace-auth-fix.js?v=0.20.12"><\/script>',
   '<script src="core.js?v=0.20.12"><\/script>',
   '<script src="os.js?v=0.20.12"><\/script>',
