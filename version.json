@@ -1,8 +1,8 @@
 {
-  "version":"0.20.18",
-  "build":1788292200,
+  "version":"0.20.19",
+  "build":1788307200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"none",
-  "feature":"Corrige painel de técnicos autenticado sem depender da chave local de sincronização"
+  "migration":"location-alias-reconcile",
+  "feature":"Renomear locações atualiza produtos, evita duplicação e permite mesclagem"
 }
