@@ -1,8 +1,8 @@
 {
-  "version":"0.20.20",
-  "build":1788309300,
+  "version":"0.20.21",
+  "build":1788316000,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"global-login-hint-session-scope",
-  "feature":"Login em navegador novo sem jf-sync-key e sessão limitada ao navegador"
+  "migration":"auth-rebuild-edge-v15",
+  "feature":"Autenticação validada no Auth e acesso ao banco pelo backend com chave secreta nova"
 }
