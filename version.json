@@ -1,8 +1,8 @@
 {
-  "version":"0.20.27",
-  "build":1788500900,
+  "version":"0.20.28",
+  "build":1788501200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-admin-v02027",
-  "feature":"Criação e edição de técnicos por Edge administrativa isolada, preservando login e sincronização v17"
+  "migration":"budget-multi-technicians-v02028",
+  "feature":"Seleção de vários técnicos por serviço no orçamento, compatível com orçamentos antigos e transferência completa para OS"
 }
