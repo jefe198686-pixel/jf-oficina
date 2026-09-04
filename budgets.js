@@ -1,4 +1,4 @@
-// JF Oficina v0.20.24 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
+// JF Oficina v0.20.26 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
 (function(){
  const V='0.14.0';
  function ensure(){S.custom=S.custom||{};if(!Array.isArray(S.custom.orcamentos))S.custom.orcamentos=[];}
@@ -29,16 +29,35 @@
  function optsEq(client,sel=''){return '<option value="">Selecione...</option>'+equips().filter(e=>String(equipClient(e))===String(client)).map(e=>`<option value="${esc(e.id)}" ${String(e.id)===String(sel)?'selected':''}>${esc(equipName(e.id))} ${esc(e.numero_serie||e.serie||'')}</option>`).join('')}
  function line(r){return Math.max(0,num(r.quantidade||1)*num(r.valor)-num(r.desconto)+num(r.acrescimo))}
  function totals(){const s=w.servicos.reduce((a,x)=>a+line(x),0),o=w.outros.reduce((a,x)=>a+line(x),0),m=w.materiais.reduce((a,x)=>a+line(x),0),total=Math.max(0,s+o+m+num(bFreight.value)+num(bAdd.value)-num(bDiscount.value));return {s,o,m,total}}
- function renderRows(){
-   bServices.innerHTML=w.servicos.map((r,i)=>`<div class="itemrow" data-i="${i}"><label>Serviço<select class="bsSel">${optsSrv(r.servico_id)}</select></label><label>Qtd/Horas<input class="bsQty" type="number" step=".25" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bsVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bsDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bsAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label>Técnico<input class="bsTech" value="${esc(r.tecnico||w.tecnico)}"></label><button type="button" class="danger bsDel">✕</button></div>`).join('');
-   bOthers.innerHTML=w.outros.map((r,i)=>`<div class="itemrow other" data-i="${i}"><label>Descrição<input class="boName" value="${esc(r.nome||'')}"></label><label>Qtd/Km<input class="boQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor un.<input class="boVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Origem<input class="boFrom" value="${esc(r.origem||'')}"></label><label>Destino<input class="boTo" value="${esc(r.destino||'')}"></label><button type="button" class="danger boDel">✕</button></div>`).join('');
-   bMaterials.innerHTML=w.materiais.map((r,i)=>`<div class="itemrow" data-i="${i}"><label>Produto / Código<select class="bmSel">${optsProd(r.produto_id)}</select></label><label>Qtd<input class="bmQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bmVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bmDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bmAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label><span class="small muted">Sem baixa</span></label><button type="button" class="danger bmDel">✕</button></div>`).join('');
-   bEquipments.innerHTML=w.equipamentos.map((r,i)=>`<div class="itemrow eq" data-i="${i}"><label>Equipamento<select class="beSel">${optsEq(w.cliente_id,r.equipamento_id)}</select></label><label>Horímetro<input class="beHour" value="${esc(r.horimetro||'')}"></label><label><input class="beMain" type="radio" name="bMain" ${r.principal?'checked':''}> Principal</label><button type="button" class="danger beDel">✕</button></div>`).join('');
+ function serviceRow(r,i){return `<div class="itemrow" data-i="${i}"><label>Serviço<select class="bsSel">${optsSrv(r.servico_id)}</select></label><label>Qtd/Horas<input class="bsQty" type="number" step=".25" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bsVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bsDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bsAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label>Técnico<input class="bsTech" value="${esc(r.tecnico||w.tecnico)}"></label><button type="button" class="danger bsDel">✕</button></div>`}
+ function otherRow(r,i){return `<div class="itemrow other" data-i="${i}"><label>Descrição<input class="boName" value="${esc(r.nome||'')}"></label><label>Qtd/Km<input class="boQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor un.<input class="boVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Origem<input class="boFrom" value="${esc(r.origem||'')}"></label><label>Destino<input class="boTo" value="${esc(r.destino||'')}"></label><button type="button" class="danger boDel">✕</button></div>`}
+ function materialRow(r,i){return `<div class="itemrow" data-i="${i}"><label>Produto / Código<select class="bmSel">${optsProd(r.produto_id)}</select></label><label>Qtd<input class="bmQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bmVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bmDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bmAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label><span class="small muted">Sem baixa</span></label><button type="button" class="danger bmDel">✕</button></div>`}
+ function equipmentRow(r,i){return `<div class="itemrow eq" data-i="${i}"><label>Equipamento<select class="beSel">${optsEq(w.cliente_id,r.equipamento_id)}</select></label><label>Horímetro<input class="beHour" value="${esc(r.horimetro||'')}"></label><label><input class="beMain" type="radio" name="bMain" ${r.principal?'checked':''}> Principal</label><button type="button" class="danger beDel">✕</button></div>`}
+ function renderSection(kind){
+   if(kind==='services')bServices.innerHTML=w.servicos.map(serviceRow).join('');
+   else if(kind==='others')bOthers.innerHTML=w.outros.map(otherRow).join('');
+   else if(kind==='materials')bMaterials.innerHTML=w.materiais.map(materialRow).join('');
+   else if(kind==='equipments')bEquipments.innerHTML=w.equipamentos.map(equipmentRow).join('');
+ }
+ function renderRows(){renderSection('services');renderSection('others');renderSection('materials');renderSection('equipments');renderTotals()}
+ function appendRow(kind){
+   if(kind==='services'){const i=w.servicos.length-1;bServices.insertAdjacentHTML('beforeend',serviceRow(w.servicos[i],i))}
+   else if(kind==='others'){const i=w.outros.length-1;bOthers.insertAdjacentHTML('beforeend',otherRow(w.outros[i],i))}
+   else if(kind==='materials'){const i=w.materiais.length-1;bMaterials.insertAdjacentHTML('beforeend',materialRow(w.materiais[i],i))}
+   else if(kind==='equipments'){const i=w.equipamentos.length-1;bEquipments.insertAdjacentHTML('beforeend',equipmentRow(w.equipamentos[i],i))}
    renderTotals();
  }
- function rowIndex(target){const row=target?.closest?.('.itemrow');if(!row||!budgetForm.contains(row))return -1;const i=Number(row.dataset.i);return Number.isInteger(i)&&i>=0?i:-1}
+ function reindex(container){container.querySelectorAll(':scope > .itemrow').forEach((row,i)=>row.dataset.i=i)}
+ function removeRow(kind,i,row){
+   if(kind==='services')w.servicos.splice(i,1);
+   else if(kind==='others')w.outros.splice(i,1);
+   else if(kind==='materials')w.materiais.splice(i,1);
+   else if(kind==='equipments')w.equipamentos.splice(i,1);
+   const container=row.parentElement;row.remove();if(container)reindex(container);renderTotals();
+ }
+ function rowInfo(target){const row=target?.closest?.('.itemrow');if(!row||!budgetForm.contains(row))return {row:null,i:-1};const i=Number(row.dataset.i);return {row,i:Number.isInteger(i)&&i>=0?i:-1}}
  function handleBudgetInput(e){
-   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;let recalc=false;
+   if(!w)return;const t=e.target,{i}=rowInfo(t);if(i<0)return;let recalc=false;
    if(t.matches('.bsQty')&&w.servicos[i]){w.servicos[i].quantidade=num(t.value);recalc=true}
    else if(t.matches('.bsVal')&&w.servicos[i]){w.servicos[i].valor=num(t.value);recalc=true}
    else if(t.matches('.bsDisc')&&w.servicos[i]){w.servicos[i].desconto=num(t.value);recalc=true}
@@ -57,18 +76,18 @@
    if(recalc)renderTotals();
  }
  function handleBudgetChange(e){
-   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;
-   if(t.matches('.bsSel')&&w.servicos[i]){const s=serviceBy(t.value);w.servicos[i].servico_id=t.value;w.servicos[i].descricao=s?.descricao||'';if(!w.servicos[i].valor)w.servicos[i].valor=num(s?.valor);renderRows();return}
-   if(t.matches('.bmSel')&&w.materiais[i]){const p=prodBy(t.value);w.materiais[i].produto_id=t.value;if(!w.materiais[i].valor)w.materiais[i].valor=num(p?.valor_venda);renderRows();return}
+   if(!w)return;const t=e.target,{row,i}=rowInfo(t);if(i<0)return;
+   if(t.matches('.bsSel')&&w.servicos[i]){const s=serviceBy(t.value),had=num(w.servicos[i].valor);w.servicos[i].servico_id=t.value;w.servicos[i].descricao=s?.descricao||'';if(!had){w.servicos[i].valor=num(s?.valor);const val=row.querySelector('.bsVal');if(val)val.value=num(w.servicos[i].valor)}renderTotals();return}
+   if(t.matches('.bmSel')&&w.materiais[i]){const p=prodBy(t.value),had=num(w.materiais[i].valor);w.materiais[i].produto_id=t.value;if(!had){w.materiais[i].valor=num(p?.valor_venda);const val=row.querySelector('.bmVal');if(val)val.value=num(w.materiais[i].valor)}renderTotals();return}
    if(t.matches('.beSel')&&w.equipamentos[i]){w.equipamentos[i].equipamento_id=t.value;return}
-   if(t.matches('.beMain')&&w.equipamentos[i]){w.equipamentos.forEach((x,j)=>x.principal=j===i);renderRows()}
+   if(t.matches('.beMain')&&w.equipamentos[i]){w.equipamentos.forEach((x,j)=>x.principal=j===i);bEquipments.querySelectorAll('.beMain').forEach((radio,j)=>radio.checked=j===i)}
  }
  function handleBudgetClick(e){
-   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;
-   if(t.matches('.bsDel')&&w.servicos[i]){e.preventDefault();w.servicos.splice(i,1);renderRows();return}
-   if(t.matches('.boDel')&&w.outros[i]){e.preventDefault();w.outros.splice(i,1);renderRows();return}
-   if(t.matches('.bmDel')&&w.materiais[i]){e.preventDefault();w.materiais.splice(i,1);renderRows();return}
-   if(t.matches('.beDel')&&w.equipamentos[i]){e.preventDefault();w.equipamentos.splice(i,1);renderRows()}
+   if(!w)return;const t=e.target,{row,i}=rowInfo(t);if(i<0)return;
+   if(t.matches('.bsDel')&&w.servicos[i]){e.preventDefault();removeRow('services',i,row);return}
+   if(t.matches('.boDel')&&w.outros[i]){e.preventDefault();removeRow('others',i,row);return}
+   if(t.matches('.bmDel')&&w.materiais[i]){e.preventDefault();removeRow('materials',i,row);return}
+   if(t.matches('.beDel')&&w.equipamentos[i]){e.preventDefault();removeRow('equipments',i,row)}
  }
  function renderTotals(){
    const t=totals();
@@ -90,6 +109,11 @@
  document.querySelectorAll('nav [data-view]').forEach(b=>{if(b.dataset.view==='budgets')b.onclick=()=>{showView('budgets');renderList()}});
  document.querySelectorAll('[data-btab]').forEach(b=>b.onclick=()=>setTab(b.dataset.btab));
  budgetForm.addEventListener('input',handleBudgetInput);budgetForm.addEventListener('change',handleBudgetChange);budgetForm.addEventListener('click',handleBudgetClick);
- newBudget.onclick=()=>open();budgetSearch.oninput=renderList;budgetStatus.onchange=renderList;closeBudget.onclick=cancelBudget.onclick=()=>budgetDlg.close();bAddService.onclick=()=>{w.servicos.push({id:uid('BOS'),servico_id:'',descricao:'',quantidade:1,valor:0,desconto:0,acrescimo:0,tecnico:w.tecnico});renderRows()};bAddOther.onclick=()=>{w.outros.push({id:uid('BO'),nome:'',quantidade:1,valor:0,origem:'',destino:'',desconto:0,acrescimo:0});renderRows()};bAddMaterial.onclick=()=>{w.materiais.push({id:uid('BM'),produto_id:'',quantidade:1,valor:0,desconto:0,acrescimo:0});renderRows()};bAddEquipment.onclick=()=>{if(!bClient.value){alert('Selecione o cliente primeiro.');return}w.cliente_id=bClient.value;w.equipamentos.push({equipamento_id:'',horimetro:'',principal:w.equipamentos.length===0});renderRows()};bClient.onchange=()=>{w.cliente_id=bClient.value;renderRows()};[bDiscount,bAdd,bFreight].forEach(x=>x.oninput=renderTotals);budgetForm.onsubmit=async e=>{e.preventDefault();if(await save()){budgetDlg.close();renderList()}};printBudget.onclick=printOne;convertBudget.onclick=convert;
+ newBudget.onclick=()=>open();budgetSearch.oninput=renderList;budgetStatus.onchange=renderList;closeBudget.onclick=cancelBudget.onclick=()=>budgetDlg.close();
+ bAddService.onclick=()=>{w.servicos.push({id:uid('BOS'),servico_id:'',descricao:'',quantidade:1,valor:0,desconto:0,acrescimo:0,tecnico:w.tecnico});appendRow('services')};
+ bAddOther.onclick=()=>{w.outros.push({id:uid('BO'),nome:'',quantidade:1,valor:0,origem:'',destino:'',desconto:0,acrescimo:0});appendRow('others')};
+ bAddMaterial.onclick=()=>{w.materiais.push({id:uid('BM'),produto_id:'',quantidade:1,valor:0,desconto:0,acrescimo:0});appendRow('materials')};
+ bAddEquipment.onclick=()=>{if(!bClient.value){alert('Selecione o cliente primeiro.');return}w.cliente_id=bClient.value;w.equipamentos.push({equipamento_id:'',horimetro:'',principal:w.equipamentos.length===0});appendRow('equipments')};
+ bClient.onchange=()=>{w.cliente_id=bClient.value;renderSection('equipments')};[bDiscount,bAdd,bFreight].forEach(x=>x.oninput=renderTotals);budgetForm.onsubmit=async e=>{e.preventDefault();if(await save()){budgetDlg.close();renderList()}};printBudget.onclick=printOne;convertBudget.onclick=convert;
  window.openBudget=open;window.renderBudgets=renderList;
 })();
