@@ -1,8 +1,8 @@
 {
-  "version":"0.20.24",
-  "build":1788496680,
+  "version":"0.20.25",
+  "build":1788498600,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"budget-performance-pass3-v02024",
-  "feature":"Delegação estática de eventos nas linhas de Orçamentos, sem recarga de listeners"
+  "migration":"label-qr-readability-v02025",
+  "feature":"QR de etiquetas com quiet zone branca e módulos preservados para leitura em impressão"
 }
