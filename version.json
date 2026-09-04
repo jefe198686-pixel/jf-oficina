@@ -1,8 +1,8 @@
 {
-  "version":"0.20.30",
-  "build":1788542940,
+  "version":"0.20.34",
+  "build":1788565200,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"technician-picker-live-list-v02030",
-  "feature":"Seletor de técnicos carrega a equipe ativa cadastrada antes de exibir as opções por serviço"
+  "migration":"lightweight-sync-head-v02034",
+  "feature":"Sincronização consulta apenas a revisão e baixa o payload completo somente quando necessário"
 }
