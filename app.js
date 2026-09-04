@@ -1,5 +1,5 @@
-// JF Oficina v0.20.30 — seletor carrega equipe cadastrada
-const JF_ASSET_VERSION='0.20.30';
+// JF Oficina v0.20.31 — seletor de técnicos estabilizado
+const JF_ASSET_VERSION='0.20.31';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
