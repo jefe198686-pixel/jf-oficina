@@ -1,4 +1,4 @@
-const VERSION='0.20.27',CACHE='jf-oficina-'+VERSION;
+const VERSION='0.20.28',CACHE='jf-oficina-'+VERSION;
 const CORE=['./','./index.html','./manifest.webmanifest','./styles.css','./theme-brasil.css','./app.js','./technicians-auth.js','./auth-auto-sync.js','./technician-permissions.js','./technician-settings-lock.js','./budgets.js','./budget-edit-fix.js','./labels.js','./label-qr-readability-fix.js','./label-selection-fix.js','./location-catalog.js','./materials-compact.js','./quick-sales.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('jf-oficina-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
