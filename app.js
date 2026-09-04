@@ -1,5 +1,5 @@
-// JF Oficina v0.20.27 — administração de técnicos reativada com Edge isolada
-const JF_ASSET_VERSION='0.20.27';
+// JF Oficina v0.20.28 — múltiplos técnicos por serviço em Orçamentos
+const JF_ASSET_VERSION='0.20.28';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
