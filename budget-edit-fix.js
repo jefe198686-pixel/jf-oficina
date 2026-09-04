@@ -1,4 +1,4 @@
-// JF Oficina v0.20.3 — edição dos campos técnicos do orçamento
+// JF Oficina v0.20.23 — edição dos campos técnicos do orçamento com observer temporário
 (function(){
  'use strict';
  const fields=[
@@ -29,16 +29,24 @@
    bar.querySelector('[data-btech]').onclick=()=>window.openReview?openReview(id,true):alert('Revisor indisponível. Recarregue o aplicativo.');
  }
  function install(){
-   const dlg=document.getElementById('budgetDlg');if(!dlg)return;
+   const dlg=document.getElementById('budgetDlg');
+   if(!dlg)return false;
    fields.forEach(([id])=>{const el=document.getElementById(id);unlock(el);addTools(id)});
-   // Reaplica a liberação sempre que o orçamento é aberto ou algum módulo redesenha a tela.
    if(!dlg.dataset.budgetEditFix){
      dlg.dataset.budgetEditFix='1';
      dlg.addEventListener('focusin',e=>{if(fields.some(([id])=>e.target?.id===id))unlock(e.target)});
      dlg.addEventListener('input',e=>{if(fields.some(([id])=>e.target?.id===id))unlock(e.target)});
    }
+   return true;
  }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,0));else setTimeout(install,0);
- new MutationObserver(()=>install()).observe(document.documentElement,{childList:true,subtree:true});
+ function boot(){
+   if(install())return;
+   const root=document.body||document.documentElement;
+   const observer=new MutationObserver((mutations,obs)=>{
+     if(install())obs.disconnect();
+   });
+   observer.observe(root,{childList:true,subtree:true});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
  window.JFBudgetEditFix={apply:install};
 })();
