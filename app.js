@@ -1,5 +1,5 @@
-// JF Oficina v0.20.31 — seletor de técnicos estabilizado
-const JF_ASSET_VERSION='0.20.31';
+// JF Oficina v0.20.32 — multitécnicos sem observer global
+const JF_ASSET_VERSION='0.20.32';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
