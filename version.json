@@ -1,8 +1,8 @@
 {
-  "version":"0.20.28",
-  "build":1788501200,
+  "version":"0.20.29",
+  "build":1788535600,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"budget-multi-technicians-v02028",
-  "feature":"Seleção de vários técnicos por serviço no orçamento, compatível com orçamentos antigos e transferência completa para OS"
+  "migration":"shared-budget-compact-multitech-v02029",
+  "feature":"Serviços compactos passam a integrar seleção múltipla de técnicos na OS e no orçamento compartilhado"
 }
