@@ -1,4 +1,4 @@
-// JF Oficina v0.14.0 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
+// JF Oficina v0.20.23 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
 (function(){
  const V='0.14.0';
  function ensure(){S.custom=S.custom||{};if(!Array.isArray(S.custom.orcamentos))S.custom.orcamentos=[];}
@@ -6,7 +6,7 @@
  function nextNo(){const a=arr().map(x=>Number(x.numero_orcamento)).filter(Number.isFinite);return String((a.length?Math.max(...a):0)+1)}
  function byId(id){return arr().find(x=>String(x.id)===String(id))}
  function blank(){return {id:'',numero_orcamento:'',cliente_id:'',situacao:'Em elaboração',solicitante:'',entrada:nowLocal(),validade:15,local:'',tecnico:'JEFERSON',horimetro:'',controle:'',defeito_reclamado:'',defeito_constatado:'',descricao_servico:'',laudo:'',recomendacao:'',observacoes_internas:'',servicos:[],outros:[],materiais:[],equipamentos:[],desconto:0,acrescimo:0,frete:0,total:0,criado_em:new Date().toISOString(),atualizado_em:new Date().toISOString()}}
- let w=null;
+ let w=null,totalNodes=null;
  function addShell(){
    if(document.getElementById('budgets'))return;
    const nav=document.querySelector('nav'),main=document.querySelector('main');if(!nav||!main)return;
@@ -41,7 +41,14 @@
    $$('.bsDel').forEach((e,i)=>e.onclick=()=>{w.servicos.splice(i,1);renderRows()});$$('.boDel').forEach((e,i)=>e.onclick=()=>{w.outros.splice(i,1);renderRows()});$$('.bmDel').forEach((e,i)=>e.onclick=()=>{w.materiais.splice(i,1);renderRows()});$$('.beDel').forEach((e,i)=>e.onclick=()=>{w.equipamentos.splice(i,1);renderRows()});renderTotals();
  }
  function bind(sel,key,a,numeric){$$(sel).forEach((e,i)=>e.oninput=()=>{a[i][key]=numeric?num(e.value):e.value;renderTotals()})}
- function renderTotals(){const t=totals();bTotals.innerHTML=`<div class="sumline"><span>Serviços</span><b>${money(t.s)}</b></div><div class="sumline"><span>Desloc./Outros</span><b>${money(t.o)}</b></div><div class="sumline"><span>Materiais</span><b>${money(t.m)}</b></div><div class="sumline"><span>Frete</span><b>${money(bFreight.value)}</b></div><div class="sumline"><span>Acréscimos</span><b>${money(bAdd.value)}</b></div><div class="sumline"><span>Descontos</span><b>-${money(bDiscount.value)}</b></div><div class="sumline total"><span>TOTAL DO ORÇAMENTO</span><b>${money(t.total)}</b></div><p class="small muted">Valor informativo. Não é lançamento financeiro.</p>`}
+ function renderTotals(){
+   const t=totals();
+   if(!totalNodes||!bTotals.isConnected||totalNodes.root!==bTotals){
+     bTotals.innerHTML=`<div class="sumline"><span>Serviços</span><b data-val="s"></b></div><div class="sumline"><span>Desloc./Outros</span><b data-val="o"></b></div><div class="sumline"><span>Materiais</span><b data-val="m"></b></div><div class="sumline"><span>Frete</span><b data-val="frt"></b></div><div class="sumline"><span>Acréscimos</span><b data-val="add"></b></div><div class="sumline"><span>Descontos</span><b data-val="disc"></b></div><div class="sumline total"><span>TOTAL DO ORÇAMENTO</span><b data-val="tot"></b></div><p class="small muted">Valor informativo. Não é lançamento financeiro.</p>`;
+     totalNodes={root:bTotals,s:bTotals.querySelector('[data-val="s"]'),o:bTotals.querySelector('[data-val="o"]'),m:bTotals.querySelector('[data-val="m"]'),frt:bTotals.querySelector('[data-val="frt"]'),add:bTotals.querySelector('[data-val="add"]'),disc:bTotals.querySelector('[data-val="disc"]'),tot:bTotals.querySelector('[data-val="tot"]')};
+   }
+   totalNodes.s.textContent=money(t.s);totalNodes.o.textContent=money(t.o);totalNodes.m.textContent=money(t.m);totalNodes.frt.textContent=money(bFreight.value);totalNodes.add.textContent=money(bAdd.value);totalNodes.disc.textContent='-'+money(bDiscount.value);totalNodes.tot.textContent=money(t.total);
+ }
  function read(){w.cliente_id=bClient.value;w.situacao=bSituation.value;w.solicitante=bRequester.value;w.entrada=bEntry.value;w.validade=num(bValidity.value)||15;w.local=bLocation.value;w.tecnico=bTechnician.value;w.horimetro=bHourmeter.value;w.controle=bControl.value;w.defeito_reclamado=bComplaint.value;w.defeito_constatado=bFinding.value;w.descricao_servico=bServiceDesc.value;w.laudo=bReport.value;w.recomendacao=bRecommendation.value;w.observacoes_internas=bInternal.value;w.desconto=num(bDiscount.value);w.acrescimo=num(bAdd.value);w.frete=num(bFreight.value);w.total=totals().total;w.atualizado_em=new Date().toISOString()}
  function open(id=''){ensure();w=id?deep(byId(id)):blank();bClient.innerHTML=optsClients(w.cliente_id);bClient.value=w.cliente_id;bSituation.value=w.situacao;bRequester.value=w.solicitante;bEntry.value=w.entrada||nowLocal();bValidity.value=w.validade||15;bLocation.value=w.local;bTechnician.value=w.tecnico||'JEFERSON';bHourmeter.value=w.horimetro;bControl.value=w.controle;bComplaint.value=w.defeito_reclamado;bFinding.value=w.defeito_constatado;bServiceDesc.value=w.descricao_servico;bReport.value=w.laudo;bRecommendation.value=w.recomendacao;bInternal.value=w.observacoes_internas;bDiscount.value=w.desconto||0;bAdd.value=w.acrescimo||0;bFreight.value=w.frete||0;budgetTitle.textContent=id?`Orçamento ${w.numero_orcamento}`:'Novo orçamento';budgetSub.textContent=id?`${clientName(w.cliente_id)} · ${w.situacao}`:'Proposta sem movimentação de estoque/financeiro';setTab('general');renderRows();budgetDlg.showModal()}
  function setTab(n){$$('[data-btab]').forEach(x=>x.classList.toggle('active',x.dataset.btab===n));$$('.btab').forEach(x=>x.classList.toggle('on',x.id==='btab-'+n))}
