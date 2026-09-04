@@ -1,5 +1,5 @@
-// JF Oficina v0.20.28 — múltiplos técnicos por serviço em Orçamentos
-const JF_ASSET_VERSION='0.20.28';
+// JF Oficina v0.20.29 — múltiplos técnicos compatíveis com serviços compactos
+const JF_ASSET_VERSION='0.20.29';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
