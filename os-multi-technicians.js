@@ -1,4 +1,4 @@
-// JF Oficina v0.20.32 — múltiplos técnicos sem observer global
+// JF Oficina v0.20.31 — múltiplos técnicos com eventos delegados
 (function(){
  const SUPA_URL='https://vfswmnkbwtlzensycnfj.supabase.co';
  const SUPA_KEY='sb_publishable_rO1NER3IpMO8HkRWwzVqvA_jDUqnyba';
@@ -27,8 +27,5 @@
  function enhanceServices(){document.querySelectorAll('#serviceRows .itemrow').forEach((row,i)=>{const old=row.querySelector('.srvTech');if(old){old.closest('label').style.display='none'}let box=row.querySelector('.jfSrvTechBox');if(!box){box=document.createElement('label');box.className='jfSrvTechBox';row.insertBefore(box,row.querySelector('.delSrv'))}box.innerHTML=`Técnico(s)<div class="jfTechPicker">${chips(work.servicos[i]?.tecnicos||[])} <button type="button" class="jfPickSrvTech">Editar</button></div>`})}
  function patch(){styles();if(typeof openOS==='function'&&!openOS.__jfMulti){const orig=openOS;window.openOS=openOS=function(id=''){const r=orig(id);ensureWork();syncMainLegacy();renderMain();enhanceServices();return r};openOS.__jfMulti=true}if(typeof renderServices==='function'&&!renderServices.__jfMulti){const orig=renderServices;window.renderServices=renderServices=function(){const r=orig();ensureWork();enhanceServices();return r};renderServices.__jfMulti=true}if(typeof readForm==='function'&&!readForm.__jfMulti){const orig=readForm;window.readForm=readForm=function(){ensureWork();syncMainLegacy();for(const s of work.servicos||[])syncServiceLegacy(s);return orig()};readForm.__jfMulti=true}if($('osDlg')?.open){ensureWork();renderMain();enhanceServices()}}
  document.addEventListener('click',e=>{if(e.target.closest('#jfPickOsTech')){openPicker('os');return}const btn=e.target.closest('.jfPickSrvTech');if(!btn)return;const row=btn.closest('.itemrow');if(!row)return;const rows=Array.from(document.querySelectorAll('#serviceRows .itemrow'));const i=rows.indexOf(row);if(i>-1)openPicker('service',i)});
- function safePatch(){try{patch()}catch(err){console.warn('JF MultiTech patch error:',err)}}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(safePatch,800),{once:true});else setTimeout(safePatch,600);
- setTimeout(safePatch,1800);
- addEventListener('jf-auth-synced',()=>{refreshTechs().then(()=>{if($('osDlg')?.open){ensureWork();renderMain();enhanceServices()}})});
+ addEventListener('DOMContentLoaded',()=>setTimeout(patch,1300));setTimeout(patch,2400);addEventListener('jf-auth-synced',()=>refreshTechs());new MutationObserver(()=>{if($('osDlg')?.open)setTimeout(()=>{ensureWork();renderMain();enhanceServices()},30)}).observe(document.documentElement,{childList:true,subtree:true});
 })();

@@ -1,8 +1,8 @@
 {
-  "version":"0.20.32",
-  "build":1788550000,
+  "version":"0.20.30",
+  "build":1788542940,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"multitech-observer-removal-v02032",
-  "feature":"Remove MutationObserver global do seletor de técnicos e mantém patch controlado com delegação de eventos"
+  "migration":"technician-picker-live-list-v02030",
+  "feature":"Seletor de técnicos carrega a equipe ativa cadastrada antes de exibir as opções por serviço"
 }
