@@ -1,4 +1,4 @@
-// JF Oficina v0.20.22 — sincronização autenticada única e dirigida por eventos
+// JF Oficina v0.20.34 — sincronização por revisão, sem baixar payload completo em polling
 (function(){
  const SUPA_URL='https://vfswmnkbwtlzensycnfj.supabase.co';
  const SUPA_KEY='sb_publishable_rO1NER3IpMO8HkRWwzVqvA_jDUqnyba';
@@ -13,30 +13,32 @@
  function status(t,type=''){try{jfSetSyncStatus(t,type)}catch{}let b=document.getElementById('jfAutoSyncBadge');if(!b){const h=document.querySelector('header');if(h){b=document.createElement('span');b.id='jfAutoSyncBadge';b.style.cssText='font-size:12px;color:#fff;opacity:.9;margin-left:8px';h.appendChild(b)}}if(b)b.textContent=t}
  async function call(action,data={}){const s=session();if(!s?.access_token)throw new Error('login_required');const r=await fetch(FN,{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json','Authorization':'Bearer '+s.access_token},body:JSON.stringify({action,...data})});let d={};try{d=await r.json()}catch{}if(!r.ok){if(r.status===401){localStorage.removeItem(SESSION_KEY);lastToken=''}throw new Error(d.message||d.error||('HTTP '+r.status))}return d}
  async function applyRemote(remote){if(!remote?.payload)return;status('Sincronizando dados...');if(typeof jfApplyServerState==='function')await jfApplyServerState(remote.payload,remote.revision);else{S=JSON.parse(JSON.stringify(remote.payload));normalize();await saveDB();render();localStorage.setItem('jf-sync-revision',String(remote.revision||0));localStorage.removeItem('jf-sync-dirty-at')}try{window.JFPermissions?.apply?.()}catch{}status('Sincronizado.','ok')}
+ async function pull(){return call('sync_get')}
  async function push(base){const r=await call('sync_post',{baseRevision:base,payload:S});localStorage.setItem('jf-sync-revision',String(r.revision||base));localStorage.removeItem('jf-sync-dirty-at');localStorage.setItem('jf-sync-last-at',new Date().toISOString());status('Sincronizado.','ok');return r}
  async function syncNow(reason='auto'){
   if(busy||!navigator.onLine||!hasLogin())return;
   busy=true;
   try{
-   const remote=await call('sync_get');
-   if(!remote.exists){status('Base central não encontrada.','warn');return}
-   const local=itemCount(),known=knownRev(),isDirty=dirty();
-   if(local===0||known===0){await applyRemote(remote);return}
+   // sync_head retorna somente revisão/data; o payload (~3 MB) só é baixado quando necessário.
+   const head=await call('sync_head');
+   if(!head.exists){status('Base central não encontrada.','warn');return}
+   const local=itemCount(),known=knownRev(),isDirty=dirty(),remoteRev=Number(head.revision||0);
+   if(local===0||known===0){const remote=await pull();await applyRemote(remote);return}
    if(isDirty){
     try{await push(known)}catch(e){
-     if(String(e.message).includes('revision_conflict')){const fresh=await call('sync_get');if(typeof jfMergeStatesLocalWins==='function'){S=jfMergeStatesLocalWins(fresh.payload,S);normalize();await saveDB();localStorage.setItem('jf-sync-revision',String(fresh.revision||0));await push(fresh.revision||0)}else await applyRemote(fresh)}else throw e
+     if(String(e.message).includes('revision_conflict')){const fresh=await pull();if(typeof jfMergeStatesLocalWins==='function'){S=jfMergeStatesLocalWins(fresh.payload,S);normalize();await saveDB();localStorage.setItem('jf-sync-revision',String(fresh.revision||0));await push(fresh.revision||0)}else await applyRemote(fresh)}else throw e
     }
     return
    }
-   if(Number(remote.revision||0)>known)await applyRemote(remote);else status('Sincronizado.','ok')
+   if(remoteRev>known){const remote=await pull();await applyRemote(remote)}else status('Sincronizado.','ok')
   }catch(e){console.error('JF auth sync',e);status('Falha na sincronização: '+String(e.message||e),'error')}
   finally{busy=false}
  }
- function schedule(reason='change',delay=1800){clearTimeout(debounce);debounce=setTimeout(()=>syncNow(reason),delay)}
+ function schedule(reason='change',delay=2500){clearTimeout(debounce);debounce=setTimeout(()=>syncNow(reason),delay)}
  function detectLogin(){const tok=session()?.access_token||'';if(tok&&tok!==lastToken){lastToken=tok;status('Entrando na base da empresa...');schedule('login',250)}if(!tok)lastToken=''}
- addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{detectLogin();if(hasLogin())syncNow('startup')},900);setInterval(()=>{detectLogin();if(hasLogin())syncNow('safety')},60000)});
- addEventListener('jf-sync-dirty',()=>schedule('change',1800));
- addEventListener('jf-permissions-changed',()=>schedule('permissions',250));
- addEventListener('online',()=>{detectLogin();schedule('online',250)});
+ addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{detectLogin();if(hasLogin())syncNow('startup')},900);setInterval(()=>{detectLogin();if(hasLogin())syncNow('safety')},300000)});
+ addEventListener('jf-sync-dirty',()=>schedule('change',2500));
+ addEventListener('jf-permissions-changed',()=>schedule('permissions',500));
+ addEventListener('online',()=>{detectLogin();schedule('online',500)});
  window.jfAuthSyncNow=syncNow;
 })();
