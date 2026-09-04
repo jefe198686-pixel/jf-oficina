@@ -1,2 +1,2 @@
-// JF Oficina v0.20.30 — normaliza referência da versão atual na URL
-(function(){addEventListener('DOMContentLoaded',()=>{try{const u=new URL(location.href);if(u.searchParams.get('v')!=='0.20.30'){u.searchParams.set('v','0.20.30');history.replaceState(null,'',u.pathname+'?'+u.searchParams.toString())}}catch(e){}})})();
+// JF Oficina v0.20.34 — normaliza referência da versão atual na URL
+(function(){addEventListener('DOMContentLoaded',()=>{try{const u=new URL(location.href);if(u.searchParams.get('v')!=='0.20.34'){u.searchParams.set('v','0.20.34');history.replaceState(null,'',u.pathname+'?'+u.searchParams.toString())}}catch(e){}})})();
