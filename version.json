@@ -1,8 +1,8 @@
 {
-  "version":"0.20.21",
-  "build":1788316000,
-  "channel":"stable-test",
+  "version":"0.20.22",
+  "build":1788492000,
+  "channel":"stable",
   "app":"JF Oficina",
-  "migration":"auth-rebuild-edge-v15",
-  "feature":"Autenticação validada no Auth e acesso ao banco pelo backend com chave secreta nova"
+  "migration":"stability-consolidation-v02022",
+  "feature":"Autenticação restaurada, permissões sincronizadas e sincronização única por usuário"
 }
