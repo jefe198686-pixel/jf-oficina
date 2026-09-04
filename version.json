@@ -1,8 +1,8 @@
 {
-  "version":"0.20.23",
-  "build":1788492300,
+  "version":"0.20.24",
+  "build":1788496680,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"budget-performance-pass1-2-v02023",
-  "feature":"Observer temporário no editor de orçamento e totais com atualização incremental do DOM"
+  "migration":"budget-performance-pass3-v02024",
+  "feature":"Delegação estática de eventos nas linhas de Orçamentos, sem recarga de listeners"
 }
