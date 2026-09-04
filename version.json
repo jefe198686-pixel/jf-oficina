@@ -1,8 +1,8 @@
 {
-  "version":"0.20.33",
-  "build":1788561800,
+  "version":"0.20.30",
+  "build":1788542940,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"same_origin_supabase_transport_v02033",
-  "feature":"Auth, sincronização e técnicos passam pelo proxy same-origin da JF Oficina para eliminar Failed to fetch direto no navegador"
+  "migration":"technician-picker-live-list-v02030",
+  "feature":"Seletor de técnicos carrega a equipe ativa cadastrada antes de exibir as opções por serviço"
 }

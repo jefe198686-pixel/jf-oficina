@@ -1,9 +1,8 @@
-// JF Oficina v0.20.33 — transporte same-origin para Auth e sincronização
-const JF_ASSET_VERSION='0.20.33';
+// JF Oficina v0.20.31 — seletor de técnicos estabilizado
+const JF_ASSET_VERSION='0.20.31';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
-  '<script src="auth-network-proxy.js?v='+JF_ASSET_VERSION+'"><\/script>',
   '<script src="core.js?v='+JF_ASSET_VERSION+'"><\/script>',
   '<script src="os.js?v='+JF_ASSET_VERSION+'"><\/script>',
   '<script src="clients.js?v='+JF_ASSET_VERSION+'"><\/script>',
