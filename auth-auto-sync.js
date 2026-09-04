@@ -1,10 +1,10 @@
-// JF Oficina v0.18.3 — sincronização automática por usuário autenticado
+// JF Oficina v0.20.22 — sincronização autenticada única e dirigida por eventos
 (function(){
  const SUPA_URL='https://vfswmnkbwtlzensycnfj.supabase.co';
  const SUPA_KEY='sb_publishable_rO1NER3IpMO8HkRWwzVqvA_jDUqnyba';
  const FN=SUPA_URL+'/functions/v1/jf-technicians';
  const SESSION_KEY='jf-auth-session-v1';
- let busy=false,lastToken='',timer=null;
+ let busy=false,lastToken='',debounce=null;
  function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}}
  function hasLogin(){return !!session()?.access_token}
  function itemCount(){try{return typeof jfStateItems==='function'?jfStateItems(S):0}catch{return 0}}
@@ -24,7 +24,7 @@
    if(local===0||known===0){await applyRemote(remote);return}
    if(isDirty){
     try{await push(known)}catch(e){
-      if(String(e.message).includes('revision_conflict')){const fresh=await call('sync_get');if(typeof jfMergeStatesLocalWins==='function'){S=jfMergeStatesLocalWins(fresh.payload,S);normalize();await saveDB();localStorage.setItem('jf-sync-revision',String(fresh.revision||0));await push(fresh.revision||0)}else await applyRemote(fresh)}else throw e
+     if(String(e.message).includes('revision_conflict')){const fresh=await call('sync_get');if(typeof jfMergeStatesLocalWins==='function'){S=jfMergeStatesLocalWins(fresh.payload,S);normalize();await saveDB();localStorage.setItem('jf-sync-revision',String(fresh.revision||0));await push(fresh.revision||0)}else await applyRemote(fresh)}else throw e
     }
     return
    }
@@ -32,8 +32,11 @@
   }catch(e){console.error('JF auth sync',e);status('Falha na sincronização: '+String(e.message||e),'error')}
   finally{busy=false}
  }
- function detectLogin(){const tok=session()?.access_token||'';if(tok&&tok!==lastToken){lastToken=tok;status('Entrando na base da empresa...');setTimeout(()=>syncNow('login'),250)}if(!tok)lastToken=''}
- addEventListener('DOMContentLoaded',()=>{timer=setInterval(()=>{detectLogin();if(hasLogin())syncNow('timer')},5000);setTimeout(()=>{detectLogin();if(hasLogin())syncNow('startup')},1200)});
- addEventListener('online',()=>{detectLogin();syncNow('online')});
+ function schedule(reason='change',delay=1800){clearTimeout(debounce);debounce=setTimeout(()=>syncNow(reason),delay)}
+ function detectLogin(){const tok=session()?.access_token||'';if(tok&&tok!==lastToken){lastToken=tok;status('Entrando na base da empresa...');schedule('login',250)}if(!tok)lastToken=''}
+ addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{detectLogin();if(hasLogin())syncNow('startup')},900);setInterval(()=>{detectLogin();if(hasLogin())syncNow('safety')},60000)});
+ addEventListener('jf-sync-dirty',()=>schedule('change',1800));
+ addEventListener('jf-permissions-changed',()=>schedule('permissions',250));
+ addEventListener('online',()=>{detectLogin();schedule('online',250)});
  window.jfAuthSyncNow=syncNow;
 })();
