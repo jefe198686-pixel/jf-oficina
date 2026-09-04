@@ -1,4 +1,4 @@
-// JF Oficina v0.20.23 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
+// JF Oficina v0.20.24 — Orçamentos independentes da OS, sem movimentação de estoque ou financeira
 (function(){
  const V='0.14.0';
  function ensure(){S.custom=S.custom||{};if(!Array.isArray(S.custom.orcamentos))S.custom.orcamentos=[];}
@@ -31,16 +31,45 @@
  function totals(){const s=w.servicos.reduce((a,x)=>a+line(x),0),o=w.outros.reduce((a,x)=>a+line(x),0),m=w.materiais.reduce((a,x)=>a+line(x),0),total=Math.max(0,s+o+m+num(bFreight.value)+num(bAdd.value)-num(bDiscount.value));return {s,o,m,total}}
  function renderRows(){
    bServices.innerHTML=w.servicos.map((r,i)=>`<div class="itemrow" data-i="${i}"><label>Serviço<select class="bsSel">${optsSrv(r.servico_id)}</select></label><label>Qtd/Horas<input class="bsQty" type="number" step=".25" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bsVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bsDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bsAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label>Técnico<input class="bsTech" value="${esc(r.tecnico||w.tecnico)}"></label><button type="button" class="danger bsDel">✕</button></div>`).join('');
-   bOthers.innerHTML=w.outros.map((r,i)=>`<div class="itemrow other"><label>Descrição<input class="boName" value="${esc(r.nome||'')}"></label><label>Qtd/Km<input class="boQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor un.<input class="boVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Origem<input class="boFrom" value="${esc(r.origem||'')}"></label><label>Destino<input class="boTo" value="${esc(r.destino||'')}"></label><button type="button" class="danger boDel">✕</button></div>`).join('');
-   bMaterials.innerHTML=w.materiais.map((r,i)=>`<div class="itemrow"><label>Produto / Código<select class="bmSel">${optsProd(r.produto_id)}</select></label><label>Qtd<input class="bmQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bmVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bmDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bmAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label><span class="small muted">Sem baixa</span></label><button type="button" class="danger bmDel">✕</button></div>`).join('');
-   bEquipments.innerHTML=w.equipamentos.map((r,i)=>`<div class="itemrow eq"><label>Equipamento<select class="beSel">${optsEq(w.cliente_id,r.equipamento_id)}</select></label><label>Horímetro<input class="beHour" value="${esc(r.horimetro||'')}"></label><label><input class="beMain" type="radio" name="bMain" ${r.principal?'checked':''}> Principal</label><button type="button" class="danger beDel">✕</button></div>`).join('');
-   bind('.bsQty','quantidade',w.servicos,true);bind('.bsVal','valor',w.servicos,true);bind('.bsDisc','desconto',w.servicos,true);bind('.bsAcc','acrescimo',w.servicos,true);bind('.bsTech','tecnico',w.servicos,false);bind('.boName','nome',w.outros,false);bind('.boQty','quantidade',w.outros,true);bind('.boVal','valor',w.outros,true);bind('.boFrom','origem',w.outros,false);bind('.boTo','destino',w.outros,false);bind('.bmQty','quantidade',w.materiais,true);bind('.bmVal','valor',w.materiais,true);bind('.bmDisc','desconto',w.materiais,true);bind('.bmAcc','acrescimo',w.materiais,true);bind('.beHour','horimetro',w.equipamentos,false);
-   $$('.bsSel').forEach((e,i)=>e.onchange=()=>{let s=serviceBy(e.value);w.servicos[i].servico_id=e.value;w.servicos[i].descricao=s?.descricao||'';if(!w.servicos[i].valor)w.servicos[i].valor=num(s?.valor);renderRows()});
-   $$('.bmSel').forEach((e,i)=>e.onchange=()=>{let p=prodBy(e.value);w.materiais[i].produto_id=e.value;if(!w.materiais[i].valor)w.materiais[i].valor=num(p?.valor_venda);renderRows()});
-   $$('.beSel').forEach((e,i)=>e.onchange=()=>{w.equipamentos[i].equipamento_id=e.value});$$('.beMain').forEach((e,i)=>e.onchange=()=>{w.equipamentos.forEach((x,j)=>x.principal=j===i);renderRows()});
-   $$('.bsDel').forEach((e,i)=>e.onclick=()=>{w.servicos.splice(i,1);renderRows()});$$('.boDel').forEach((e,i)=>e.onclick=()=>{w.outros.splice(i,1);renderRows()});$$('.bmDel').forEach((e,i)=>e.onclick=()=>{w.materiais.splice(i,1);renderRows()});$$('.beDel').forEach((e,i)=>e.onclick=()=>{w.equipamentos.splice(i,1);renderRows()});renderTotals();
+   bOthers.innerHTML=w.outros.map((r,i)=>`<div class="itemrow other" data-i="${i}"><label>Descrição<input class="boName" value="${esc(r.nome||'')}"></label><label>Qtd/Km<input class="boQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor un.<input class="boVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Origem<input class="boFrom" value="${esc(r.origem||'')}"></label><label>Destino<input class="boTo" value="${esc(r.destino||'')}"></label><button type="button" class="danger boDel">✕</button></div>`).join('');
+   bMaterials.innerHTML=w.materiais.map((r,i)=>`<div class="itemrow" data-i="${i}"><label>Produto / Código<select class="bmSel">${optsProd(r.produto_id)}</select></label><label>Qtd<input class="bmQty" type="number" step=".01" value="${num(r.quantidade)||1}"></label><label>Valor<input class="bmVal" type="number" step=".01" value="${num(r.valor)}"></label><label>Desconto<input class="bmDisc" type="number" step=".01" value="${num(r.desconto)}"></label><label>Acréscimo<input class="bmAcc" type="number" step=".01" value="${num(r.acrescimo)}"></label><label><span class="small muted">Sem baixa</span></label><button type="button" class="danger bmDel">✕</button></div>`).join('');
+   bEquipments.innerHTML=w.equipamentos.map((r,i)=>`<div class="itemrow eq" data-i="${i}"><label>Equipamento<select class="beSel">${optsEq(w.cliente_id,r.equipamento_id)}</select></label><label>Horímetro<input class="beHour" value="${esc(r.horimetro||'')}"></label><label><input class="beMain" type="radio" name="bMain" ${r.principal?'checked':''}> Principal</label><button type="button" class="danger beDel">✕</button></div>`).join('');
+   renderTotals();
  }
- function bind(sel,key,a,numeric){$$(sel).forEach((e,i)=>e.oninput=()=>{a[i][key]=numeric?num(e.value):e.value;renderTotals()})}
+ function rowIndex(target){const row=target?.closest?.('.itemrow');if(!row||!budgetForm.contains(row))return -1;const i=Number(row.dataset.i);return Number.isInteger(i)&&i>=0?i:-1}
+ function handleBudgetInput(e){
+   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;let recalc=false;
+   if(t.matches('.bsQty')&&w.servicos[i]){w.servicos[i].quantidade=num(t.value);recalc=true}
+   else if(t.matches('.bsVal')&&w.servicos[i]){w.servicos[i].valor=num(t.value);recalc=true}
+   else if(t.matches('.bsDisc')&&w.servicos[i]){w.servicos[i].desconto=num(t.value);recalc=true}
+   else if(t.matches('.bsAcc')&&w.servicos[i]){w.servicos[i].acrescimo=num(t.value);recalc=true}
+   else if(t.matches('.bsTech')&&w.servicos[i])w.servicos[i].tecnico=t.value;
+   else if(t.matches('.boName')&&w.outros[i])w.outros[i].nome=t.value;
+   else if(t.matches('.boQty')&&w.outros[i]){w.outros[i].quantidade=num(t.value);recalc=true}
+   else if(t.matches('.boVal')&&w.outros[i]){w.outros[i].valor=num(t.value);recalc=true}
+   else if(t.matches('.boFrom')&&w.outros[i])w.outros[i].origem=t.value;
+   else if(t.matches('.boTo')&&w.outros[i])w.outros[i].destino=t.value;
+   else if(t.matches('.bmQty')&&w.materiais[i]){w.materiais[i].quantidade=num(t.value);recalc=true}
+   else if(t.matches('.bmVal')&&w.materiais[i]){w.materiais[i].valor=num(t.value);recalc=true}
+   else if(t.matches('.bmDisc')&&w.materiais[i]){w.materiais[i].desconto=num(t.value);recalc=true}
+   else if(t.matches('.bmAcc')&&w.materiais[i]){w.materiais[i].acrescimo=num(t.value);recalc=true}
+   else if(t.matches('.beHour')&&w.equipamentos[i])w.equipamentos[i].horimetro=t.value;
+   if(recalc)renderTotals();
+ }
+ function handleBudgetChange(e){
+   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;
+   if(t.matches('.bsSel')&&w.servicos[i]){const s=serviceBy(t.value);w.servicos[i].servico_id=t.value;w.servicos[i].descricao=s?.descricao||'';if(!w.servicos[i].valor)w.servicos[i].valor=num(s?.valor);renderRows();return}
+   if(t.matches('.bmSel')&&w.materiais[i]){const p=prodBy(t.value);w.materiais[i].produto_id=t.value;if(!w.materiais[i].valor)w.materiais[i].valor=num(p?.valor_venda);renderRows();return}
+   if(t.matches('.beSel')&&w.equipamentos[i]){w.equipamentos[i].equipamento_id=t.value;return}
+   if(t.matches('.beMain')&&w.equipamentos[i]){w.equipamentos.forEach((x,j)=>x.principal=j===i);renderRows()}
+ }
+ function handleBudgetClick(e){
+   if(!w)return;const t=e.target,i=rowIndex(t);if(i<0)return;
+   if(t.matches('.bsDel')&&w.servicos[i]){e.preventDefault();w.servicos.splice(i,1);renderRows();return}
+   if(t.matches('.boDel')&&w.outros[i]){e.preventDefault();w.outros.splice(i,1);renderRows();return}
+   if(t.matches('.bmDel')&&w.materiais[i]){e.preventDefault();w.materiais.splice(i,1);renderRows();return}
+   if(t.matches('.beDel')&&w.equipamentos[i]){e.preventDefault();w.equipamentos.splice(i,1);renderRows()}
+ }
  function renderTotals(){
    const t=totals();
    if(!totalNodes||!bTotals.isConnected||totalNodes.root!==bTotals){
@@ -60,6 +89,7 @@
  addShell();ensure();
  document.querySelectorAll('nav [data-view]').forEach(b=>{if(b.dataset.view==='budgets')b.onclick=()=>{showView('budgets');renderList()}});
  document.querySelectorAll('[data-btab]').forEach(b=>b.onclick=()=>setTab(b.dataset.btab));
+ budgetForm.addEventListener('input',handleBudgetInput);budgetForm.addEventListener('change',handleBudgetChange);budgetForm.addEventListener('click',handleBudgetClick);
  newBudget.onclick=()=>open();budgetSearch.oninput=renderList;budgetStatus.onchange=renderList;closeBudget.onclick=cancelBudget.onclick=()=>budgetDlg.close();bAddService.onclick=()=>{w.servicos.push({id:uid('BOS'),servico_id:'',descricao:'',quantidade:1,valor:0,desconto:0,acrescimo:0,tecnico:w.tecnico});renderRows()};bAddOther.onclick=()=>{w.outros.push({id:uid('BO'),nome:'',quantidade:1,valor:0,origem:'',destino:'',desconto:0,acrescimo:0});renderRows()};bAddMaterial.onclick=()=>{w.materiais.push({id:uid('BM'),produto_id:'',quantidade:1,valor:0,desconto:0,acrescimo:0});renderRows()};bAddEquipment.onclick=()=>{if(!bClient.value){alert('Selecione o cliente primeiro.');return}w.cliente_id=bClient.value;w.equipamentos.push({equipamento_id:'',horimetro:'',principal:w.equipamentos.length===0});renderRows()};bClient.onchange=()=>{w.cliente_id=bClient.value;renderRows()};[bDiscount,bAdd,bFreight].forEach(x=>x.oninput=renderTotals);budgetForm.onsubmit=async e=>{e.preventDefault();if(await save()){budgetDlg.close();renderList()}};printBudget.onclick=printOne;convertBudget.onclick=convert;
  window.openBudget=open;window.renderBudgets=renderList;
 })();
