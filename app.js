@@ -1,5 +1,5 @@
-// JF Oficina v0.20.24 — piloto de performance de Orçamentos
-const JF_ASSET_VERSION='0.20.24';
+// JF Oficina v0.20.25 — piloto de performance de Orçamentos + correção de leitura QR
+const JF_ASSET_VERSION='0.20.25';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
@@ -57,5 +57,6 @@ document.write([
   '<script src="pdf-compact-layout.js?v='+JF_ASSET_VERSION+'"><\/script>',
   '<script src="payment-qr.js?v='+JF_ASSET_VERSION+'"><\/script>',
   '<script src="company-persistence.js?v='+JF_ASSET_VERSION+'"><\/script>',
-  '<script src="labels.js?v='+JF_ASSET_VERSION+'"><\/script>'
+  '<script src="labels.js?v='+JF_ASSET_VERSION+'"><\/script>',
+  '<script src="label-qr-readability-fix.js?v='+JF_ASSET_VERSION+'"><\/script>'
 ].join(''));
