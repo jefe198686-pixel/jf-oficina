@@ -1,8 +1,8 @@
 {
-  "version":"0.20.29",
-  "build":1788535600,
+  "version":"0.20.30",
+  "build":1788542940,
   "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"shared-budget-compact-multitech-v02029",
-  "feature":"Serviços compactos passam a integrar seleção múltipla de técnicos na OS e no orçamento compartilhado"
+  "migration":"technician-picker-live-list-v02030",
+  "feature":"Seletor de técnicos carrega a equipe ativa cadastrada antes de exibir as opções por serviço"
 }
