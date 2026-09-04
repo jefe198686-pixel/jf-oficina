@@ -1,5 +1,5 @@
-const VERSION='0.20.21',CACHE='jf-oficina-'+VERSION;
-const CORE=['./','./index.html','./manifest.webmanifest','./styles.css','./theme-brasil.css','./app.js','./technicians-auth.js','./auth-auto-sync.js','./labels.js','./label-selection-fix.js','./location-catalog.js','./materials-compact.js','./quick-sales.js'];
+const VERSION='0.20.22',CACHE='jf-oficina-'+VERSION;
+const CORE=['./','./index.html','./manifest.webmanifest','./styles.css','./theme-brasil.css','./app.js','./technicians-auth.js','./auth-auto-sync.js','./technician-permissions.js','./labels.js','./label-selection-fix.js','./location-catalog.js','./materials-compact.js','./quick-sales.js'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('jf-oficina-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});
