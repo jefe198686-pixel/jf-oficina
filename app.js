@@ -1,5 +1,5 @@
-// JF Oficina v0.20.25 — piloto de performance de Orçamentos + correção de leitura QR
-const JF_ASSET_VERSION='0.20.25';
+// JF Oficina v0.20.26 — laboratório de performance de Orçamentos concluído
+const JF_ASSET_VERSION='0.20.26';
 document.write([
   '<link rel="stylesheet" href="theme-brasil.css?v='+JF_ASSET_VERSION+'">',
   '<script src="auth-prelock.js?v='+JF_ASSET_VERSION+'"><\/script>',
