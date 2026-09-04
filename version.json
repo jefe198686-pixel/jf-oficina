@@ -1,8 +1,8 @@
 {
-  "version":"0.20.22",
-  "build":1788492000,
-  "channel":"stable",
+  "version":"0.20.23",
+  "build":1788492300,
+  "channel":"stable-test",
   "app":"JF Oficina",
-  "migration":"stability-consolidation-v02022",
-  "feature":"Autenticação restaurada, permissões sincronizadas e sincronização única por usuário"
+  "migration":"budget-performance-pass1-2-v02023",
+  "feature":"Observer temporário no editor de orçamento e totais com atualização incremental do DOM"
 }
